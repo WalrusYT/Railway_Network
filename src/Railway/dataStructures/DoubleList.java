@@ -400,8 +400,10 @@ public class DoubleList<E> implements List<E>
             return this.removeLast();
         else 
         {
-        	//TODO: Left as an exercise.
-        	return null;
+            DoubleListNode<E> node = getNode(position);
+        	E e = node.getElement();
+            removeMiddleNode(node);
+            return e;
         }
     }
 

@@ -1,4 +1,9 @@
 import Railway.*;
+import Railway.dataStructures.DoubleList;
+import Railway.dataStructures.Iterator;
+import Railway.dataStructures.List;
+import Railway.exceptions.LineAlreadyExistsException;
+import Railway.exceptions.LineNotExistsException;
 
 import java.util.Scanner;
 
@@ -18,9 +23,9 @@ public class Main {
     }
     private static void handleCommand(Scanner in, String command, Railway rw) {
         switch (command) {
-            case Commands.INSERT_LINE -> {}
-            case Commands.REMOVE_LINE -> {}
-            case Commands.LINE_STATIONS -> {}
+            case Commands.INSERT_LINE -> insertLine(in, rw);
+            case Commands.REMOVE_LINE -> removeLine(in, rw);
+            case Commands.LINE_STATIONS -> listStations(in, rw);
             case Commands.STATION_LINES -> {}
             case Commands.INSERT_SCHEDULE -> {}
             case Commands.REMOVE_SCHEDULE -> {}
@@ -31,6 +36,47 @@ public class Main {
             default -> {}
         }
     }
+
+    public static void insertLine(Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        List<String> stations = new DoubleList<>();
+        String station;
+        while (true) {
+            station = in.nextLine().toLowerCase();
+            if (station.isEmpty()) break;
+            stations.addLast(station);
+        }
+        try {
+            rw.insertLine(name, stations);
+            System.out.println(Feedback.LINE_INSERTED);
+        } catch (LineAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void removeLine(Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        try {
+            rw.removeLine(name);
+            System.out.println(Feedback.LINE_REMOVED);
+        } catch (LineNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listStations (Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        try {
+            Iterator<Station> stations = rw.listStations(name);
+            System.out.println(name);
+            while (stations.hasNext()) {
+                System.out.println(stations.next().getName());
+            }
+        } catch (LineNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static class Commands {
         public static final String
                 INSERT_LINE = "il", REMOVE_LINE = "rl", LINE_STATIONS = "cl", STATION_LINES = "ce",
