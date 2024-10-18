@@ -3,7 +3,7 @@ package Railway;
 import Railway.dataStructures.DoubleList;
 import Railway.dataStructures.List;
 
-public class StationClass implements Station{
+public class StationClass implements Station {
     String name;
     List<Line> lines = new DoubleList<>();
 

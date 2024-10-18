@@ -8,4 +8,5 @@ public interface Railway {
     void insertLine(String name, List<String> stations) throws LineAlreadyExistsException;
     void removeLine(String name) throws LineNotExistsException;
     Iterator<Station> listStations (String name) throws LineNotExistsException;
+    void insertSchedule(String name, int number, List<String> entries) throws InvalidScheduleException, LineNotExistsException;
 }

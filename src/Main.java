@@ -1,5 +1,5 @@
 import Railway.*;
-import Railway.dataStructures.DoubleList;
+import Railway.dataStructures.MyArrayList;
 import Railway.dataStructures.Iterator;
 import Railway.dataStructures.List;
 import Railway.exceptions.LineAlreadyExistsException;
@@ -39,7 +39,7 @@ public class Main {
 
     public static void insertLine(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
-        List<String> stations = new DoubleList<>();
+        List<String> stations = new MyArrayList<>();
         String station;
         while (true) {
             station = in.nextLine().toLowerCase();
@@ -75,6 +75,22 @@ public class Main {
         } catch (LineNotExistsException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void insertSchedule (Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        int number = Integer.parseInt(in.nextLine().trim());
+        List<String> entries = new MyArrayList<>();
+        while (true) {
+            String stationAndTime = in.nextLine();
+            entries.addLast(stationAndTime);
+            if (stationAndTime.isEmpty()) break;
+//            String[] stationAndTimeSplit = stationAndTime.split(" ");
+//            String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
+//            Time time = Time.parse(timeStr);
+        }
+
+
     }
 
     public static class Commands {
