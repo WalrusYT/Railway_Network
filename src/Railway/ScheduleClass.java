@@ -1,24 +1,40 @@
 package Railway;
 
+import Railway.dataStructures.Iterator;
 import Railway.dataStructures.List;
-import Railway.dataStructures.MyArrayList;
 
-public class ScheduleClass {
-    private int trainNumber;
-    private List<StationTime> entries;
+public class ScheduleClass implements Schedule {
+    private final int trainNumber;
+    private final List<ScheduleEntry> entries;
 
-    public ScheduleClass (int trainNumber) {
+    public ScheduleClass (int trainNumber, List<ScheduleEntry> entries) {
         this.trainNumber = trainNumber;
-        entries = new MyArrayList<>();
+        this.entries = entries;
     }
 
-    public class StationTime {
-        Station station;
-        Time time;
+    public Iterator<ScheduleEntry> getEntries() {
+        return entries.iterator();
+    }
 
-        public StationTime (Station station, Time time) {
+    public int getTrainNumber() {
+        return trainNumber;
+    }
+
+    public static class ScheduleEntry {
+        private final Station station;
+        private final Time time;
+
+        public ScheduleEntry(Station station, Time time) {
             this.station = station;
             this.time = time;
+        }
+
+        public Station getStation() {
+            return station;
+        }
+
+        public Time getTime() {
+            return time;
         }
     }
 }

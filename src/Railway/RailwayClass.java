@@ -10,12 +10,13 @@ public class RailwayClass implements Railway {
     public RailwayClass() {
         lines = new MyArrayList<>();
     }
+
     @Override
     public void insertLine(String name, List<String> stations) throws LineAlreadyExistsException {
         if (lineExists(name)) throw new LineAlreadyExistsException();
         List<Station> stationList = new MyArrayList<>();
         for (int i = 0; i < stations.size(); i++) {
-            Station station = createStation(stations.get(i));
+            Station station = new StationClass(stations.get(i));
             stationList.addLast(station);
         }
         Line line = new LineClass(name, stationList);
@@ -51,27 +52,37 @@ public class RailwayClass implements Railway {
     }
 
     @Override
-    public void insertSchedule(String name, int number, List<String> entries)
+    public void insertSchedule(String name, int number, List<String> entriesRaw)
             throws InvalidScheduleException, LineNotExistsException {
         Line line = getLine(name);
         if (line == null) throw new LineNotExistsException();
-        List<ScheduleClass.StationTime> entriesLst = new MyArrayList<>();
-        Time prevTime = null;
-        for (int i = 0; i < entries.size() ; i++) {
-            String[] stationAndTimeSplit = entries.get(i).split(" ");
-            String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
-            if (i == 0 && (!stationName.equals(lines.getFirst().getName()) || !stationName.equals(lines.getLast().getName()))) {
+        List<Railway.ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
+        // parse first schedule entry, check if its terminal
+        ScheduleClass.ScheduleEntry firstEntry = parseScheduleEntry(line, entriesRaw.getFirst());
+        if (line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
+        Time prevTime = firstEntry.getTime();
+        entries.addLast(firstEntry);
+        for (int i = 1; i < entriesRaw.size() ; i++) {
+            ScheduleClass.ScheduleEntry entry = parseScheduleEntry(line, entriesRaw.get(i));
+            // if next station time is less than or equals prevTime - bad schedule
+            if (entry.getTime().compareTo(prevTime) <= 0)
                 throw new InvalidScheduleException();
-            }
-            Time time = Time.parse(timeStr);
-            if (time.compareTo(prevTime) <= 0) throw new InvalidScheduleException();
-            prevTime = time;
-            entriesLst.addLast(new ScheduleClass.StationTime());
+            entries.addLast(entry);
         }
-        Schedule schedule = new ScheduleClass(number, entries);
+        line.addSchedule(new ScheduleClass(number, entries));
     }
 
-    private Station createStation(String station) {
-        return new StationClass(station);
+    private ScheduleClass.ScheduleEntry parseScheduleEntry(Line line, String input) throws InvalidScheduleException {
+        String[] stationAndTimeSplit = input.split(" ");
+        String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
+        Station station = line.getStationByName(stationName);
+        if (station == null) throw new InvalidScheduleException();
+        Time time;
+        try {
+            time = Time.parse(timeStr);
+        } catch (TimeFormatException e) {
+            throw new InvalidScheduleException();
+        }
+        return new ScheduleClass.ScheduleEntry(station, time);
     }
 }
