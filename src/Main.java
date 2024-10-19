@@ -2,8 +2,10 @@ import Railway.*;
 import Railway.dataStructures.MyArrayList;
 import Railway.dataStructures.Iterator;
 import Railway.dataStructures.List;
+import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.LineAlreadyExistsException;
 import Railway.exceptions.LineNotExistsException;
+import Railway.exceptions.StationNotExistsException;
 
 import java.util.Scanner;
 
@@ -27,7 +29,7 @@ public class Main {
             case Commands.REMOVE_LINE -> removeLine(in, rw);
             case Commands.LINE_STATIONS -> listStations(in, rw);
             case Commands.STATION_LINES -> {}
-            case Commands.INSERT_SCHEDULE -> {}
+            case Commands.INSERT_SCHEDULE -> insertSchedule(in, rw);
             case Commands.REMOVE_SCHEDULE -> {}
             case Commands.LIST_SCHEDULES -> {}
             case Commands.LIST_TRAINS -> {}
@@ -64,7 +66,7 @@ public class Main {
         }
     }
 
-    public static void listStations (Scanner in, Railway rw) {
+    public static void listStations(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         try {
             Iterator<Station> stations = rw.listStations(name);
@@ -77,7 +79,7 @@ public class Main {
         }
     }
 
-    public static void insertSchedule (Scanner in, Railway rw) {
+    public static void insertSchedule(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         int number = Integer.parseInt(in.nextLine().trim());
         List<String> entries = new MyArrayList<>();
@@ -85,12 +87,12 @@ public class Main {
             String stationAndTime = in.nextLine();
             entries.addLast(stationAndTime);
             if (stationAndTime.isEmpty()) break;
-//            String[] stationAndTimeSplit = stationAndTime.split(" ");
-//            String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
-//            Time time = Time.parse(timeStr);
         }
-
-
+        try {
+            rw.insertSchedule(name, number, entries);
+        } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static class Commands {
