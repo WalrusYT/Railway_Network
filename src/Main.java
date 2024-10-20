@@ -31,7 +31,7 @@ public class Main {
             case Commands.STATION_LINES -> {}
             case Commands.INSERT_SCHEDULE -> insertSchedule(in, rw);
             case Commands.REMOVE_SCHEDULE -> {}
-            case Commands.LIST_SCHEDULES -> {}
+            case Commands.LIST_SCHEDULES -> listSchedules(in, rw);
             case Commands.LIST_TRAINS -> {}
             case Commands.BEST_TIMETABLE -> {}
             case Commands.EXIT -> System.out.println(Feedback.BYE);
@@ -85,11 +85,31 @@ public class Main {
         List<String> entries = new MyArrayList<>();
         while (true) {
             String stationAndTime = in.nextLine();
-            entries.addLast(stationAndTime);
             if (stationAndTime.isEmpty()) break;
+            entries.addLast(stationAndTime);
         }
         try {
             rw.insertSchedule(name, number, entries);
+            System.out.println(Feedback.SCHEDULE_INSERTED);
+        } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listSchedules(Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        String departureStation = in.nextLine().trim();
+        try {
+            Iterator<Schedule> schedules = rw.listSchedules(name, departureStation);
+            while (schedules.hasNext()) {
+                Schedule schedule = schedules.next();
+                System.out.println(schedule.getTrainNumber());
+                Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+                while (entries.hasNext()) {
+                    ScheduleClass.ScheduleEntry entry = entries.next();
+                    System.out.printf("%s %s%n", entry.getStation().getName(), entry.getTime().toString());
+                }
+            }
         } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
             System.out.println(e.getMessage());
         }

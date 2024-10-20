@@ -1,4 +1,12 @@
 package Railway;
 
+import Railway.dataStructures.Iterator;
+
 public interface Schedule {
+    int getTrainNumber();
+    Iterator<ScheduleClass.ScheduleEntry> getEntries();
+
+    Time getDepartureTime();
+
+    Station getDepartureStation();
 }

@@ -2,8 +2,6 @@ package Railway;
 
 import Railway.exceptions.TimeFormatException;
 
-import java.util.Comparator;
-
 public class Time implements Comparable<Time> {
     private int h, m;
 
@@ -14,9 +12,11 @@ public class Time implements Comparable<Time> {
 
     @Override
     public int compareTo(Time o) {
-        return Comparator.comparingInt(Time::getHours)
-                .thenComparingInt(Time::getMinutes)
-                .compare(this, o);
+        if (h > o.getHours()) {
+            return 1;
+        } else if (h < o.getHours()) {
+            return -1;
+        } else return Integer.compare(m, o.getMinutes());
     }
 
     public int getHours() {
@@ -38,5 +38,10 @@ public class Time implements Comparable<Time> {
             throw new TimeFormatException();
         }
         return new Time(h, m);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%02d:%02d", this.h, this.m);
     }
 }

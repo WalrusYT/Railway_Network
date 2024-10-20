@@ -56,10 +56,10 @@ public class RailwayClass implements Railway {
             throws InvalidScheduleException, LineNotExistsException {
         Line line = getLine(name);
         if (line == null) throw new LineNotExistsException();
-        List<Railway.ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
+        List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         // parse first schedule entry, check if its terminal
         ScheduleClass.ScheduleEntry firstEntry = parseScheduleEntry(line, entriesRaw.getFirst());
-        if (line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
+        if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
         for (int i = 1; i < entriesRaw.size() ; i++) {
@@ -72,8 +72,20 @@ public class RailwayClass implements Railway {
         line.addSchedule(new ScheduleClass(number, entries));
     }
 
+    @Override
+    public Iterator<Schedule> listSchedules(String name, String departureStation) throws LineNotExistsException,
+            StationNotExistsException {
+        Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
+        Station station = line.getStationByName(departureStation);
+        if (station == null || !line.isStationTerminal(station)) throw new StationNotExistsException();
+        return line.getSchedulesByStation(station);
+    }
+
+
     private ScheduleClass.ScheduleEntry parseScheduleEntry(Line line, String input) throws InvalidScheduleException {
         String[] stationAndTimeSplit = input.split(" ");
+        if (stationAndTimeSplit.length < 2) throw new InvalidScheduleException();
         String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
         Station station = line.getStationByName(stationName);
         if (station == null) throw new InvalidScheduleException();

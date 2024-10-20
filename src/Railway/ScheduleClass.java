@@ -12,12 +12,24 @@ public class ScheduleClass implements Schedule {
         this.entries = entries;
     }
 
+    @Override
     public Iterator<ScheduleEntry> getEntries() {
         return entries.iterator();
     }
 
+    @Override
     public int getTrainNumber() {
         return trainNumber;
+    }
+
+    @Override
+    public Time getDepartureTime() {
+        return entries.getFirst().getTime();
+    }
+
+    @Override
+    public Station getDepartureStation() {
+        return entries.getFirst().getStation();
     }
 
     public static class ScheduleEntry {

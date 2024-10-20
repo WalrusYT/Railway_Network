@@ -9,4 +9,6 @@ public interface Line {
     void addSchedule(Schedule schedule);
     Iterator<Schedule> getSchedules();
     boolean isStationTerminal(Station station);
+
+    Iterator<Schedule> getSchedulesByStation(Station station);
 }
