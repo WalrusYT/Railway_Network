@@ -1,6 +1,6 @@
 package Railway.dataStructures;
 
-public class EntryClass<K,V> implements Entry{
+public class EntryClass<K,V> implements Entry<K,V> {
     K key;
     V value;
 
