@@ -41,42 +41,72 @@ public class OrderedDoubleList <K extends Comparable<K>, V> implements Dictionar
     }
 
     // it calls findNode and it inserts the new node before the found node,
-    // or at the end of the list findNote returns null.
+    // or at the end of the list if findNote returns null.
     // If the keys are the same, it updates the value
     @Override
     public V insert(K key, V value) {
         DoubleListNode<Entry<K,V>> node = findNode(key);
-        // if ( node != null and key are the same )... else () ..
-        if (node == null) {
-            if (isEmpty()) {
+        Entry<K,V> entry = new EntryClass<>(key, value);
+        if (node != null) {
+            if (node.getElement().getKey().equals(key)) {
+                Entry<K,V> oldEntry = node.getElement();
+                node.setElement(entry);
+                return oldEntry.getValue();
+            }
+            else {
+                DoubleListNode<Entry<K,V>> prevNode = node.getPrevious();
+                DoubleListNode<Entry<K,V>> newNode = new DoubleListNode<>(entry, prevNode, node);
+                prevNode.setNext(newNode);
+                node.setPrevious(newNode);
+                currentSize++;
+                return null;
+            }
+        } else {
+            DoubleListNode<Entry<K,V>> newNode = new DoubleListNode<>(entry, tail, null);
+            if (this.isEmpty()) {
                 head = node;
-                // new node
             } else {
                 tail.setNext(node);
-                // new node
             }
-            tail = node;
+            tail = newNode;
             currentSize++;
-        } else {
-            DoubleListNode<Entry<K,V>> prevNode = node.getPrevious();
-            DoubleListNode<Entry<K,V>> nextNode = node.getNext();
-            Entry<K,V> element;
-            DoubleListNode<Entry<K,V>> newNode = new DoubleListNode<Entry<K,V>>(, prevNode, nextNode);
-            node.setNext(nextNode);
-            node.setPrevious(prevNode);
-            prevNode.setNext(node);
-            nextNode.setPrevious(node);
+            return null;
         }
     }
 
     // it calls findNode. If the key is the same of the found node, it removes it
     @Override
     public V remove(K key) {
+        DoubleListNode<Entry<K,V>> node = findNode(key);
+        if (node != null && node.getElement().getKey().equals(key)) {
+            currentSize--;
+            if (node == head) {
+                head = head.getNext();
+                if ( head == null )
+                    tail = null;
+                else
+                    head.setPrevious(null);
+            } else if (node == tail) {
+                tail = tail.getPrevious();
+                if (tail == null) {
+                    head = null;
+                }
+                else {
+                    tail.setNext(null);
+                }
+            } else {
+                DoubleListNode<Entry<K,V>> prevNode = node.getPrevious();
+                DoubleListNode<Entry<K,V>> nextNode = node.getNext();
+                prevNode.setNext(nextNode);
+                nextNode.setPrevious(prevNode);
+            }
+            return node.getElement().getValue();
+        }
         return null;
     }
 
     @Override
     public Iterator<Entry<K, V>> iterator() {
-        return null;
+        return new DoubleListIterator<>(head, tail);
     }
 }
