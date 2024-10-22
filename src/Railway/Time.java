@@ -27,6 +27,7 @@ public class Time implements Comparable<Time> {
         return this.m;
     }
 
+    // in main
     public static Time parse(String input) throws TimeFormatException {
         String[] hoursAndMinutes = input.split(":");
         if (hoursAndMinutes.length != 2) throw new TimeFormatException();
@@ -44,4 +45,5 @@ public class Time implements Comparable<Time> {
     public String toString() {
         return String.format("%02d:%02d", this.h, this.m);
     }
+    // in main
 }

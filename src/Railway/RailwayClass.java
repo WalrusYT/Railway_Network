@@ -82,7 +82,7 @@ public class RailwayClass implements Railway {
         return line.getSchedulesByStation(station);
     }
 
-
+    // main
     private ScheduleClass.ScheduleEntry parseScheduleEntry(Line line, String input) throws InvalidScheduleException {
         String[] stationAndTimeSplit = input.split(" ");
         if (stationAndTimeSplit.length < 2) throw new InvalidScheduleException();

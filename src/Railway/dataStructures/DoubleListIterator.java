@@ -1,6 +1,6 @@
 package Railway.dataStructures;
 
-import Railway.dataStructures.DoubleList.DoubleListNode;
+import Railway.dataStructures.DoubleListNode;
 
 /**
  * Implementation of Two Way Iterator for DLList 
