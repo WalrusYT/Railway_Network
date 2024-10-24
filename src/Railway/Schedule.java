@@ -1,6 +1,8 @@
 package Railway;
 
-import Railway.dataStructures.Iterator;
+import Railway.exceptions.ImpossibleRouteException;
+import Railway.exceptions.StationNotExistsException;
+import dataStructures.Iterator;
 
 public interface Schedule {
     int getTrainNumber();

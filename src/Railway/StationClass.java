@@ -1,7 +1,7 @@
 package Railway;
 
-import Railway.dataStructures.DoubleList;
-import Railway.dataStructures.List;
+import dataStructures.DoubleList;
+import dataStructures.List;
 
 
 public class StationClass implements Station {

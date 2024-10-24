@@ -1,9 +1,9 @@
 package Railway.tests;
 
-import Railway.dataStructures.Dictionary;
-import Railway.dataStructures.Entry;
-import Railway.dataStructures.Iterator;
-import Railway.dataStructures.OrderedDoubleList;
+import dataStructures.Dictionary;
+import dataStructures.Entry;
+import dataStructures.Iterator;
+import dataStructures.OrderedDoubleList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

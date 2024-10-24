@@ -1,18 +1,17 @@
 package Railway;
 
-import Railway.dataStructures.DoubleList;
-import Railway.dataStructures.Iterator;
-import Railway.dataStructures.List;
-import Railway.dataStructures.MyArrayList;
+import Railway.exceptions.ImpossibleRouteException;
+import Railway.exceptions.StationNotExistsException;
+import dataStructures.*;
 
 public class LineClass implements Line {
     private final List<Station> stations;
-    private final List<Schedule> schedules;
+    private final Dictionary<Time, Schedule> schedules;
     String name;
     public LineClass (String name, List<Station> stations) {
         this.name = name;
         this.stations = stations;
-        schedules = new DoubleList<>();
+        schedules = new OrderedDoubleList<>();
     }
 
     public String getName() {
@@ -34,18 +33,31 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void addSchedule(Schedule schedule) {
-        for (int i = 0; i < schedules.size(); i++) {
-            if (schedule.getDepartureTime().compareTo(schedules.get(i).getDepartureTime()) <= 0) {
-                schedules.add(i, schedule);
-                return;
+    public Schedule bestRoute(Station departure, Station destination, Time prefferedTime)
+            throws ImpossibleRouteException, StationNotExistsException {
+        Iterator<Entry<Time, Schedule>> it = getSchedules();
+        Schedule bestRoute = null;
+        Time bestTime = null;
+        while (it.hasNext()) {
+            Schedule route = it.next().getValue();
+            Time arrivalTime = route.getArrivalForRoute(departure, destination);
+            Time diff = prefferedTime.difference(arrivalTime);
+            if (arrivalTime.compareTo(prefferedTime) <= 0 &&
+                    (bestTime == null || prefferedTime.difference(bestTime).compareTo(diff) > 0)) {
+                bestTime = arrivalTime;
+                bestRoute = route;
             }
         }
-        schedules.addLast(schedule);
+        return bestRoute;
     }
 
     @Override
-    public Iterator<Schedule> getSchedules() {
+    public void addSchedule(Schedule schedule) {
+        schedules.insert(schedule.getDepartureTime(), schedule);
+    }
+
+    @Override
+    public Iterator<Entry<Time, Schedule>> getSchedules() {
         return schedules.iterator();
     }
 

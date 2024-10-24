@@ -1,8 +1,8 @@
 package Railway;
 
-import Railway.dataStructures.MyArrayList;
-import Railway.dataStructures.Iterator;
-import Railway.dataStructures.List;
+import dataStructures.MyArrayList;
+import dataStructures.Iterator;
+import dataStructures.List;
 import Railway.exceptions.*;
 
 public class RailwayClass implements Railway {
@@ -51,6 +51,20 @@ public class RailwayClass implements Railway {
         return line.getStations();
     }
 
+    @Override
+    public Schedule bestTimetable(String name, String departureStation, String destinationStation, String arrivalTime)
+            throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException {
+        Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
+        Station departure = line.getStationByName(departureStation);
+        Station destination = line.getStationByName(destinationStation);
+        if (departure == null || destination == null) throw new StationNotExistsException();
+        try {
+            return line.bestRoute(departure, destination, Time.parse(arrivalTime));
+        } catch (TimeFormatException e) {
+            throw new ImpossibleRouteException();
+        }
+    }
     @Override
     public void insertSchedule(String name, int number, List<String> entriesRaw)
             throws InvalidScheduleException, LineNotExistsException {

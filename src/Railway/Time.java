@@ -27,6 +27,10 @@ public class Time implements Comparable<Time> {
         return this.m;
     }
 
+    public Time difference(Time other) {
+        return new Time (Math.abs(h - other.getHours()), Math.abs(m - other.getMinutes()));
+    }
+
     // in main
     public static Time parse(String input) throws TimeFormatException {
         String[] hoursAndMinutes = input.split(":");

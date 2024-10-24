@@ -1,7 +1,7 @@
 package Railway;
 
-import Railway.dataStructures.Iterator;
-import Railway.dataStructures.List;
+import dataStructures.Iterator;
+import dataStructures.List;
 import Railway.exceptions.*;
 
 public interface Railway {

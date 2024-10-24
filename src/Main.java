@@ -1,11 +1,8 @@
 import Railway.*;
-import Railway.dataStructures.MyArrayList;
-import Railway.dataStructures.Iterator;
-import Railway.dataStructures.List;
-import Railway.exceptions.InvalidScheduleException;
-import Railway.exceptions.LineAlreadyExistsException;
-import Railway.exceptions.LineNotExistsException;
-import Railway.exceptions.StationNotExistsException;
+import Railway.exceptions.*;
+import dataStructures.MyArrayList;
+import dataStructures.Iterator;
+import dataStructures.List;
 
 import java.util.Scanner;
 
@@ -33,7 +30,7 @@ public class Main {
             case Commands.REMOVE_SCHEDULE -> {}
             case Commands.LIST_SCHEDULES -> listSchedules(in, rw);
             case Commands.LIST_TRAINS -> {}
-            case Commands.BEST_TIMETABLE -> {}
+            case Commands.BEST_TIMETABLE -> bestTimetable(in, rw);
             case Commands.EXIT -> System.out.println(Feedback.BYE);
             default -> {}
         }
