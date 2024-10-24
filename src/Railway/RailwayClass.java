@@ -37,6 +37,7 @@ public class RailwayClass implements Railway {
         return null;
     }
 
+    @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
         if (line == null) throw new LineNotExistsException();
@@ -44,6 +45,7 @@ public class RailwayClass implements Railway {
         // удалить линию из всех станций......
     }
 
+    @Override
     public Iterator<Station> listStations (String name) throws LineNotExistsException {
         // Iterator<String> ??
         Line line = getLine(name);

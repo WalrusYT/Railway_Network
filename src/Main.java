@@ -112,6 +112,23 @@ public class Main {
         }
     }
 
+    private static void bestTimetable(Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        String departureStation = in.nextLine().trim();
+        String destinationStation = in.nextLine().trim();
+        String arrivalTime = in.nextLine().trim();
+        try {
+            Schedule schedule = rw.bestTimetable(name, departureStation, destinationStation, arrivalTime);
+            Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+            while (entries.hasNext()) {
+                ScheduleClass.ScheduleEntry entry = entries.next();
+                System.out.printf("%s %s%n", entry.getStation().getName(), entry.getTime().toString());
+            }
+        } catch (LineNotExistsException | ImpossibleRouteException | StationNotExistsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static class Commands {
         public static final String
                 INSERT_LINE = "il", REMOVE_LINE = "rl", LINE_STATIONS = "cl", STATION_LINES = "ce",

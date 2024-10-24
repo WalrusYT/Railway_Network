@@ -11,4 +11,6 @@ public interface Railway {
     void insertSchedule(String name, int number, List<String> entries) throws InvalidScheduleException, LineNotExistsException, InvalidScheduleException, StationNotExistsException;
     Iterator<Schedule> listSchedules (String name, String departureStation) throws LineNotExistsException,
             StationNotExistsException, InvalidScheduleException;
+    Schedule bestTimetable(String name, String departureStation, String destinationStation, String arrivalTime)
+            throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException;
 }

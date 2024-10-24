@@ -11,4 +11,6 @@ public interface Schedule {
     Time getDepartureTime();
 
     Station getDepartureStation();
+
+    Time getArrivalForRoute(Station departure, Station destination) throws ImpossibleRouteException, StationNotExistsException;
 }

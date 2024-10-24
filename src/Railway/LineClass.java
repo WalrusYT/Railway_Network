@@ -69,8 +69,9 @@ public class LineClass implements Line {
     @Override
     public Iterator<Schedule> getSchedulesByStation(Station station) {
         List<Schedule> schedulesByStation = new MyArrayList<>();
-        for (int i = 0; i < schedules.size(); i++) {
-            Schedule schedule = schedules.get(i);
+        Iterator<Entry<Time, Schedule>> iterator = schedules.iterator();
+        while (iterator.hasNext()) {
+            Schedule schedule = iterator.next().getValue();
             if (schedule.getDepartureStation().equals(station)) {
                 schedulesByStation.addLast(schedule);
             }
