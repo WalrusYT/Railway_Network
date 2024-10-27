@@ -1,17 +1,20 @@
 package Railway;
 
 import Railway.exceptions.ImpossibleRouteException;
+import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.StationNotExistsException;
 import dataStructures.*;
 
 public class LineClass implements Line {
+    private static final long serialVersionUID = 0L;
+
     private final List<Station> stations;
-    private final Dictionary<Time, Schedule> schedules;
+    private final Dictionary<ScheduleClass.ScheduleEntry, Schedule> schedules;
     String name;
     public LineClass (String name, List<Station> stations) {
         this.name = name;
         this.stations = stations;
-        schedules = new OrderedDoubleList<>();
+        schedules = new OrderedDoubleList<>(new ScheduleEntryComparatorByTime());
     }
 
     public String getName() {
@@ -35,7 +38,7 @@ public class LineClass implements Line {
     @Override
     public Schedule bestRoute(Station departure, Station destination, Time prefferedTime)
             throws ImpossibleRouteException, StationNotExistsException {
-        Iterator<Entry<Time, Schedule>> it = getSchedules();
+        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> it = getSchedules();
         Schedule bestRoute = null;
         Time bestTime = null;
         while (it.hasNext()) {
@@ -52,12 +55,18 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void addSchedule(Schedule schedule) {
-        schedules.insert(schedule.getDepartureTime(), schedule);
+    public void removeSchedule(ScheduleClass.ScheduleEntry entry) throws InvalidScheduleException {
+        if (schedules.remove(entry) == null)
+            throw new InvalidScheduleException();
     }
 
     @Override
-    public Iterator<Entry<Time, Schedule>> getSchedules() {
+    public void addSchedule(Schedule schedule) {
+        schedules.insert(schedule.getDepartureEntry(), schedule);
+    }
+
+    @Override
+    public Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> getSchedules() {
         return schedules.iterator();
     }
 
@@ -69,7 +78,7 @@ public class LineClass implements Line {
     @Override
     public Iterator<Schedule> getSchedulesByStation(Station station) {
         List<Schedule> schedulesByStation = new MyArrayList<>();
-        Iterator<Entry<Time, Schedule>> iterator = schedules.iterator();
+        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> iterator = schedules.iterator();
         while (iterator.hasNext()) {
             Schedule schedule = iterator.next().getValue();
             if (schedule.getDepartureStation().equals(station)) {

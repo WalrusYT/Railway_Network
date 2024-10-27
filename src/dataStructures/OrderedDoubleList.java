@@ -1,12 +1,18 @@
 package dataStructures;
 
-public class OrderedDoubleList <K extends Comparable<K>, V> implements Dictionary<K,V>{
+import java.io.Serializable;
+
+public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable {
+    private static final long serialVersionUID = 0L;
+
     protected DoubleListNode<Entry<K, V>> head;
-    protected DoubleListNode<Entry<K,V>> tail;
+    protected DoubleListNode<Entry<K, V>> tail;
+    protected Comparator<K> comparator;
 
     protected int currentSize;
 
-    public OrderedDoubleList () {
+    public OrderedDoubleList(Comparator<K> comparator) {
+        this.comparator = comparator;
         head = null;
         tail = null;
         currentSize = 0;
@@ -29,7 +35,7 @@ public class OrderedDoubleList <K extends Comparable<K>, V> implements Dictionar
         // - a bigger key, or
         // it gets to the end of the list (returns null in this case)
         DoubleListNode<Entry<K,V>> node = head;
-        while (node != null && node.getElement().getKey().compareTo(key) < 0) {
+        while (node != null && comparator.compare(node.getElement().getKey(), key) < 0) {
             node = node.getNext();
         }
         return node;
@@ -38,7 +44,7 @@ public class OrderedDoubleList <K extends Comparable<K>, V> implements Dictionar
     // locates existing node by utilizing findNextOrExisting method and checking whether the keys are equal
     private DoubleListNode<Entry<K,V>> findExisting(K key) {
         DoubleListNode<Entry<K,V>> node = findNextOrExisting(key);
-        return node != null && node.getElement().getKey().equals(key) ? node : null;
+        return node != null && comparator.compare(node.getElement().getKey(), key) == 0 ? node : null;
     }
 
     // uses findExisting method to locate the node and returns its value if successful, otherwise null

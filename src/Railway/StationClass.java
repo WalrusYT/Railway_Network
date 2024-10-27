@@ -5,6 +5,8 @@ import dataStructures.List;
 
 
 public class StationClass implements Station {
+    private static final long serialVersionUID = 0L;
+
     private final String name;
     private final List<Line> lines = new DoubleList<>();
 

@@ -1,18 +1,22 @@
 package Railway.tests;
 
-import dataStructures.Dictionary;
-import dataStructures.Entry;
-import dataStructures.Iterator;
-import dataStructures.OrderedDoubleList;
+import dataStructures.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class OrderedDoubleListTests {
+    public static final Comparator<Integer> COMPARATOR = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o1.compareTo(o2);
+        }
+    };
+
     @Test
     public void insertTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(1, "a"); dict.insert(2, "b"); dict.insert(3, "c");
         assertEquals(3, dict.size());
         assertEquals("a", dict.find(1));
@@ -22,7 +26,7 @@ public class OrderedDoubleListTests {
 
     @Test
     public void insertExistingTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(1, "a"); dict.insert(2, "b"); dict.insert(3, "c");
         dict.insert(3, "d");
         assertEquals(3, dict.size());
@@ -31,7 +35,7 @@ public class OrderedDoubleListTests {
 
     @Test
     public void removeTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(1, "a"); dict.insert(2, "b"); dict.insert(3, "c");
         assertEquals("c", dict.remove(3));
         assertEquals(2, dict.size());
@@ -43,14 +47,14 @@ public class OrderedDoubleListTests {
 
     @Test
     public void removeEmptyTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         assertNull(dict.remove(2));
         assertEquals(0, dict.size());
     }
 
     @Test
     public void removeNonExistentTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(1, "a"); dict.insert(2, "b"); dict.insert(3, "c");
         assertNull(dict.remove(4));
         assertEquals(3, dict.size());
@@ -58,7 +62,7 @@ public class OrderedDoubleListTests {
 
     @Test
     public void insertAfterRemovingTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(1, "a");
         dict.remove(1);
         dict.insert(2, "b");
@@ -68,7 +72,7 @@ public class OrderedDoubleListTests {
 
     @Test
     public void orderTest() {
-        Dictionary<Integer, String> dict = new OrderedDoubleList<>();
+        Dictionary<Integer, String> dict = new OrderedDoubleList<>(COMPARATOR);
         dict.insert(5, "a"); dict.insert(1, "b"); dict.insert(9, "c"); dict.insert(4, "d");
         Iterator<Entry<Integer, String>> iterator = dict.iterator();
         Entry<Integer, String> entry = iterator.next();

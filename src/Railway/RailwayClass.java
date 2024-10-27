@@ -1,11 +1,13 @@
 package Railway;
 
-import dataStructures.MyArrayList;
-import dataStructures.Iterator;
-import dataStructures.List;
+import dataStructures.*;
 import Railway.exceptions.*;
 
+import java.io.Serializable;
+
 public class RailwayClass implements Railway {
+    private static final long serialVersionUID = 0L;
+
     List<Line> lines;
     public RailwayClass() {
         lines = new MyArrayList<>();
@@ -24,23 +26,28 @@ public class RailwayClass implements Railway {
     }
 
     private boolean lineExists (String name) {
-        return getLine(name) != null;
+        try {
+            getLine(name);
+            return true;
+        } catch (LineNotExistsException e) {
+            return false;
+        }
     }
 
-    private Line getLine(String name) {
+    @Override
+    public Line getLine(String name) throws LineNotExistsException {
         for (int i = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
             if (line.getName().equals(name)) {
                 return line;
             }
         }
-        return null;
+        throw new LineNotExistsException();
     }
 
     @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
-        if (line == null) throw new LineNotExistsException();
         lines.remove(line);
         // удалить линию из всех станций......
     }
@@ -49,37 +56,30 @@ public class RailwayClass implements Railway {
     public Iterator<Station> listStations (String name) throws LineNotExistsException {
         // Iterator<String> ??
         Line line = getLine(name);
-        if (line == null) throw new LineNotExistsException();
         return line.getStations();
     }
 
     @Override
-    public Schedule bestTimetable(String name, String departureStation, String destinationStation, String arrivalTime)
+    public Schedule bestTimetable(String name, String departureStation, String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException {
         Line line = getLine(name);
-        if (line == null) throw new LineNotExistsException();
         Station departure = line.getStationByName(departureStation);
         Station destination = line.getStationByName(destinationStation);
         if (departure == null || destination == null) throw new StationNotExistsException();
-        try {
-            return line.bestRoute(departure, destination, Time.parse(arrivalTime));
-        } catch (TimeFormatException e) {
-            throw new ImpossibleRouteException();
-        }
+        return line.bestRoute(departure, destination, arrivalTime);
     }
     @Override
-    public void insertSchedule(String name, int number, List<String> entriesRaw)
+    public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
             throws InvalidScheduleException, LineNotExistsException {
         Line line = getLine(name);
-        if (line == null) throw new LineNotExistsException();
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         // parse first schedule entry, check if its terminal
-        ScheduleClass.ScheduleEntry firstEntry = parseScheduleEntry(line, entriesRaw.getFirst());
+        ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
         if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
         for (int i = 1; i < entriesRaw.size() ; i++) {
-            ScheduleClass.ScheduleEntry entry = parseScheduleEntry(line, entriesRaw.get(i));
+            ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, entriesRaw.get(i));
             // if next station time is less than or equals prevTime - bad schedule
             if (entry.getTime().compareTo(prevTime) <= 0)
                 throw new InvalidScheduleException();
@@ -87,30 +87,28 @@ public class RailwayClass implements Railway {
         }
         line.addSchedule(new ScheduleClass(number, entries));
     }
+    @Override
+    public void removeSchedule(String name, String station, Time time)
+            throws InvalidScheduleException, LineNotExistsException {
+        Line line = getLine(name);
+        ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, new EntryClass<>(station, time));
+        line.removeSchedule(entry);
+    }
 
     @Override
     public Iterator<Schedule> listSchedules(String name, String departureStation) throws LineNotExistsException,
             StationNotExistsException {
         Line line = getLine(name);
-        if (line == null) throw new LineNotExistsException();
         Station station = line.getStationByName(departureStation);
         if (station == null || !line.isStationTerminal(station)) throw new StationNotExistsException();
         return line.getSchedulesByStation(station);
     }
 
     // main
-    private ScheduleClass.ScheduleEntry parseScheduleEntry(Line line, String input) throws InvalidScheduleException {
-        String[] stationAndTimeSplit = input.split(" ");
-        if (stationAndTimeSplit.length < 2) throw new InvalidScheduleException();
-        String stationName = stationAndTimeSplit[0], timeStr  = stationAndTimeSplit[1];
-        Station station = line.getStationByName(stationName);
+    private ScheduleClass.ScheduleEntry createScheduleEntry(Line line, Entry<String, Time> entry)
+            throws InvalidScheduleException {
+        Station station = line.getStationByName(entry.getKey());
         if (station == null) throw new InvalidScheduleException();
-        Time time;
-        try {
-            time = Time.parse(timeStr);
-        } catch (TimeFormatException e) {
-            throw new InvalidScheduleException();
-        }
-        return new ScheduleClass.ScheduleEntry(station, time);
+        return new ScheduleClass.ScheduleEntry(station, entry.getValue());
     }
 }

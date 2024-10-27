@@ -1,11 +1,17 @@
 package Railway;
 
 import Railway.exceptions.ImpossibleRouteException;
+import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.StationNotExistsException;
+import Railway.exceptions.TimeFormatException;
 import dataStructures.Iterator;
 import dataStructures.List;
 
+import java.io.Serializable;
+
 public class ScheduleClass implements Schedule {
+    private static final long serialVersionUID = 0L;
+
     private final int trainNumber;
     private final List<ScheduleEntry> entries;
 
@@ -25,8 +31,8 @@ public class ScheduleClass implements Schedule {
     }
 
     @Override
-    public Time getDepartureTime() {
-        return entries.getFirst().getTime();
+    public ScheduleEntry getDepartureEntry() {
+        return entries.getFirst();
     }
 
     @Override
@@ -50,7 +56,9 @@ public class ScheduleClass implements Schedule {
         return entries.getFirst().getStation();
     }
 
-    public static class ScheduleEntry {
+    public static class ScheduleEntry implements Serializable {
+        private static final long serialVersionUID = 0L;
+
         private final Station station;
         private final Time time;
 

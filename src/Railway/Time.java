@@ -2,7 +2,11 @@ package Railway;
 
 import Railway.exceptions.TimeFormatException;
 
-public class Time implements Comparable<Time> {
+import java.io.Serializable;
+
+public class Time implements Comparable<Time>, Serializable {
+    private static final long serialVersionUID = 0L;
+
     private int h, m;
 
     public Time(int h, int m) {
@@ -30,24 +34,4 @@ public class Time implements Comparable<Time> {
     public Time difference(Time other) {
         return new Time (Math.abs(h - other.getHours()), Math.abs(m - other.getMinutes()));
     }
-
-    // in main
-    public static Time parse(String input) throws TimeFormatException {
-        String[] hoursAndMinutes = input.split(":");
-        if (hoursAndMinutes.length != 2) throw new TimeFormatException();
-        int h, m;
-        try {
-            h = Integer.parseInt(hoursAndMinutes[0]);
-            m = Integer.parseInt(hoursAndMinutes[1]);
-        } catch (NumberFormatException e) {
-            throw new TimeFormatException();
-        }
-        return new Time(h, m);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%02d:%02d", this.h, this.m);
-    }
-    // in main
 }

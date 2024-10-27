@@ -1,16 +1,17 @@
 import Railway.*;
 import Railway.exceptions.*;
-import dataStructures.MyArrayList;
-import dataStructures.Iterator;
-import dataStructures.List;
+import dataStructures.*;
 
+import javax.sound.midi.Soundbank;
+import java.io.*;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+    private static final String RAILWAY_FILE = "railway.dat";
     public static void main(String[] args) {
-        Railway rw = new RailwayClass();
+        Railway rw = load();
         Scanner in = new Scanner(System.in);
         String command;
         do {
@@ -18,7 +19,34 @@ public class Main {
             handleCommand(in, command, rw);
         }
         while (!command.equals(Commands.EXIT));
+        save(rw);
         in.close();
+    }
+
+    private static void save(Railway rw) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RAILWAY_FILE));
+            oos.writeObject(rw);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            System.out.println("Issue in writing");
+        }
+    }
+
+    private static Railway load() {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RAILWAY_FILE));
+            Railway rw = (Railway) ois.readObject();
+            ois.close();
+            return rw;
+        } catch (IOException e) {
+            System.out.println("Non existing serialization file: Creating new Object.");
+            return new RailwayClass();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Problems with serialization: Creating new Object.");
+            return new RailwayClass();
+        }
     }
     private static void handleCommand(Scanner in, String command, Railway rw) {
         switch (command) {
@@ -27,7 +55,7 @@ public class Main {
             case Commands.LINE_STATIONS -> listStations(in, rw);
             case Commands.STATION_LINES -> {}
             case Commands.INSERT_SCHEDULE -> insertSchedule(in, rw);
-            case Commands.REMOVE_SCHEDULE -> {}
+            case Commands.REMOVE_SCHEDULE -> removeSchedule(in, rw);
             case Commands.LIST_SCHEDULES -> listSchedules(in, rw);
             case Commands.LIST_TRAINS -> {}
             case Commands.BEST_TIMETABLE -> bestTimetable(in, rw);
@@ -79,11 +107,18 @@ public class Main {
     public static void insertSchedule(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         int number = Integer.parseInt(in.nextLine().trim());
-        List<String> entries = new MyArrayList<>();
+        List<Entry<String, Time>> entries = new MyArrayList<>();
         while (true) {
-            String stationAndTime = in.nextLine();
-            if (stationAndTime.isEmpty()) break;
-            entries.addLast(stationAndTime);
+            String input = in.nextLine();
+            if (input.isEmpty()) break;
+            String[] stationAndTime = input.split(" ");
+            String stationName = stationAndTime[0];
+            Time time = parseTime(stationAndTime[1]);
+            if (time == null) {
+                System.out.println(Feedback.INVALID_SCHEDULE);
+                return;
+            }
+            entries.addLast(new EntryClass<>(stationName, time));
         }
         try {
             rw.insertSchedule(name, number, entries);
@@ -91,6 +126,40 @@ public class Main {
         } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void removeSchedule(Scanner in, Railway rw) {
+        String line = in.nextLine().trim();
+        String station = in.next().trim();
+        String timeStr = in.nextLine().trim();
+        Time time = parseTime(timeStr);
+        if (time == null) {
+            System.out.println(Feedback.INVALID_SCHEDULE);
+            return;
+        }
+        try {
+            rw.removeSchedule(line, station, time);
+            System.out.println(Feedback.SCHEDULE_REMOVED);
+        } catch (LineNotExistsException | InvalidScheduleException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static Time parseTime(String input) {
+        String[] hoursAndMinutes = input.split(":");
+        if (hoursAndMinutes.length != 2) return null;
+        int h, m;
+        try {
+            h = Integer.parseInt(hoursAndMinutes[0]);
+            m = Integer.parseInt(hoursAndMinutes[1]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        return new Time(h, m);
+    }
+
+    private static String timeToString(Time time) {
+        return String.format("%02d:%02d", time.getHours(), time.getMinutes());
     }
 
     public static void listSchedules(Scanner in, Railway rw) {
@@ -104,7 +173,7 @@ public class Main {
                 Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
                 while (entries.hasNext()) {
                     ScheduleClass.ScheduleEntry entry = entries.next();
-                    System.out.printf("%s %s%n", entry.getStation().getName(), entry.getTime().toString());
+                    System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
                 }
             }
         } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
@@ -116,8 +185,13 @@ public class Main {
         String name = in.nextLine().trim();
         String departureStation = in.nextLine().trim();
         String destinationStation = in.nextLine().trim();
-        String arrivalTime = in.nextLine().trim();
+        String arrivalTimeStr = in.nextLine().trim();
         try {
+            Time arrivalTime = parseTime(arrivalTimeStr);
+            if (arrivalTime == null) {
+                System.out.println(Feedback.INVALID_SCHEDULE);
+                return;
+            }
             Schedule schedule = rw.bestTimetable(name, departureStation, destinationStation, arrivalTime);
             Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
             while (entries.hasNext()) {

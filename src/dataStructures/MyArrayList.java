@@ -1,6 +1,10 @@
 package dataStructures;
 
-public class MyArrayList<E> implements List<E> {
+import java.io.Serializable;
+
+public class MyArrayList<E> implements List<E>, Serializable {
+    private static final long serialVersionUID = 0L;
+
     private static final int INITIAL_CAPACITY = 8;
     private int size;
     private E[] elements;

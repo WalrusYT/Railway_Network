@@ -1,5 +1,7 @@
 package Railway;
 
-public interface Station {
+import java.io.Serializable;
+
+public interface Station extends Serializable {
     String getName();
 }

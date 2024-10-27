@@ -4,11 +4,13 @@ import Railway.exceptions.ImpossibleRouteException;
 import Railway.exceptions.StationNotExistsException;
 import dataStructures.Iterator;
 
-public interface Schedule {
+import java.io.Serializable;
+
+public interface Schedule extends Serializable {
     int getTrainNumber();
     Iterator<ScheduleClass.ScheduleEntry> getEntries();
 
-    Time getDepartureTime();
+    ScheduleClass.ScheduleEntry getDepartureEntry();
 
     Station getDepartureStation();
 
