@@ -2,25 +2,46 @@ package Railway;
 
 import Railway.exceptions.ImpossibleRouteException;
 import Railway.exceptions.InvalidScheduleException;
+import Railway.exceptions.ScheduleNotExistsException;
 import Railway.exceptions.StationNotExistsException;
 import dataStructures.*;
 
+/**
+ * The Line class represents a line with a name, list of stations and schedules
+ */
 public class LineClass implements Line {
+    /**
+     * Serializable class a version number
+     */
     private static final long serialVersionUID = 0L;
-
+    /**
+     * List of the {@link Station} stations of the line
+     */
     private final List<Station> stations;
+    /**
+     * Dictionary of schedules of the line
+     */
     private final Dictionary<ScheduleClass.ScheduleEntry, Schedule> schedules;
-    String name;
+    /**
+     * Name of the line
+     */
+    private final String name;
+
+    /**
+     * Constructs an object {@link LineClass} with the given name and list of stations
+     * @param name name of the line
+     * @param stations list of stations of the line
+     */
     public LineClass (String name, List<Station> stations) {
         this.name = name;
         this.stations = stations;
         schedules = new OrderedDoubleList<>(new ScheduleEntryComparatorByTime());
     }
-
+    @Override
     public String getName() {
         return name;
     }
-
+    @Override
     public Iterator<Station> getStations() {
         return stations.iterator();
     }
@@ -55,14 +76,26 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleClass.ScheduleEntry entry) throws InvalidScheduleException {
+    public void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException {
         if (schedules.remove(entry) == null)
-            throw new InvalidScheduleException();
+            throw new ScheduleNotExistsException();
     }
 
     @Override
     public void addSchedule(Schedule schedule) {
         schedules.insert(schedule.getDepartureEntry(), schedule);
+    }
+
+    @Override
+    public boolean isOverlap (ScheduleClass.ScheduleEntry entry) {
+        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> it = getSchedules();
+        while (it.hasNext()) {
+            ScheduleClass.ScheduleEntry e = it.next().getKey();
+            if (e.equals(entry)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

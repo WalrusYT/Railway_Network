@@ -1,7 +1,5 @@
 package Railway;
 
-import Railway.exceptions.TimeFormatException;
-
 import java.io.Serializable;
 
 public class Time implements Comparable<Time>, Serializable {

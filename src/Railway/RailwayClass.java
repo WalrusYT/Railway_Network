@@ -4,6 +4,7 @@ import dataStructures.*;
 import Railway.exceptions.*;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 
 public class RailwayClass implements Railway {
     private static final long serialVersionUID = 0L;
@@ -34,8 +35,13 @@ public class RailwayClass implements Railway {
         }
     }
 
-    @Override
-    public Line getLine(String name) throws LineNotExistsException {
+    /**
+     * Auxiliary method to get a line by its name
+     * @param name name of the {@link Line} line
+     * @return the {@link Line} line with the given name
+     * @throws LineNotExistsException if there is no line with the given name
+     */
+    private Line getLine(String name) throws LineNotExistsException {
         for (int i = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
             if (line.getName().equals(name)) {
@@ -49,12 +55,11 @@ public class RailwayClass implements Railway {
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
         lines.remove(line);
-        // удалить линию из всех станций......
+        // delete the schedules of this line?
     }
 
     @Override
     public Iterator<Station> listStations (String name) throws LineNotExistsException {
-        // Iterator<String> ??
         Line line = getLine(name);
         return line.getStations();
     }
@@ -70,17 +75,16 @@ public class RailwayClass implements Railway {
     }
     @Override
     public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
-            throws InvalidScheduleException, LineNotExistsException {
+            throws InvalidScheduleException, LineNotExistsException, ScheduleNotExistsException {
         Line line = getLine(name);
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
-        // parse first schedule entry, check if its terminal
         ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
         if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
+        if (line.isOverlap(firstEntry)) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
         for (int i = 1; i < entriesRaw.size() ; i++) {
             ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, entriesRaw.get(i));
-            // if next station time is less than or equals prevTime - bad schedule
             if (entry.getTime().compareTo(prevTime) <= 0)
                 throw new InvalidScheduleException();
             entries.addLast(entry);
@@ -89,7 +93,7 @@ public class RailwayClass implements Railway {
     }
     @Override
     public void removeSchedule(String name, String station, Time time)
-            throws InvalidScheduleException, LineNotExistsException {
+            throws ScheduleNotExistsException, LineNotExistsException {
         Line line = getLine(name);
         ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, new EntryClass<>(station, time));
         line.removeSchedule(entry);
@@ -104,11 +108,17 @@ public class RailwayClass implements Railway {
         return line.getSchedulesByStation(station);
     }
 
-    // main
+    /**
+     * Creates a schedule entry by the given {@link Line} and pairs of (station , time)
+     * @param line {@link Line} of the schedule entry
+     * @param entry the pair of (station , time)
+     * @return an instance of {@link ScheduleClass.ScheduleEntry}
+     * @throws ScheduleNotExistsException if there is no station in the given line
+     */
     private ScheduleClass.ScheduleEntry createScheduleEntry(Line line, Entry<String, Time> entry)
-            throws InvalidScheduleException {
+            throws ScheduleNotExistsException {
         Station station = line.getStationByName(entry.getKey());
-        if (station == null) throw new InvalidScheduleException();
+        if (station == null) throw new ScheduleNotExistsException();
         return new ScheduleClass.ScheduleEntry(station, entry.getValue());
     }
 }

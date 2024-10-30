@@ -2,14 +2,20 @@ import Railway.*;
 import Railway.exceptions.*;
 import dataStructures.*;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Main program for Railway Network
+ * @author Ilia Taitsel (67258) i.taitsel@campus.fct.unl.pt
+ * @author Oleksandra Kozlova (68739) o.kozlova@campus.fct.unl.pt
+ */
 public class Main {
     private static final String RAILWAY_FILE = "railway.dat";
+    /**
+     * Main method. Invokes the command interpreter
+     * @param args command-line arguments (not used in this program)
+     */
     public static void main(String[] args) {
         Railway rw = load();
         Scanner in = new Scanner(System.in);
@@ -23,6 +29,10 @@ public class Main {
         in.close();
     }
 
+    /**
+     * Saves Railway network into the file, when exiting from the application
+     * @param rw instance of the railway network to save
+     */
     private static void save(Railway rw) {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RAILWAY_FILE));
@@ -34,6 +44,10 @@ public class Main {
         }
     }
 
+    /**
+     * Loads Railway Network from the file, if it's exists, otherwise create a new one
+     * @return the instance of Railway - the railway network
+     */
     private static Railway load() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RAILWAY_FILE));
@@ -48,6 +62,12 @@ public class Main {
             return new RailwayClass();
         }
     }
+    /**
+     * Handle a command from an output and executes a corresponding method
+     * @param in Scanner object to read user input
+     * @param command String of a command from input
+     * @param rw Railway object - the railway network
+     */
     private static void handleCommand(Scanner in, String command, Railway rw) {
         switch (command) {
             case Commands.INSERT_LINE -> insertLine(in, rw);
@@ -64,12 +84,17 @@ public class Main {
         }
     }
 
+    /**
+     * Insertion of a line, given a name and a non-empty list of station names
+     * @param in Scanner object to read user input
+     * @param rw Railway object to that we want to insert a new line
+     */
     public static void insertLine(Scanner in, Railway rw) {
-        String name = in.nextLine().trim();
+        String name = in.nextLine().trim().toLowerCase();
         List<String> stations = new MyArrayList<>();
         String station;
         while (true) {
-            station = in.nextLine().toLowerCase();
+            station = in.nextLine();
             if (station.isEmpty()) break;
             stations.addLast(station);
         }
@@ -81,8 +106,13 @@ public class Main {
         }
     }
 
+    /**
+     * Removal of a line with the given name
+     * @param in Scanner object to read user input
+     * @param rw Railway object from that we want to remove a line
+     */
     public static void removeLine(Scanner in, Railway rw) {
-        String name = in.nextLine().trim();
+        String name = in.nextLine().trim().toLowerCase();
         try {
             rw.removeLine(name);
             System.out.println(Feedback.LINE_REMOVED);
@@ -91,11 +121,15 @@ public class Main {
         }
     }
 
+    /**
+     * Lists the stations on a given line, if the line exists.
+     * @param in Scanner object to read user input
+     * @param rw Railway object from that we want to be informed about stations
+     */
     public static void listStations(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         try {
             Iterator<Station> stations = rw.listStations(name);
-            System.out.println(name);
             while (stations.hasNext()) {
                 System.out.println(stations.next().getName());
             }
@@ -104,6 +138,11 @@ public class Main {
         }
     }
 
+    /**
+     * Inserts a new schedule into the Railway Network
+     * @param in Scanner object to read user input
+     * @param rw Railway object to that we want to insert a schedule
+     */
     public static void insertSchedule(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         int number = Integer.parseInt(in.nextLine().trim());
@@ -111,9 +150,9 @@ public class Main {
         while (true) {
             String input = in.nextLine();
             if (input.isEmpty()) break;
-            String[] stationAndTime = input.split(" ");
-            String stationName = stationAndTime[0];
-            Time time = parseTime(stationAndTime[1]);
+            String stationName = input.substring(0, input.lastIndexOf(' ')).trim();
+            String timeStr = input.substring(input.lastIndexOf(' ') + 1).trim();
+            Time time = parseTime(timeStr);
             if (time == null) {
                 System.out.println(Feedback.INVALID_SCHEDULE);
                 return;
@@ -123,15 +162,22 @@ public class Main {
         try {
             rw.insertSchedule(name, number, entries);
             System.out.println(Feedback.SCHEDULE_INSERTED);
-        } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
+        } catch (InvalidScheduleException | LineNotExistsException |
+                 StationNotExistsException | ScheduleNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Removal of a schedule, if the line and schedule exist
+     * @param in Scanner object to read user input
+     * @param rw Railway object to that we want to insert a schedule
+     */
     public static void removeSchedule(Scanner in, Railway rw) {
         String line = in.nextLine().trim();
-        String station = in.next().trim();
-        String timeStr = in.nextLine().trim();
+        String input = in.nextLine().trim();
+        String station = input.substring(0, input.lastIndexOf(' ')).trim();
+        String timeStr = input.substring(input.lastIndexOf(' ') + 1).trim();
         Time time = parseTime(timeStr);
         if (time == null) {
             System.out.println(Feedback.INVALID_SCHEDULE);
@@ -140,11 +186,17 @@ public class Main {
         try {
             rw.removeSchedule(line, station, time);
             System.out.println(Feedback.SCHEDULE_REMOVED);
-        } catch (LineNotExistsException | InvalidScheduleException e) {
+        } catch (LineNotExistsException | ScheduleNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
 
+
+    /**
+     * Time parsing from string (hh:mm) to an instance of {@link Time}
+     * @param input time in the string format (hh:mm)
+     * @return instance of {@link Time}
+     */
     private static Time parseTime(String input) {
         String[] hoursAndMinutes = input.split(":");
         if (hoursAndMinutes.length != 2) return null;
@@ -158,10 +210,22 @@ public class Main {
         return new Time(h, m);
     }
 
+    /**
+     * Formats an instance of {@link Time} to {@link String}
+     * @param time an instance that should be converted
+     * @return a {@link String} in format (hh:mm) corresponding to the time
+     */
     private static String timeToString(Time time) {
         return String.format("%02d:%02d", time.getHours(), time.getMinutes());
     }
 
+    /**
+     * Lists all the schedules for a given line, if the line exists
+     * and the departure station is a terminal station
+     * (determining the direction of travel direction)
+     * @param in Scanner object to read user input
+     * @param rw Railway object to that we want to list the schedules from
+     */
     public static void listSchedules(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         String departureStation = in.nextLine().trim();
@@ -176,11 +240,17 @@ public class Main {
                     System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
                 }
             }
-        } catch (InvalidScheduleException | LineNotExistsException | StationNotExistsException e) {
+        } catch (LineNotExistsException | StationNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Determines, if possible, the “best” route between two stations
+     * (departure and destination) on a given line.
+     * @param in Scanner object to read user input
+     * @param rw Railway object that we want to find the best timetable from
+     */
     private static void bestTimetable(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         String departureStation = in.nextLine().trim();
@@ -203,13 +273,18 @@ public class Main {
         }
     }
 
+    /**
+     * Commands which allow users to interact with this program and the game
+     */
     public static class Commands {
         public static final String
                 INSERT_LINE = "il", REMOVE_LINE = "rl", LINE_STATIONS = "cl", STATION_LINES = "ce",
                 INSERT_SCHEDULE = "ih", REMOVE_SCHEDULE = "rh", LIST_SCHEDULES = "ch", LIST_TRAINS = "lc",
                 BEST_TIMETABLE = "mh", EXIT = "ta";
     }
-
+    /**
+     * Feedback given by the program
+     */
     public static class Feedback {
         public static final String
                 BYE = "Aplicação terminada.",
