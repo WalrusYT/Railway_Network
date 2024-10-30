@@ -78,7 +78,6 @@ public class RailwayClass implements Railway {
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
         if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
-        if (line.isOverlap(firstEntry)) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
         for (int i = 1; i < entriesRaw.size() ; i++) {

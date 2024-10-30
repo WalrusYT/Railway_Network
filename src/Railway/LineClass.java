@@ -65,6 +65,8 @@ public class LineClass implements Line {
         while (it.hasNext()) {
             Schedule route = it.next().getValue();
             Time arrivalTime = route.getArrivalForRoute(departure, destination);
+            // if (arrivalTime == null) continue; вместо exception, поскольку нужная станция прибытия может оказаться
+            // в следующем расписании
             Time diff = prefferedTime.difference(arrivalTime);
             if (arrivalTime.compareTo(prefferedTime) <= 0 &&
                     (bestTime == null || prefferedTime.difference(bestTime).compareTo(diff) > 0)) {
@@ -82,20 +84,12 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void addSchedule(Schedule schedule) {
-        schedules.insert(schedule.getDepartureEntry(), schedule);
-    }
-
-    @Override
-    public boolean isOverlap (ScheduleClass.ScheduleEntry entry) {
-        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> it = getSchedules();
+    public void addSchedule(Schedule schedule) throws InvalidScheduleException {
+        Iterator<Schedule> it = getSchedulesByStation(schedule.getDepartureStation());
         while (it.hasNext()) {
-            ScheduleClass.ScheduleEntry e = it.next().getKey();
-            if (e.equals(entry)) {
-                return true;
-            }
+            if (it.next().equals(schedule)) throw new InvalidScheduleException();
         }
-        return false;
+        schedules.insert(schedule.getDepartureEntry(), schedule);
     }
 
     @Override

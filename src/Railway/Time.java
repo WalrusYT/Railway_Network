@@ -34,6 +34,14 @@ public class Time implements Comparable<Time>, Serializable {
             return -1;
         } else return Integer.compare(m, o.getMinutes());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Time that = (Time) o;
+        return h == that.h && m == that.m;
+    }
     /**
      * Returns hours
      * @return hour

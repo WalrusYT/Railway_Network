@@ -1,6 +1,7 @@
 package Railway;
 
 import Railway.exceptions.ImpossibleRouteException;
+import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.ScheduleNotExistsException;
 import Railway.exceptions.StationNotExistsException;
 import dataStructures.Entry;
@@ -34,15 +35,7 @@ public interface Line extends Serializable {
      * Adds a {@link Schedule} schedule to the line
      * @param schedule schedule that should be inserted
      */
-    void addSchedule(Schedule schedule);
-
-    /**
-     * Checks if the {@link ScheduleClass.ScheduleEntry} overlaps with another one in a schedule
-     * @param entry that should be checked of existence in other schedules
-     * @return <code>true</code> if entries station and time are the same, <code>false</code> otherwise
-     */
-    boolean isOverlap (ScheduleClass.ScheduleEntry entry);
-
+    void addSchedule(Schedule schedule) throws InvalidScheduleException;
     /**
      * Returns the {@link Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>>} to iterate
      * through the schedules in a line

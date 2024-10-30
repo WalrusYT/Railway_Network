@@ -263,9 +263,10 @@ public class Main {
             }
             Schedule schedule = rw.bestTimetable(name, departureStation, destinationStation, arrivalTime);
             Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+            System.out.println(schedule.getTrainNumber());
             while (entries.hasNext()) {
                 ScheduleClass.ScheduleEntry entry = entries.next();
-                System.out.printf("%s %s%n", entry.getStation().getName(), entry.getTime().toString());
+                System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
             }
         } catch (LineNotExistsException | ImpossibleRouteException | StationNotExistsException e) {
             System.out.println(e.getMessage());

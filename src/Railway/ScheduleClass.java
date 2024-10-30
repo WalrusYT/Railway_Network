@@ -63,8 +63,23 @@ public class ScheduleClass implements Schedule {
                 arrivalTime = entry.getTime();
         }
         if (departureTime == null || arrivalTime == null) throw new StationNotExistsException();
+        // if (departureTime == null || arrivalTime == null) return null;
         if (departureTime.compareTo(arrivalTime) > 0) throw new ImpossibleRouteException();
         return arrivalTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScheduleClass that = (ScheduleClass) o;
+        Iterator<ScheduleEntry> it = that.getEntries();
+        int i = 0;
+        while (it.hasNext() && i < entries.size()) {
+            if (it.next().equals(entries.get(i)))
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -111,6 +126,13 @@ public class ScheduleClass implements Schedule {
          */
         public Time getTime() {
             return time;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ScheduleEntry that = (ScheduleEntry) o;
+            return time.equals(that.time) && station.equals(that.station);
         }
     }
 }
