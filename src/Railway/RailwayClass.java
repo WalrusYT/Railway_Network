@@ -67,6 +67,8 @@ public class RailwayClass implements Railway {
         Line line = getLine(name);
         Station departure = line.getStationByName(departureStation);
         Station destination = line.getStationByName(destinationStation);
+        // impossible route is the one that starts and ends with the same station (probably)
+        if (departure == destination) throw new ImpossibleRouteException();
         if (departure == null || destination == null) throw new StationNotExistsException();
         return line.bestRoute(departure, destination, arrivalTime);
     }

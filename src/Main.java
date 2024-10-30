@@ -1,4 +1,4 @@
-import Railway.*;
+import Railway.Railway;
 import Railway.exceptions.*;
 import dataStructures.*;
 import java.io.*;
@@ -233,9 +233,9 @@ public class Main {
             while (schedules.hasNext()) {
                 Schedule schedule = schedules.next();
                 System.out.println(schedule.getTrainNumber());
-                Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+                Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
                 while (entries.hasNext()) {
-                    ScheduleClass.ScheduleEntry entry = entries.next();
+                    Railway.ScheduleClass.ScheduleEntry entry = entries.next();
                     System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
                 }
             }
@@ -262,10 +262,10 @@ public class Main {
                 return;
             }
             Schedule schedule = rw.bestTimetable(name, departureStation, destinationStation, arrivalTime);
-            Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+            Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
             System.out.println(schedule.getTrainNumber());
             while (entries.hasNext()) {
-                ScheduleClass.ScheduleEntry entry = entries.next();
+                Railway.ScheduleClass.ScheduleEntry entry = entries.next();
                 System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
             }
         } catch (LineNotExistsException | ImpossibleRouteException | StationNotExistsException e) {

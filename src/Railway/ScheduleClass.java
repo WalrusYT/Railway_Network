@@ -51,8 +51,7 @@ public class ScheduleClass implements Schedule {
     }
 
     @Override
-    public Time getArrivalForRoute(Station departure, Station destination) 
-    throws ImpossibleRouteException, StationNotExistsException {
+    public Time getArrivalForRoute(Station departure, Station destination) {
         Iterator<ScheduleEntry> iterator = entries.iterator();
         Time departureTime = null, arrivalTime = null;
         while (iterator.hasNext()) {
@@ -62,9 +61,8 @@ public class ScheduleClass implements Schedule {
             if (entry.getStation().equals(destination))
                 arrivalTime = entry.getTime();
         }
-        if (departureTime == null || arrivalTime == null) throw new StationNotExistsException();
-        // if (departureTime == null || arrivalTime == null) return null;
-        if (departureTime.compareTo(arrivalTime) > 0) throw new ImpossibleRouteException();
+        if (departureTime == null || arrivalTime == null) return null;
+        if (departureTime.compareTo(arrivalTime) > 0) return null;
         return arrivalTime;
     }
 

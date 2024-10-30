@@ -57,11 +57,8 @@ public interface Line extends Serializable {
      * @param destination station of the arrival
      * @param prefferedTime at what time it's better to arrive
      * @return a {@link Schedule} that better suits for the requested preferences
-     * @throws ImpossibleRouteException if the arrival time is less than a departure one
-     * @throws StationNotExistsException if the station of departure/arrival does not exist
      */
-    Schedule bestRoute(Station departure, Station destination, Time prefferedTime)
-            throws ImpossibleRouteException, StationNotExistsException;
+    Schedule bestRoute(Station departure, Station destination, Time prefferedTime);
 
     /**
      * Removes a schedule with the given terminal of {@link ScheduleClass.ScheduleEntry}
