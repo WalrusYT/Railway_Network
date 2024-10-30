@@ -1,7 +1,6 @@
 import Railway.*;
 import Railway.exceptions.*;
 import dataStructures.*;
-
 import java.io.*;
 import java.util.Scanner;
 
@@ -143,7 +142,7 @@ public class Main {
      * @param in Scanner object to read user input
      * @param rw Railway object to that we want to insert a schedule
      */
-    public static void insertSchedule(Scanner in, Railway rw) {
+    public static void insertSchedule(Scanner in, Railway rw) {   // больше чем 20 строк
         String name = in.nextLine().trim();
         int number = Integer.parseInt(in.nextLine().trim());
         List<Entry<String, Time>> entries = new MyArrayList<>();

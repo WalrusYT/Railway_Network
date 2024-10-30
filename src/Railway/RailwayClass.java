@@ -1,10 +1,7 @@
 package Railway;
 
-import dataStructures.*;
 import Railway.exceptions.*;
-
-import java.io.Serializable;
-import java.sql.SQLOutput;
+import dataStructures.*;
 
 public class RailwayClass implements Railway {
     private static final long serialVersionUID = 0L;
@@ -73,6 +70,7 @@ public class RailwayClass implements Railway {
         if (departure == null || destination == null) throw new StationNotExistsException();
         return line.bestRoute(departure, destination, arrivalTime);
     }
+
     @Override
     public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
             throws InvalidScheduleException, LineNotExistsException, ScheduleNotExistsException {
@@ -91,6 +89,7 @@ public class RailwayClass implements Railway {
         }
         line.addSchedule(new ScheduleClass(number, entries));
     }
+    
     @Override
     public void removeSchedule(String name, String station, Time time)
             throws ScheduleNotExistsException, LineNotExistsException {

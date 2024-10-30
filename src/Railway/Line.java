@@ -5,7 +5,6 @@ import Railway.exceptions.ScheduleNotExistsException;
 import Railway.exceptions.StationNotExistsException;
 import dataStructures.Entry;
 import dataStructures.Iterator;
-
 import java.io.Serializable;
 
 /**
@@ -54,7 +53,8 @@ public interface Line extends Serializable {
     /**
      * Checks if the given station is a terminal one or not
      * @param station that should be checked if it's terminal
-     * @return <code>true</code> is the station is terminal station and <code>false</code> otherwise
+     * @return <code>true</code> is the station is terminal station 
+     * and <code>false</code> otherwise
      */
     boolean isStationTerminal(Station station);
 
