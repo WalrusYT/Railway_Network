@@ -2,15 +2,41 @@ package dataStructures;
 
 import java.io.Serializable;
 
+/**
+ * An ordered dictionary implemented as a doubly linked list, which stores key-value pairs
+ * in sorted order based on a specified comparator.
+ *
+ * @param <K> the type of keys maintained by this dictionary
+ * @param <V> the type of values associated with keys
+ */
 public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable {
+    /**
+     * Serial Version UID of the Class
+     */
     private static final long serialVersionUID = 0L;
-
+    /**
+     *  Node at the head of the list.
+     */
     protected DoubleListNode<Entry<K, V>> head;
+    /**
+     * Node at the tail of the list.
+     */
     protected DoubleListNode<Entry<K, V>> tail;
+    /**
+     * Comparator to set the rules of comparing keys
+     */
     protected Comparator<K> comparator;
-
+    /**
+     * Constructs an ordered dictionary with a specified comparator to define the ordering.
+     *
+     * @param comparator the comparator used to determine the order of keys
+     */
     protected int currentSize;
-
+    /**
+     * Constructs an ordered double list with a specified comparator to define the ordering.
+     *
+     * @param comparator the comparator used to determine the order of keys
+     */
     public OrderedDoubleList(Comparator<K> comparator) {
         this.comparator = comparator;
         head = null;
@@ -28,12 +54,13 @@ public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable 
         return currentSize;
     }
 
-    // finds a node, where the key is greater than or equals to the specified one
+    /**
+     * Finds the first node with a key greater than or equal to the specified key.
+     * @param key the key to compare against
+     * @return the node with a key greater than or equal to the specified key,
+     * or {@code null} if no such node exists
+     */
     private DoubleListNode<Entry<K,V>> findNextOrExisting(K key) {
-        // it compares keys until it finds
-        // - an equal key
-        // - a bigger key, or
-        // it gets to the end of the list (returns null in this case)
         DoubleListNode<Entry<K,V>> node = head;
         while (node != null && comparator.compare(node.getElement().getKey(), key) < 0) {
             node = node.getNext();
@@ -41,49 +68,45 @@ public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable 
         return node;
     }
 
-    // locates existing node by utilizing findNextOrExisting method and checking whether the keys are equal
+    /**
+     * Searches for a node with the specified key in the dictionary.
+     * @param key the key to search for
+     * @return the node with the matching key, or {@code null} if no such node exists
+     */
     private DoubleListNode<Entry<K,V>> findExisting(K key) {
         DoubleListNode<Entry<K,V>> node = findNextOrExisting(key);
         return node != null && comparator.compare(node.getElement().getKey(), key) == 0 ? node : null;
     }
 
-    // uses findExisting method to locate the node and returns its value if successful, otherwise null
     @Override
     public V find(K key) {
         DoubleListNode<Entry<K,V>> node = findExisting(key);
         return node == null ? null : node.getElement().getValue();
     }
 
-    // inserts a new key-value pair into the dict, preserving its order
-    // defined by the key's compareTo method and by utilizing findNextOrExisting method
     @Override
     public V insert(K key, V value) {
         currentSize++;
         Entry<K,V> entry = new EntryClass<>(key, value);
-        // if dict is empty - set head and tail as new node
         if (tail == null) {
             head = new DoubleListNode<>(entry);
             tail = head;
             return null;
         }
         DoubleListNode<Entry<K,V>> next = findNextOrExisting(key);
-        // if new key is greater than any key present - append newNode to end of dict
         if (next == null) {
             DoubleListNode<Entry<K,V>> newNode = new DoubleListNode<>(entry, tail, null);
             tail.setNext(newNode);
             tail = newNode;
             return null;
         }
-        // if new key already exists - change the value and return the old one
         if (next.getElement().getKey().equals(key)) {
             V oldValue = next.getElement().getValue();
             next.setElement(entry);
-            currentSize--; // no element was inserted - decrement size
+            currentSize--;
             return oldValue;
         }
-        // otherwise insert new node before the node with a greater key
         DoubleListNode<Entry<K,V>> newNode = new DoubleListNode<>(entry, next.getPrevious(), next);
-        // if next node is the first one in dict - modify head
         if (next == head) {
             head = newNode;
             next.setPrevious(newNode);
@@ -94,33 +117,27 @@ public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable 
         return null;
     }
 
-    // removes an existing key-value pair by utilizing findExisting method
     @Override
     public V remove(K key) {
         DoubleListNode<Entry<K,V>> node = findExisting(key);
-        // if node doesn't exist - return null
         if (node == null) return null;
         V value = node.getElement().getValue();
         currentSize--;
-        // if found node is the only node in dict (tail == head -> 1 entry in dict) - set head and tail to null
         if (tail == head) {
             head = null;
             tail = null;
             return value;
         }
-        // if node is the first element in dict - modify head
         if (node == head) {
             head = node.getNext();
             node.getNext().setPrevious(null);
             return value;
         }
-        // if node is the last element in dict - modify tail
         if (node == tail) {
             tail = node.getPrevious();
             node.getPrevious().setNext(null);
             return value;
         }
-        // otherwise modify references of the removed nodes neighbours
         node.getNext().setPrevious(node.getPrevious());
         node.getPrevious().setNext(node.getNext());
         return value;

@@ -231,9 +231,9 @@ public class Main {
             while (schedules.hasNext()) {
                 Schedule schedule = schedules.next();
                 System.out.println(schedule.getTrainNumber());
-                Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+                Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
                 while (entries.hasNext()) {
-                    Railway.ScheduleClass.ScheduleEntry entry = entries.next();
+                    ScheduleClass.ScheduleEntry entry = entries.next();
                     System.out.printf("%s %s%n", entry.getStation().getName(),
                             timeToString(entry.getTime()));
                 }
@@ -260,10 +260,10 @@ public class Main {
             }
             Schedule schedule = rw.bestTimetable(name, departureStation,
                     destinationStation, arrivalTime);
-            Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+            Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
             System.out.println(schedule.getTrainNumber());
             while (entries.hasNext()) {
-                Railway.ScheduleClass.ScheduleEntry entry = entries.next();
+                ScheduleClass.ScheduleEntry entry = entries.next();
                 System.out.printf("%s %s%n", entry.getStation().getName(),
                         timeToString(entry.getTime()));
             }

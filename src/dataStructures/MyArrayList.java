@@ -1,14 +1,33 @@
 package dataStructures;
 
 import java.io.Serializable;
-
+/**
+ * A custom implementation of a dynamically resizing array-based list.
+ * This class implements the {@link List} interface and supports common list operations,
+ * including adding, removing, finding elements, and iterating over them.
+ *
+ * @param <E> the type of elements held in this list
+ */
 public class MyArrayList<E> implements List<E>, Serializable {
+    /**
+     * Serial Version UID of the Class
+     */
     private static final long serialVersionUID = 0L;
-
+    /**
+     * Initial capacity of the array
+     */
     private static final int INITIAL_CAPACITY = 8;
+    /**
+     * Size of the list
+     */
     private int size;
+    /**
+     * Array of the elements of type E
+     */
     private E[] elements;
-
+    /**
+     * Constructs an empty {@code MyArrayList} with an initial capacity.
+     */
     public MyArrayList() {
         size = 0;
         elements = (E[]) new Object[INITIAL_CAPACITY];
@@ -75,6 +94,9 @@ public class MyArrayList<E> implements List<E>, Serializable {
         size++;
     }
 
+    /**
+     * Resizes the array, when it's full
+     */
     private void resize() {
         E[] newElements = (E[]) new Object[elements.length * 2];
         System.arraycopy(elements, 0, newElements, 0, size);

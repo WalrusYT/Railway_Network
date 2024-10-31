@@ -1,9 +1,30 @@
 package dataStructures;
 
+/**
+ * A queue implementation that supports concatenation of another queue's elements.
+ * This class extends {@link QueueInList} and implements the {@link ConcatenableQueue} interface.
+ * It allows appending the elements of another {@code ConcatenableQueue}
+ * to the end of the current queue.
+ *
+ * @param <E> the type of elements held in this queue
+ */
 public class ConcatenableQueueInList<E> extends QueueInList<E> implements ConcatenableQueue<E> {
+    /**
+     * Constructs an empty {@code ConcatenableQueueInList}.
+     */
     public ConcatenableQueueInList() {
         super();
     }
+    /**
+     * Appends all elements from the given {@code ConcatenableQueue} to the end of this queue.
+     * <p>
+     * If the specified queue is of type {@code ConcatenableQueueInList}, it uses a fast list
+     * concatenation. Otherwise, it appends elements one-by-one.
+     * </p>
+     *
+     * @param queue the {@code ConcatenableQueue} whose elements will be added to this queue
+     * @throws ClassCastException if the internal list cannot be cast to {@code DoubleList<E>}
+     */
     public void append(ConcatenableQueue<E> queue) {
         if (queue instanceof ConcatenableQueueInList<E>) {
             DoubleList<E> l1 = (DoubleList<E>) this.list;
