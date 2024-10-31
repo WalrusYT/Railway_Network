@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @param <E> the type of elements held in this list
  */
-public class MyArrayList<E> implements List<E>, Serializable {
+public class MyArrayList<E> implements List<E> {
     /**
      * Serial Version UID of the Class
      */
@@ -28,6 +28,7 @@ public class MyArrayList<E> implements List<E>, Serializable {
     /**
      * Constructs an empty {@code MyArrayList} with an initial capacity.
      */
+    @SuppressWarnings("unchecked")
     public MyArrayList() {
         size = 0;
         elements = (E[]) new Object[INITIAL_CAPACITY];

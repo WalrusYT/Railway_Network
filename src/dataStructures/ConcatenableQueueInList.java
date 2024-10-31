@@ -17,10 +17,6 @@ public class ConcatenableQueueInList<E> extends QueueInList<E> implements Concat
     }
     /**
      * Appends all elements from the given {@code ConcatenableQueue} to the end of this queue.
-     * <p>
-     * If the specified queue is of type {@code ConcatenableQueueInList}, it uses a fast list
-     * concatenation. Otherwise, it appends elements one-by-one.
-     * </p>
      *
      * @param queue the {@code ConcatenableQueue} whose elements will be added to this queue
      * @throws ClassCastException if the internal list cannot be cast to {@code DoubleList<E>}

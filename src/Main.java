@@ -38,8 +38,7 @@ public class Main {
             oos.writeObject(rw);
             oos.flush();
             oos.close();
-        } catch (IOException e) {
-            System.out.println("Issue in writing");
+        } catch (IOException ignored) {
         }
     }
 
@@ -47,17 +46,14 @@ public class Main {
      * Loads Railway Network from the file, if it's exists, otherwise create a new one
      * @return the instance of Railway - the railway network
      */
+    @SuppressWarnings("unchecked")
     private static Railway load() {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RAILWAY_FILE));
             Railway rw = (Railway) ois.readObject();
             ois.close();
             return rw;
-        } catch (IOException e) {
-            System.out.println("Non existing serialization file: Creating new Object.");
-            return new RailwayClass();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Problems with serialization: Creating new Object.");
+        } catch (IOException | ClassNotFoundException e) {
             return new RailwayClass();
         }
     }
