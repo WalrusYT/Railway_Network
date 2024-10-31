@@ -76,7 +76,8 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException {
+    public void removeSchedule(ScheduleClass.ScheduleEntry entry)
+            throws ScheduleNotExistsException {
         if (schedules.remove(entry) == null)
             throw new ScheduleNotExistsException();
     }

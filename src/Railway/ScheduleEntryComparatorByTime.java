@@ -10,9 +10,8 @@ public class ScheduleEntryComparatorByTime implements Comparator<ScheduleClass.S
     @Override
     public int compare(ScheduleClass.ScheduleEntry o1, ScheduleClass.ScheduleEntry o2) {
         int timeCompare = o1.getTime().compareTo(o2.getTime());
-        if (timeCompare == 0 && o1.getStation().getName().compareTo(o2.getStation().getName()) == 0) {
+        if (timeCompare == 0 && o1.getStation().getName().compareTo(o2.getStation().getName()) == 0)
             return 0;
-        }
         return timeCompare;
     }
 }
