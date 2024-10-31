@@ -45,12 +45,15 @@ public interface Railway extends Serializable {
      * @param entries pairs of (Station name , time )
      * @throws LineNotExistsException if there is no line with the given name
      * @throws InvalidScheduleException if the first station indicated is not terminal, or if
-     * there is an overlap with another schedule, or the times of arriving are not strictly increasing
+     * there is an overlap with another schedule or the times of arriving are not strictly
+     * increasing
      * @throws StationNotExistsException if there is no {@link Station} station with the given name
-     * @throws ScheduleNotExistsException if there is no such {@link Schedule} schedule with in the given line
+     * @throws ScheduleNotExistsException if there is no such {@link Schedule} schedule with in the
+     * given line
      */
-    void insertSchedule(String name, int number, List<Entry<String, Time>> entries) throws LineNotExistsException,
-            InvalidScheduleException, StationNotExistsException, ScheduleNotExistsException;
+    void insertSchedule(String name, int number, List<Entry<String, Time>> entries)
+            throws LineNotExistsException, InvalidScheduleException,
+            StationNotExistsException, ScheduleNotExistsException;
 
     /**
      * Removes a schedule from the given {@link Line} line with the given
@@ -75,8 +78,8 @@ public interface Railway extends Serializable {
      * @throws StationNotExistsException if there is no {@link Station} station
      * with the given name or if it's not a departure station
      */
-    Iterator<Schedule> listSchedules (String name, String departureStation) throws LineNotExistsException,
-            StationNotExistsException;
+    Iterator<Schedule> listSchedules (String name, String departureStation)
+            throws LineNotExistsException, StationNotExistsException;
 
     /**
      * Finds out the best timetable of the given {@link Line} line by its name,
@@ -91,7 +94,8 @@ public interface Railway extends Serializable {
      * (e.g. the departure time is less that an arriving one)
      * @throws StationNotExistsException if there is no {@link Station} with the given name
      */
-    Schedule bestTimetable(String name, String departureStation, String destinationStation, Time arrivalTime)
+    Schedule bestTimetable(String name, String departureStation,
+                           String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException;
 
 }

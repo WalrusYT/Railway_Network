@@ -72,11 +72,11 @@ public class Main {
             case Commands.INSERT_LINE -> insertLine(in, rw);
             case Commands.REMOVE_LINE -> removeLine(in, rw);
             case Commands.LINE_STATIONS -> listStations(in, rw);
-            case Commands.STATION_LINES -> {}
+            // case Commands.STATION_LINES -> {}
             case Commands.INSERT_SCHEDULE -> insertSchedule(in, rw);
             case Commands.REMOVE_SCHEDULE -> removeSchedule(in, rw);
             case Commands.LIST_SCHEDULES -> listSchedules(in, rw);
-            case Commands.LIST_TRAINS -> {}
+            // case Commands.LIST_TRAINS -> {}
             case Commands.BEST_TIMETABLE -> bestTimetable(in, rw);
             case Commands.EXIT -> System.out.println(Feedback.BYE);
             default -> {}
@@ -142,16 +142,14 @@ public class Main {
      * @param in Scanner object to read user input
      * @param rw Railway object to that we want to insert a schedule
      */
-    public static void insertSchedule(Scanner in, Railway rw) {   // больше чем 20 строк
-        String name = in.nextLine().trim();
-        int number = Integer.parseInt(in.nextLine().trim());
+    public static void insertSchedule(Scanner in, Railway rw) {
+        String name = in.nextLine().trim(); int number = Integer.parseInt(in.nextLine().trim());
         List<Entry<String, Time>> entries = new MyArrayList<>();
         while (true) {
             String input = in.nextLine();
             if (input.isEmpty()) break;
             String stationName = input.substring(0, input.lastIndexOf(' ')).trim();
-            String timeStr = input.substring(input.lastIndexOf(' ') + 1).trim();
-            Time time = parseTime(timeStr);
+            Time time = parseTime(input.substring(input.lastIndexOf(' ') + 1).trim());
             if (time == null) {
                 System.out.println(Feedback.INVALID_SCHEDULE);
                 return;
@@ -233,10 +231,11 @@ public class Main {
             while (schedules.hasNext()) {
                 Schedule schedule = schedules.next();
                 System.out.println(schedule.getTrainNumber());
-                Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+                Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
                 while (entries.hasNext()) {
-                    ScheduleClass.ScheduleEntry entry = entries.next();
-                    System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
+                    Railway.ScheduleClass.ScheduleEntry entry = entries.next();
+                    System.out.printf("%s %s%n", entry.getStation().getName(),
+                            timeToString(entry.getTime()));
                 }
             }
         } catch (LineNotExistsException | StationNotExistsException e) {
@@ -251,22 +250,22 @@ public class Main {
      * @param rw Railway object that we want to find the best timetable from
      */
     private static void bestTimetable(Scanner in, Railway rw) {
-        String name = in.nextLine().trim();
-        String departureStation = in.nextLine().trim();
-        String destinationStation = in.nextLine().trim();
-        String arrivalTimeStr = in.nextLine().trim();
+        String name = in.nextLine().trim(), departureStation = in.nextLine().trim();
+        String destinationStation = in.nextLine().trim(), arrivalTimeStr = in.nextLine().trim();
         try {
             Time arrivalTime = parseTime(arrivalTimeStr);
             if (arrivalTime == null) {
                 System.out.println(Feedback.INVALID_SCHEDULE);
                 return;
             }
-            Schedule schedule = rw.bestTimetable(name, departureStation, destinationStation, arrivalTime);
-            Iterator<ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
+            Schedule schedule = rw.bestTimetable(name, departureStation,
+                    destinationStation, arrivalTime);
+            Iterator<Railway.ScheduleClass.ScheduleEntry> entries = schedule.getEntries();
             System.out.println(schedule.getTrainNumber());
             while (entries.hasNext()) {
-                ScheduleClass.ScheduleEntry entry = entries.next();
-                System.out.printf("%s %s%n", entry.getStation().getName(), timeToString(entry.getTime()));
+                Railway.ScheduleClass.ScheduleEntry entry = entries.next();
+                System.out.printf("%s %s%n", entry.getStation().getName(),
+                        timeToString(entry.getTime()));
             }
         } catch (LineNotExistsException | ImpossibleRouteException | StationNotExistsException e) {
             System.out.println(e.getMessage());

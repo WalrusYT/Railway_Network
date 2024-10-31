@@ -57,16 +57,14 @@ public class LineClass implements Line {
     }
 
     @Override
-    public Schedule bestRoute(Station departure, Station destination, Time prefferedTime)
-            throws ImpossibleRouteException, StationNotExistsException {
+    public Schedule bestRoute(Station departure, Station destination, Time prefferedTime) {
         Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> it = getSchedules();
         Schedule bestRoute = null;
         Time bestTime = null;
         while (it.hasNext()) {
             Schedule route = it.next().getValue();
             Time arrivalTime = route.getArrivalForRoute(departure, destination);
-            // if (arrivalTime == null) continue; вместо exception, поскольку нужная станция прибытия может оказаться
-            // в следующем расписании
+            if (arrivalTime == null) continue;
             Time diff = prefferedTime.difference(arrivalTime);
             if (arrivalTime.compareTo(prefferedTime) <= 0 &&
                     (bestTime == null || prefferedTime.difference(bestTime).compareTo(diff) > 0)) {
@@ -78,7 +76,8 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException {
+    public void removeSchedule(ScheduleClass.ScheduleEntry entry)
+            throws ScheduleNotExistsException {
         if (schedules.remove(entry) == null)
             throw new ScheduleNotExistsException();
     }

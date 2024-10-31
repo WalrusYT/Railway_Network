@@ -40,9 +40,6 @@ public interface Schedule extends Serializable {
      * @param departure   the {@link Station} from which the train is departing
      * @param destination the {@link Station} to which the arrival time is requested
      * @return a {@link Time} object representing the arrival time at the destination
-     * @throws ImpossibleRouteException if the arrival time is less than a departure one
-     * @throws StationNotExistsException if the station of departure/arrival does not exist
      */
-    Time getArrivalForRoute(Station departure, Station destination) 
-    throws ImpossibleRouteException, StationNotExistsException;
+    Time getArrivalForRoute(Station departure, Station destination);
 }

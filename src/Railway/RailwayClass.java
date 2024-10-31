@@ -62,13 +62,17 @@ public class RailwayClass implements Railway {
     }
 
     @Override
-    public Schedule bestTimetable(String name, String departureStation, String destinationStation, Time arrivalTime)
+    public Schedule bestTimetable(String name, String departureStation,
+                                  String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException {
         Line line = getLine(name);
         Station departure = line.getStationByName(departureStation);
+        if (departure == null) throw new StationNotExistsException();
         Station destination = line.getStationByName(destinationStation);
-        if (departure == null || destination == null) throw new StationNotExistsException();
-        return line.bestRoute(departure, destination, arrivalTime);
+        if (destination == null) throw new ImpossibleRouteException();
+        Schedule best = line.bestRoute(departure, destination, arrivalTime);
+        if (best == null) throw new ImpossibleRouteException();
+        return best;
     }
 
     @Override
@@ -93,16 +97,18 @@ public class RailwayClass implements Railway {
     public void removeSchedule(String name, String station, Time time)
             throws ScheduleNotExistsException, LineNotExistsException {
         Line line = getLine(name);
-        ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, new EntryClass<>(station, time));
+        ScheduleClass.ScheduleEntry entry =
+                createScheduleEntry(line, new EntryClass<>(station, time));
         line.removeSchedule(entry);
     }
 
     @Override
-    public Iterator<Schedule> listSchedules(String name, String departureStation) throws LineNotExistsException,
-            StationNotExistsException {
+    public Iterator<Schedule> listSchedules(String name, String departureStation)
+            throws LineNotExistsException, StationNotExistsException {
         Line line = getLine(name);
         Station station = line.getStationByName(departureStation);
-        if (station == null || !line.isStationTerminal(station)) throw new StationNotExistsException();
+        if (station == null || !line.isStationTerminal(station))
+            throw new StationNotExistsException();
         return line.getSchedulesByStation(station);
     }
 
