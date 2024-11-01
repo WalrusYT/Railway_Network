@@ -1,6 +1,6 @@
 package dataStructures;
 
-import java.io.Serializable;
+import java.io.Serial;
 /**
  * A custom implementation of a dynamically resizing array-based list.
  * This class implements the {@link List} interface and supports common list operations,
@@ -12,6 +12,7 @@ public class MyArrayList<E> implements List<E> {
     /**
      * Serial Version UID of the Class
      */
+    @Serial
     private static final long serialVersionUID = 0L;
     /**
      * Initial capacity of the array
@@ -88,7 +89,7 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public void add(int position, E element) throws InvalidPositionException {
-        if (position < 0 || position >= size) throw new InvalidPositionException();
+        if (position < 0 || position > size) throw new InvalidPositionException();
         if (size == elements.length) resize();
         System.arraycopy(elements, position, elements, position + 1, size - position);
         elements[position] = element;
@@ -98,6 +99,7 @@ public class MyArrayList<E> implements List<E> {
     /**
      * Resizes the array, when it's full
      */
+    @SuppressWarnings("unchecked")
     private void resize() {
         E[] newElements = (E[]) new Object[elements.length * 2];
         System.arraycopy(elements, 0, newElements, 0, size);
@@ -113,7 +115,9 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public E removeLast() throws EmptyListException {
         if (isEmpty()) throw new EmptyListException();
-        return elements[size--];
+        E element = elements[--size];
+        elements[size] = null;
+        return element;
     }
 
     @Override
@@ -121,8 +125,8 @@ public class MyArrayList<E> implements List<E> {
         if (position < 0 || position >= size) throw new InvalidPositionException();
         if (position == size - 1) return removeLast();
         E element = elements[position];
-        System.arraycopy(elements, position + 1, elements, position, size - 1);
-        size--;
+        System.arraycopy(elements, position + 1, elements, position, size - position - 1);
+        elements[--size] = null;
         return element;
     }
 

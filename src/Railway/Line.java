@@ -1,9 +1,7 @@
 package Railway;
 
-import Railway.exceptions.ImpossibleRouteException;
 import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.ScheduleNotExistsException;
-import Railway.exceptions.StationNotExistsException;
 import dataStructures.Entry;
 import dataStructures.Iterator;
 import java.io.Serializable;
@@ -37,9 +35,9 @@ public interface Line extends Serializable {
      */
     void addSchedule(Schedule schedule) throws InvalidScheduleException;
     /**
-     * Returns the {@link Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>>} to iterate
+     * Returns the {@link Iterator<Entry<ScheduleClass.ScheduleEntry,Schedule>>} to iterate
      * through the schedules in a line
-     * @return an {@link Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>>} to iterate
+     * @return an {@link Iterator<Entry<ScheduleClass.ScheduleEntry,Schedule>>} to iterate
      */
     Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> getSchedules();
 
@@ -66,6 +64,14 @@ public interface Line extends Serializable {
      * @throws ScheduleNotExistsException if the {@link Schedule} schedule does not exist.
      */
     void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException;
+
+    /**
+     * Get an absolute index of the specified station in a line. If the station is first in its
+     * line - the index will be 0, if its second - 1 etc.
+     * @param station Instance of {@link Schedule}, index of which will be acquired
+     * @return Index of the specified station in its line
+     */
+    int getStationIndex(Station station);
 
     /**
      * Returns an iterator of the schedules that contains given {@link Station}

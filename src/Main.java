@@ -284,15 +284,9 @@ public class Main {
         public static final String
                 BYE = "Aplicação terminada.",
                 LINE_INSERTED = "Inserção de linha com sucesso.",
-                LINE_EXISTS = "Linha existente.",
                 LINE_REMOVED = "Remoção de linha com sucesso.",
-                LINE_NOT_EXIST = "Linha inexistente.",
-                STATION_NOT_EXIST = "Station does not exist.",
                 SCHEDULE_INSERTED = "Criação de horário com sucesso.",
                 INVALID_SCHEDULE = "Horário inválido.",
-                SCHEDULE_REMOVED = "Remoção de horário com sucesso.",
-                SCHEDULE_NOT_EXIST = "Horário inexistente.",
-                INVALID_STATION = "Estação de partida inexistente.",
-                INVALID_ROUTE = "Percurso impossível.";
+                SCHEDULE_REMOVED = "Remoção de horário com sucesso.";
     }
 }

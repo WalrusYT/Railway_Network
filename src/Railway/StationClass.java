@@ -15,10 +15,6 @@ public class StationClass implements Station {
      * Name of the station
      */
     private final String name;
-    /**
-     * List of the lines
-     */
-    private final List<Line> lines = new DoubleList<>();
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -38,6 +34,6 @@ public class StationClass implements Station {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StationClass that = (StationClass) o;
-        return name.equals(that.name) && lines.equals(that.lines);
+        return name.equals(that.name);
     }
 }

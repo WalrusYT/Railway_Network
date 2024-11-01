@@ -51,7 +51,7 @@ public class RailwayClass implements Railway {
     @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
-        lines.remove(line);
+        boolean removed = lines.remove(line);
         // delete the schedules of this line?
     }
 
@@ -84,11 +84,19 @@ public class RailwayClass implements Railway {
         if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
+        int stationIndex = line.getStationIndex(firstEntry.getStation());
+        boolean directionLeft = stationIndex == 0;
         for (int i = 1; i < entriesRaw.size() ; i++) {
             ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, entriesRaw.get(i));
-            if (entry.getTime().compareTo(prevTime) <= 0)
+            if (entry.getTime().compareTo(prevTime) <= 0) throw new InvalidScheduleException();
+            int nextStationIndex = line.getStationIndex(entry.getStation());
+            if (directionLeft && nextStationIndex <= stationIndex)
+                throw new InvalidScheduleException();
+            if (!directionLeft && nextStationIndex >= stationIndex)
                 throw new InvalidScheduleException();
             entries.addLast(entry);
+            prevTime = entry.getTime();
+            stationIndex = nextStationIndex;
         }
         line.addSchedule(new ScheduleClass(number, entries));
     }

@@ -60,7 +60,7 @@ public class ScheduleClass implements Schedule {
                 arrivalTime = entry.getTime();
         }
         if (departureTime == null || arrivalTime == null) return null;
-        if (departureTime.compareTo(arrivalTime) > 0) return null;
+        if (departureTime.compareTo(arrivalTime) >= 0) return null;
         return arrivalTime;
     }
 

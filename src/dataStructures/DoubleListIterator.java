@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.io.Serial;
+
 /**
  * Implementation of Two Way Iterator for DLList 
  * @author AED  Team
@@ -13,7 +15,8 @@ class DoubleListIterator<E> implements TwoWayIterator<E>
 	/**
 	 * Serial Version UID of the Class
 	 */
-    static final long serialVersionUID = 0L;
+    @Serial
+    private static final long serialVersionUID = 0L;
 
 
     /** 

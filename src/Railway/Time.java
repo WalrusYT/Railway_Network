@@ -15,7 +15,8 @@ public class Time implements Comparable<Time>, Serializable {
     /**
      * Hours and minutes
      */
-    private int h, m;
+    private final int h;
+    private final int m;
      /**
      * Constructs an object {@link Time} with the given hours and minutes
      * @param h hours
@@ -57,11 +58,13 @@ public class Time implements Comparable<Time>, Serializable {
         return this.m;
     }
     /**
-     * Calculates absolute difference between this {@code Time} and another {@code Time}
+     * Calculates absolute difference between this {@code Time} and another {@code Time} in minutes
      * @param other {@code Time} instance to calculate the difference from
-     * @return a new {@code Time} object representing the absolute difference in hours and minutes
+     * @return Difference in time in minutes
      */
-    public Time difference(Time other) {
-        return new Time (Math.abs(h - other.getHours()), Math.abs(m - other.getMinutes()));
+    public int differenceMin(Time other) {
+        int thisMin = this.h * 60 + this.m;
+        int otherMin = other.h * 60 + other.m;
+        return Math.abs(thisMin - otherMin);
     }
 }

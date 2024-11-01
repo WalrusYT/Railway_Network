@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.io.Serializable;
-
 /**
  * Doubly linked list Implementation 
  * @author AED  Team
@@ -173,8 +171,6 @@ public class DoubleList<E> implements List<E>
         DoubleListNode<E> prevNode = this.getNode(position - 1);
         DoubleListNode<E> nextNode = prevNode.getNext();
         DoubleListNode<E> newNode = new DoubleListNode<E>(element, prevNode, nextNode);
-        //newNode.setNext(nextNode);
-        //newNode.setPrevious(prevNode);
         prevNode.setNext(newNode);
         nextNode.setPrevious(newNode);
         currentSize++;

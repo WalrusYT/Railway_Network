@@ -1,7 +1,5 @@
 package dataStructures;
 
-import dataStructures.Iterator;
-
 import java.io.Serializable;
 
 /**

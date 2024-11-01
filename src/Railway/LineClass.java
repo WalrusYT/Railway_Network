@@ -1,9 +1,7 @@
 package Railway;
 
-import Railway.exceptions.ImpossibleRouteException;
 import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.ScheduleNotExistsException;
-import Railway.exceptions.StationNotExistsException;
 import dataStructures.*;
 
 /**
@@ -65,9 +63,9 @@ public class LineClass implements Line {
             Schedule route = it.next().getValue();
             Time arrivalTime = route.getArrivalForRoute(departure, destination);
             if (arrivalTime == null) continue;
-            Time diff = prefferedTime.difference(arrivalTime);
+            int arrivalDiffMin = prefferedTime.differenceMin(arrivalTime);
             if (arrivalTime.compareTo(prefferedTime) <= 0 &&
-                    (bestTime == null || prefferedTime.difference(bestTime).compareTo(diff) > 0)) {
+                    (bestTime == null || arrivalDiffMin < prefferedTime.differenceMin(bestTime))) {
                 bestTime = arrivalTime;
                 bestRoute = route;
             }
@@ -83,12 +81,8 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void addSchedule(Schedule schedule) throws InvalidScheduleException {
-        Iterator<Schedule> it = getSchedulesByStation(schedule.getDepartureStation());
-        while (it.hasNext()) {
-            if (it.next().equals(schedule)) throw new InvalidScheduleException();
-        }
-        schedules.insert(schedule.getDepartureEntry(), schedule);
+    public void addSchedule(Schedule schedule) {
+        Schedule s = schedules.insert(schedule.getDepartureEntry(), schedule);
     }
 
     @Override
@@ -99,6 +93,11 @@ public class LineClass implements Line {
     @Override
     public boolean isStationTerminal(Station station) {
         return station.equals(stations.getFirst()) || station.equals(stations.getLast());
+    }
+
+    @Override
+    public int getStationIndex(Station station) {
+        return stations.find(station);
     }
 
     @Override
