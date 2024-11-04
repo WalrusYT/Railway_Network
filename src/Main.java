@@ -85,7 +85,7 @@ public class Main {
      * @param rw Railway object to that we want to insert a new line
      */
     public static void insertLine(Scanner in, Railway rw) {
-        String name = in.nextLine().trim().toLowerCase();
+        String name = in.nextLine().trim();
         List<String> stations = new MyArrayList<>();
         String station;
         while (true) {

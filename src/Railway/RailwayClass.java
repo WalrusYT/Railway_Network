@@ -41,7 +41,7 @@ public class RailwayClass implements Railway {
     private Line getLine(String name) throws LineNotExistsException {
         for (int i = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
-            if (line.getName().equals(name)) {
+            if (line.getName().equalsIgnoreCase(name)) {
                 return line;
             }
         }

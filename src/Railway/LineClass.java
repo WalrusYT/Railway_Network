@@ -48,7 +48,7 @@ public class LineClass implements Line {
     public Station getStationByName(String name) {
         for (int i = 0; i < stations.size(); i++) {
             Station station = stations.get(i);
-            if (station.getName().equals(name))
+            if (station.getName().equalsIgnoreCase(name))
                 return station;
         }
         return null;

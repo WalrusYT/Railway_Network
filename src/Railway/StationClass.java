@@ -34,6 +34,6 @@ public class StationClass implements Station {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StationClass that = (StationClass) o;
-        return name.equals(that.name);
+        return name.equalsIgnoreCase(that.name);
     }
 }
