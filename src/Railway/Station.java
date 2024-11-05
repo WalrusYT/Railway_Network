@@ -10,4 +10,7 @@ public interface Station extends Serializable {
      * @return a {@link int} name of the station
      */
     String getName();
+    void addLine(Line line);
+    void removeLine(Line line);
+    boolean hasLines();
 }

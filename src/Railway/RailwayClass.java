@@ -7,8 +7,10 @@ public class RailwayClass implements Railway {
     private static final long serialVersionUID = 0L;
 
     List<Line> lines;
+    List<Station> stations;
     public RailwayClass() {
         lines = new MyArrayList<>();
+        stations = new MyArrayList<>();
     }
 
     @Override
@@ -16,11 +18,34 @@ public class RailwayClass implements Railway {
         if (lineExists(name)) throw new LineAlreadyExistsException();
         List<Station> stationList = new MyArrayList<>();
         for (int i = 0; i < stations.size(); i++) {
-            Station station = new StationClass(stations.get(i));
+            Station station = getStation(stations.get(i)); // получаем станцию из коллекции системы
+            if (station == null) { // если такой станции еще нет
+                station = new StationClass(stations.get(i)); // то создаем новую
+                this.stations.addLast(station); // и кладем её в коллекцию системы
+            }
             stationList.addLast(station);
         }
         Line line = new LineClass(name, stationList);
         lines.addLast(line);
+        // теперь нужно вставить созданную линюю во все станции
+        updateStationsOfALine(line);
+    }
+
+    // добавляет линюю в каждую станцию линии
+    private void updateStationsOfALine(Line line) {
+        Iterator<Station> stations = line.getStations();
+        while (stations.hasNext()) {
+            Station station = stations.next();
+            station.addLine(line);
+        }
+    }
+
+    private Station getStation (String name) {
+        for (int i = 0; i < stations.size(); i++) {
+            Station station = stations.get(i);
+            if (station.getName().equalsIgnoreCase(name)) return station;
+        }
+        return null;
     }
 
     private boolean lineExists (String name) {
@@ -51,6 +76,14 @@ public class RailwayClass implements Railway {
     @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
+        // удаляем станции линии из системы
+        Iterator<Station> stations = line.getStations(); // пробегаем по станциям линии
+        while (stations.hasNext()) {
+            Station station = stations.next();
+            station.removeLine(line); // удаляем линюю из станции
+            if (!station.hasLines()) this.stations.remove(station); // если у станций не осталось линий
+            // то удаляем станцию из системы
+        }
         boolean removed = lines.remove(line);
         // delete the schedules of this line?
     }
