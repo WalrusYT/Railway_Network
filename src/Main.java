@@ -124,7 +124,7 @@ public class Main {
     public static void listStations(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         try {
-            Iterator<Station> stations = rw.listStations(name);
+            Iterator<ProtectedStation> stations = rw.listStations(name);
             while (stations.hasNext()) {
                 System.out.println(stations.next().getName());
             }

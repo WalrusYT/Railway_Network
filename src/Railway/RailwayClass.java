@@ -3,12 +3,29 @@ package Railway;
 import Railway.exceptions.*;
 import dataStructures.*;
 
+/**
+ * The Railway class represents a railway system with a collection of lines and stations
+ */
 public class RailwayClass implements Railway {
+    /**
+     * Serializable class a version number
+     */
     private static final long serialVersionUID = 0L;
-
+    /**
+     * Collection of lines of the network
+     */
     List<Line> lines;
+    /**
+     * Collection of stations of the network
+     */
+    List<Station> stations;
+
+    /**
+     * Constructs an object Railway Network
+     */
     public RailwayClass() {
         lines = new MyArrayList<>();
+        stations = new MyArrayList<>();
     }
 
     @Override
@@ -16,13 +33,35 @@ public class RailwayClass implements Railway {
         if (lineExists(name)) throw new LineAlreadyExistsException();
         List<Station> stationList = new MyArrayList<>();
         for (int i = 0; i < stations.size(); i++) {
-            Station station = new StationClass(stations.get(i));
+            Station station = getStation(stations.get(i));
+            if (station == null) {
+                station = new StationClass(stations.get(i));
+                this.stations.addLast(station);
+            }
             stationList.addLast(station);
         }
         Line line = new LineClass(name, stationList);
         lines.addLast(line);
     }
 
+    /**
+     * Auxiliary method to get a station by its name
+     * @param name name of the {@link Station} station
+     * @return the {@link Station} line with the given name
+     */
+    private Station getStation (String name) {
+        for (int i = 0; i < stations.size(); i++) {
+            Station station = stations.get(i);
+            if (station.getName().equalsIgnoreCase(name)) return station;
+        }
+        return null;
+    }
+
+    /**
+     * Auxiliary method checks if the line exists in the system
+     * @param name name of the line
+     * @return <code>true</code> if the line exists in the system, <code>false</code> otherwise.
+     */
     private boolean lineExists (String name) {
         try {
             getLine(name);
@@ -51,14 +90,19 @@ public class RailwayClass implements Railway {
     @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
-        boolean removed = lines.remove(line);
-        // delete the schedules of this line?
+        Iterator<Station> stations = line.getStations();
+        while (stations.hasNext()) {
+            Station station = stations.next();
+            station.removeLine(line);
+            if (!station.hasLines()) this.stations.remove(station);
+        }
+        lines.remove(line);
     }
 
     @Override
-    public Iterator<Station> listStations (String name) throws LineNotExistsException {
+    public Iterator<ProtectedStation> listStations (String name) throws LineNotExistsException {
         Line line = getLine(name);
-        return line.getStations();
+        return line.getProtectedStations();
     }
 
     @Override

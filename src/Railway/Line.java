@@ -23,6 +23,13 @@ public interface Line extends Serializable {
     Iterator<Station> getStations();
 
     /**
+     * Returns an iterator of "protected"* stations of the line
+     * *"protected" means that they cannot be modified (for the safe output in Main)
+     * @return a {@link Iterator<Station>}  to iterate through the stations
+     */
+    Iterator<ProtectedStation> getProtectedStations();
+
+    /**
      * Returns a station by its {@link String} name
      * @param name name of the station
      * @return {@link Station} station with the given name, or null it doesn't exist

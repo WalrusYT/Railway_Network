@@ -1,6 +1,5 @@
 package Railway;
 
-import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.ScheduleNotExistsException;
 import dataStructures.*;
 
@@ -27,12 +26,16 @@ public class LineClass implements Line {
 
     /**
      * Constructs an object {@link LineClass} with the given name and list of stations
+     * Inserts itself to its stations
      * @param name name of the line
      * @param stations list of stations of the line
      */
     public LineClass (String name, List<Station> stations) {
         this.name = name;
         this.stations = stations;
+        for (int i = 0; i < stations.size(); i++) {
+            stations.get(i).addLine(this);
+        }
         schedules = new OrderedDoubleList<>(new ScheduleEntryComparatorByTime());
     }
     @Override
@@ -42,6 +45,28 @@ public class LineClass implements Line {
     @Override
     public Iterator<Station> getStations() {
         return stations.iterator();
+    }
+
+    @Override
+    public Iterator<ProtectedStation> getProtectedStations() {
+        return new Iterator<ProtectedStation>() {
+            private final Iterator<Station> iterator = stations.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProtectedStation next() {
+                return iterator.next();
+            }
+
+            @Override
+            public void rewind() {
+                iterator.rewind();
+            }
+        };
     }
 
     @Override

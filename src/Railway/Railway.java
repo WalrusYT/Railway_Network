@@ -35,7 +35,7 @@ public interface Railway extends Serializable {
      * of the line
      * @throws LineNotExistsException if there is no line with the given name
      */
-    Iterator<Station> listStations (String name) throws LineNotExistsException;
+    Iterator<ProtectedStation> listStations (String name) throws LineNotExistsException;
 
     /**
      * Inserts a schedule to the given {@link Line} line with the given
