@@ -110,25 +110,28 @@ public class RailwayClass implements Railway {
         Line line = getLine(name);
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
-        if (!line.isStationTerminal(firstEntry.getStation())) throw new InvalidScheduleException();
+        Direction direction = line.getDirectionByDeparture(firstEntry.getStation());
+        if (direction == null) throw new InvalidScheduleException();
         Time prevTime = firstEntry.getTime();
         entries.addLast(firstEntry);
-        int stationIndex = line.getStationIndex(firstEntry.getStation());
-        boolean directionLeft = stationIndex == 0;
-        for (int i = 1; i < entriesRaw.size() ; i++) {
+        Iterator<Station> lineStations = line.getStations(direction);
+        scheduleLoop: for (int i = 1; i < entriesRaw.size() ; i++) {
             ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, entriesRaw.get(i));
             if (entry.getTime().compareTo(prevTime) <= 0) throw new InvalidScheduleException();
-            int nextStationIndex = line.getStationIndex(entry.getStation());
-            if (directionLeft && nextStationIndex <= stationIndex)
-                throw new InvalidScheduleException();
-            if (!directionLeft && nextStationIndex >= stationIndex)
-                throw new InvalidScheduleException();
-            entries.addLast(entry);
-            prevTime = entry.getTime();
-            stationIndex = nextStationIndex;
+            while (lineStations.hasNext()) { // look for station in the line
+                // if found - continue with the next station
+                if (lineStations.next().equals(entry.getStation())) {
+                    entries.addLast(entry);
+                    prevTime = entry.getTime();
+                    continue scheduleLoop;
+                }
+            }
+            // if needed station was not found - while loop exits and exception is thrown
+            throw new InvalidScheduleException();
         }
-        Direction dir = directionLeft ? Direction.FORWARD : Direction.BACKWARDS;
-        line.addSchedule(new ScheduleClass(number, entries, dir));
+        Schedule schedule = new ScheduleClass(number, entries, direction);
+        if (!line.isScheduleValid(schedule)) throw new InvalidScheduleException();
+        line.addSchedule(schedule);
     }
     
     @Override

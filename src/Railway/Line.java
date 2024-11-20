@@ -21,4 +21,6 @@ public interface Line extends Serializable, ProtectedLine, Comparable<Line> {
      * @throws ScheduleNotExistsException if the {@link Schedule} schedule does not exist.
      */
     void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException;
+
+    boolean isScheduleValid(Schedule schedule);
 }

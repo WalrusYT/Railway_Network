@@ -82,6 +82,11 @@ public class StationClass implements Station {
     }
 
     @Override
+    public boolean isTrainArrive(Time time) {
+        return passingTrains.find(time) != null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

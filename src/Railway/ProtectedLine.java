@@ -66,7 +66,5 @@ public interface ProtectedLine extends Serializable {
 
     Direction getDirectionByDeparture(Station station);
 
-    boolean areStationsConsecutive(Iterator<Station> stations, Direction direction);
-
     int getStationIndex(Station station);
 }

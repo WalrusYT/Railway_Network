@@ -2,6 +2,7 @@ package Railway;
 
 import Railway.exceptions.ScheduleNotExistsException;
 import dataStructures.*;
+import Railway.ScheduleClass.ScheduleEntry;
 
 /**
  * The Line class represents a line with a name, list of stations and schedules
@@ -18,7 +19,7 @@ public class LineClass implements Line {
     /**
      * Dictionary of schedules of the line
      */
-    private final Dictionary<ScheduleClass.ScheduleEntry, Schedule> schedules;
+    private final Dictionary<ScheduleEntry, Schedule> schedules;
     /**
      * Name of the line
      */
@@ -45,9 +46,27 @@ public class LineClass implements Line {
 
     @Override
     public Iterator<Station> getStations(Direction direction) {
-        TwoWayIterator<Station> iterator = stations.twoWayIterator();
-        if (direction == Direction.BACKWARDS) iterator.fullForward();
-        return iterator;
+        if (direction == Direction.FORWARD) return stations.iterator();
+        return new Iterator<>() {
+            private final TwoWayIterator<Station> iterator = stations.twoWayIterator();
+            // reverse iterator before doing stuff
+            { this.rewind(); }
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasPrevious();
+            }
+
+            @Override
+            public Station next() throws NoSuchElementException {
+                return iterator.previous();
+            }
+
+            @Override
+            public void rewind() {
+                iterator.fullForward();
+            }
+        };
     }
 
     @Override
@@ -84,7 +103,7 @@ public class LineClass implements Line {
 
     @Override
     public Schedule bestRoute(Station departure, Station destination, Time prefferedTime) {
-        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> it = getSchedules();
+        Iterator<Entry<ScheduleEntry, Schedule>> it = getSchedules();
         Schedule bestRoute = null;
         Time bestTime = null;
         while (it.hasNext()) {
@@ -102,7 +121,7 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleClass.ScheduleEntry entry)
+    public void removeSchedule(ScheduleEntry entry)
             throws ScheduleNotExistsException {
         if (schedules.remove(entry) == null)
             throw new ScheduleNotExistsException();
@@ -110,11 +129,16 @@ public class LineClass implements Line {
 
     @Override
     public void addSchedule(Schedule schedule) {
-        Schedule s = schedules.insert(schedule.getDepartureEntry(), schedule);
+        schedules.insert(schedule.getDepartureEntry(), schedule);
+        Iterator<ScheduleEntry> entries = schedule.getEntries();
+        while (entries.hasNext()) {
+            ScheduleEntry entry = entries.next();
+            entry.getStation().addPassingTrain(entry.getTime(), schedule.getTrainNumber());
+        }
      }
 
     @Override
-    public Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> getSchedules() {
+    public Iterator<Entry<ScheduleEntry, Schedule>> getSchedules() {
         return schedules.iterator();
     }
 
@@ -149,21 +173,25 @@ public class LineClass implements Line {
     }
 
     @Override
-    public boolean areStationsConsecutive(Iterator<Station> stations, Direction direction) {
-        Iterator<Station> lineStations = this.getStations(direction);
-        Station next = stations.next();
-        while (lineStations.hasNext()) {
-            if (lineStations.next().equals(next)) {
-                if (!stations.hasNext())
-                    return !lineStations.hasNext();
-                next = stations.next();
-            }
-        }
-        return stations.hasNext();
+    public int compareTo(Line o) {
+        return this.getName().compareTo(o.getName());
     }
 
     @Override
-    public int compareTo(Line o) {
-        return this.getName().compareTo(o.getName());
+    public boolean isScheduleValid(Schedule schedule) {
+        // checking if there is an overlap on the same line (train overtakes)
+        Iterator<Entry<ScheduleEntry, Schedule>> schedules = this.schedules.iterator();
+        while (schedules.hasNext()) {
+            boolean overlap = schedules.next().getValue().isOverlapping(schedule);
+            if (overlap) return false;
+        }
+        // checking if there is an arrival at the same time on different lines (train collisions)
+        Iterator<ScheduleEntry> entries = schedule.getEntries();
+        while (entries.hasNext()) {
+            ScheduleEntry entry = entries.next();
+            boolean arrive = entry.getStation().isTrainArrive(entry.getTime());
+            if (arrive) return false;
+        }
+        return true;
     }
 }

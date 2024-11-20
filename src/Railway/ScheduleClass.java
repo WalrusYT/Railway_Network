@@ -67,6 +67,35 @@ public class ScheduleClass implements Schedule {
     }
 
     @Override
+    public boolean isOverlapping(Schedule other) {
+        if (this.direction != other.getDirection()) return false;
+        Iterator<ScheduleEntry> otherEntries = other.getEntries();
+        ScheduleEntry thisEntry = this.entries.getFirst(), otherEntry = otherEntries.next();
+        int initialTimeState = thisEntry.time.compareTo(otherEntry.getTime());
+        if (initialTimeState == 0) return true;
+        // It's not O(n^2) !!!
+        // keeping schedules' stations in sync with the second while loop
+        int lastStationIndex = 1;
+        otherEntriesLoop: while (otherEntries.hasNext()) {
+            otherEntry = otherEntries.next();
+            for (int i = lastStationIndex; i < this.entries.size(); i++) {
+                thisEntry = this.entries.get(i);
+                if (otherEntry.station.equals(thisEntry.getStation())) {
+                    lastStationIndex = i + 1;
+                    int currentTimeState = thisEntry.time.compareTo(otherEntry.getTime());
+                    if (currentTimeState == 0 || currentTimeState != initialTimeState) return true;
+                    continue otherEntriesLoop;
+                }
+            }
+        }
+        return false;
+    }
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

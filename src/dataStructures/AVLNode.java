@@ -84,6 +84,14 @@ class AVLNode<E> extends BSTNode<E>
      */
     AVLNode<E> tallerChild()  {
         //TODO -- careful about ties
+        AVLNode<E> leftChild = (AVLNode<E>) this.getLeft();
+        AVLNode<E> rightChild = (AVLNode<E>) this.getRight();
+        int leftChildHeight = getHeight(leftChild);
+        int rightChildHeight = getHeight(rightChild);
+        if (leftChildHeight > rightChildHeight)
+            return leftChild;
+        else if (leftChildHeight < rightChildHeight)
+            return rightChild;
         return null;
     }
 

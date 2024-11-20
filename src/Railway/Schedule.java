@@ -40,4 +40,8 @@ public interface Schedule extends Serializable {
      * @return a {@link Time} object representing the arrival time at the destination
      */
     Time getArrivalForRoute(Station departure, Station destination);
+
+    boolean isOverlapping(Schedule schedule);
+
+    Direction getDirection();
 }

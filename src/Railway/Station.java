@@ -23,4 +23,6 @@ public interface Station extends Serializable, ProtectedStation {
     void addPassingTrain(Time time, int train);
 
     Iterator<Entry<Time, Integer>> getPassingTrains();
+
+    boolean isTrainArrive(Time time);
 }
