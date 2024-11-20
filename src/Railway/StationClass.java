@@ -1,8 +1,6 @@
 package Railway;
 
-import dataStructures.DoubleList;
-import dataStructures.List;
-import dataStructures.MyArrayList;
+import dataStructures.*;
 
 /**
  * The Station Class represents a station with a station name and list of lines
@@ -17,7 +15,9 @@ public class StationClass implements Station {
      */
     private final String name;
 
-    private List<Line> lines;
+    private final Set<Line> lines;
+
+    private final Dictionary<Time, Integer> passingTrains;
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -25,7 +25,8 @@ public class StationClass implements Station {
      */
     public StationClass (String name) {
         this.name = name;
-        lines = new MyArrayList<>();
+        this.lines = new TreeSet<>();
+        this.passingTrains = new BinarySearchTree<>();
     }
 
     @Override
@@ -35,17 +36,49 @@ public class StationClass implements Station {
 
     @Override
     public void addLine(Line line) {
-        if (lines.find(line) < 0) return;
-        lines.addLast(line);
+        // O log n
+        lines.add(line);
     }
     @Override
     public void removeLine(Line line) {
+        // O log n
         lines.remove(line);
     }
 
     @Override
     public boolean hasLines() {
         return !lines.isEmpty();
+    }
+
+    @Override
+    public Iterator<ProtectedLine> getProtectedLines() {
+        return new Iterator<>() {
+            private final Iterator<Line> iterator = lines.iterator();
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ProtectedLine next() throws NoSuchElementException {
+                return iterator.next();
+            }
+
+            @Override
+            public void rewind() {
+                iterator.rewind();
+            }
+        };
+    }
+
+    @Override
+    public void addPassingTrain(Time time, int train) {
+        this.passingTrains.insert(time, train);
+    }
+
+    @Override
+    public Iterator<Entry<Time, Integer>> getPassingTrains() {
+        return this.passingTrains.iterator();
     }
 
     @Override

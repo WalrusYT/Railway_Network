@@ -7,7 +7,7 @@ package dataStructures;
  * @param <E> Generic Element
  * 
  */
-public class DoubleList<E> implements List<E>
+public class DoubleList<E> implements TwoWayList<E>
 {   
 
 	/**
@@ -59,9 +59,8 @@ public class DoubleList<E> implements List<E>
     @Override
     public Iterator<E> iterator( )
     {
-        return new DoubleListIterator<E>(head, tail);
+        return new DoubleListIterator<>(head, tail);
     }
-
 
     @Override
     public E getFirst( ) throws EmptyListException
@@ -343,6 +342,10 @@ public class DoubleList<E> implements List<E>
     }
 
 
-}   
+    @Override
+    public TwoWayIterator<E> twoWayIterator() {
+        return new DoubleListIterator<>(head, tail);
+    }
+}
 
 

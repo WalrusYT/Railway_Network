@@ -14,7 +14,7 @@ public class LineClass implements Line {
     /**
      * List of the {@link Station} stations of the line
      */
-    private final List<Station> stations;
+    private final TwoWayList<Station> stations;
     /**
      * Dictionary of schedules of the line
      */
@@ -30,26 +30,29 @@ public class LineClass implements Line {
      * @param name name of the line
      * @param stations list of stations of the line
      */
-    public LineClass (String name, List<Station> stations) {
+    public LineClass (String name, TwoWayList<Station> stations) {
         this.name = name;
         this.stations = stations;
+        this.schedules = new BinarySearchTree<>();
         for (int i = 0; i < stations.size(); i++) {
             stations.get(i).addLine(this);
         }
-        schedules = new OrderedDoubleList<>(new ScheduleEntryComparatorByTime());
     }
     @Override
     public String getName() {
         return name;
     }
+
     @Override
-    public Iterator<Station> getStations() {
-        return stations.iterator();
+    public Iterator<Station> getStations(Direction direction) {
+        TwoWayIterator<Station> iterator = stations.twoWayIterator();
+        if (direction == Direction.BACKWARDS) iterator.fullForward();
+        return iterator;
     }
 
     @Override
     public Iterator<ProtectedStation> getProtectedStations() {
-        return new Iterator<ProtectedStation>() {
+        return new Iterator<>() {
             private final Iterator<Station> iterator = stations.iterator();
 
             @Override
@@ -108,7 +111,7 @@ public class LineClass implements Line {
     @Override
     public void addSchedule(Schedule schedule) {
         Schedule s = schedules.insert(schedule.getDepartureEntry(), schedule);
-    }
+     }
 
     @Override
     public Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> getSchedules() {
@@ -138,4 +141,29 @@ public class LineClass implements Line {
         return schedulesByStation.iterator();
     }
 
+    @Override
+    public Direction getDirectionByDeparture(Station station) {
+        if (station.equals(stations.getFirst())) return Direction.FORWARD;
+        if (station.equals(stations.getLast())) return Direction.BACKWARDS;
+        return null;
+    }
+
+    @Override
+    public boolean areStationsConsecutive(Iterator<Station> stations, Direction direction) {
+        Iterator<Station> lineStations = this.getStations(direction);
+        Station next = stations.next();
+        while (lineStations.hasNext()) {
+            if (lineStations.next().equals(next)) {
+                if (!stations.hasNext())
+                    return !lineStations.hasNext();
+                next = stations.next();
+            }
+        }
+        return stations.hasNext();
+    }
+
+    @Override
+    public int compareTo(Line o) {
+        return this.getName().compareTo(o.getName());
+    }
 }

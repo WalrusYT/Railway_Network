@@ -1,20 +1,35 @@
+/**
+ * 
+ */
 package dataStructures;
 
-public class EntryClass<K,V> implements Entry<K,V> {
-    K key;
-    V value;
+/**
+ * @author AED
+ *
+ */
+public class EntryClass<K, V> implements Entry<K, V>{
+	protected K key;
+	protected V value;
+	
+	public EntryClass(K k, V v){
+		key=k;
+		value=v;
+	}
 
-    public EntryClass(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-    @Override
-    public K getKey() {
-        return key;
-    }
+	@Override
+	public K getKey() {
+		return key;
+	}
 
-    @Override
-    public V getValue() {
-        return value;
-    }
+	@Override
+	public V getValue() {
+		return value;
+	}
+
+	public void setValue(V value2) {
+		value=value2;
+	}
+	
+	
+
 }

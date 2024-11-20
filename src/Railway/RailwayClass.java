@@ -14,34 +14,35 @@ public class RailwayClass implements Railway {
     /**
      * Collection of lines of the network
      */
-    List<Line> lines;
+    Dictionary<String, Line> lines;
     /**
      * Collection of stations of the network
      */
-    List<Station> stations;
+    Dictionary<String, Station> stations;
 
     /**
      * Constructs an object Railway Network
      */
     public RailwayClass() {
-        lines = new MyArrayList<>();
-        stations = new MyArrayList<>();
+        lines = new SepChainHashTable<>();
+        stations = new SepChainHashTable<>();
     }
 
     @Override
     public void insertLine(String name, List<String> stations) throws LineAlreadyExistsException {
-        if (lineExists(name)) throw new LineAlreadyExistsException();
-        List<Station> stationList = new MyArrayList<>();
+        if (this.getLine(name) != null) throw new LineAlreadyExistsException();
+        TwoWayList<Station> stationList = new DoubleList<>();
         for (int i = 0; i < stations.size(); i++) {
-            Station station = getStation(stations.get(i));
+            String stationName = stations.get(i);
+            Station station = this.getStation(stationName);
             if (station == null) {
-                station = new StationClass(stations.get(i));
-                this.stations.addLast(station);
+                station = new StationClass(stationName);
+                this.stations.insert(stationName.toLowerCase(), station);
             }
             stationList.addLast(station);
         }
         Line line = new LineClass(name, stationList);
-        lines.addLast(line);
+        lines.insert(name.toLowerCase(), line);
     }
 
     /**
@@ -49,26 +50,8 @@ public class RailwayClass implements Railway {
      * @param name name of the {@link Station} station
      * @return the {@link Station} line with the given name
      */
-    private Station getStation (String name) {
-        for (int i = 0; i < stations.size(); i++) {
-            Station station = stations.get(i);
-            if (station.getName().equalsIgnoreCase(name)) return station;
-        }
-        return null;
-    }
-
-    /**
-     * Auxiliary method checks if the line exists in the system
-     * @param name name of the line
-     * @return <code>true</code> if the line exists in the system, <code>false</code> otherwise.
-     */
-    private boolean lineExists (String name) {
-        try {
-            getLine(name);
-            return true;
-        } catch (LineNotExistsException e) {
-            return false;
-        }
+    private Station getStation(String name) {
+        return stations.find(name.toLowerCase());
     }
 
     /**
@@ -77,41 +60,43 @@ public class RailwayClass implements Railway {
      * @return the {@link Line} line with the given name
      * @throws LineNotExistsException if there is no line with the given name
      */
-    private Line getLine(String name) throws LineNotExistsException {
-        for (int i = 0; i < lines.size(); i++) {
-            Line line = lines.get(i);
-            if (line.getName().equalsIgnoreCase(name)) {
-                return line;
-            }
-        }
-        throw new LineNotExistsException();
+    private Line getLine(String name) {
+        return lines.find(name.toLowerCase());
     }
 
     @Override
     public void removeLine(String name) throws LineNotExistsException {
         Line line = getLine(name);
-        Iterator<Station> stations = line.getStations();
+        if (line == null) throw new LineNotExistsException();
+        Iterator<Station> stations = line.getStations(Direction.FORWARD);
         while (stations.hasNext()) {
             Station station = stations.next();
             station.removeLine(line);
-            if (!station.hasLines()) this.stations.remove(station);
+            if (!station.hasLines()) this.stations.remove(station.getName().toLowerCase());
         }
-        lines.remove(line);
+        lines.remove(line.getName().toLowerCase());
     }
 
     @Override
-    public Iterator<ProtectedStation> listStations (String name) throws LineNotExistsException {
+    public Iterator<ProtectedStation> listStations(String name) {
         Line line = getLine(name);
-        return line.getProtectedStations();
+        return line == null ? null : line.getProtectedStations();
+    }
+
+    @Override
+    public Iterator<ProtectedLine> listLines(String name) {
+        Station station = this.getStation(name);
+        return station == null ? null : station.getProtectedLines();
     }
 
     @Override
     public Schedule bestTimetable(String name, String departureStation,
                                   String destinationStation, Time arrivalTime)
-            throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException {
+            throws LineNotExistsException, ImpossibleRouteException, DepartureNotExistsException {
         Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
         Station departure = line.getStationByName(departureStation);
-        if (departure == null) throw new StationNotExistsException();
+        if (departure == null) throw new DepartureNotExistsException();
         Station destination = line.getStationByName(destinationStation);
         if (destination == null) throw new ImpossibleRouteException();
         Schedule best = line.bestRoute(departure, destination, arrivalTime);
@@ -121,7 +106,7 @@ public class RailwayClass implements Railway {
 
     @Override
     public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
-            throws InvalidScheduleException, LineNotExistsException, ScheduleNotExistsException {
+            throws InvalidScheduleException, ScheduleNotExistsException {
         Line line = getLine(name);
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
@@ -142,25 +127,34 @@ public class RailwayClass implements Railway {
             prevTime = entry.getTime();
             stationIndex = nextStationIndex;
         }
-        line.addSchedule(new ScheduleClass(number, entries));
+        Direction dir = directionLeft ? Direction.FORWARD : Direction.BACKWARDS;
+        line.addSchedule(new ScheduleClass(number, entries, dir));
     }
     
     @Override
     public void removeSchedule(String name, String station, Time time)
             throws ScheduleNotExistsException, LineNotExistsException {
         Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
         ScheduleClass.ScheduleEntry entry =
                 createScheduleEntry(line, new EntryClass<>(station, time));
         line.removeSchedule(entry);
     }
 
     @Override
+    public Iterator<Entry<Time, Integer>> passingTrainsOfStation(String name) {
+        Station station = this.getStation(name);
+        return station == null ? null : station.getPassingTrains();
+    }
+
+    @Override
     public Iterator<Schedule> listSchedules(String name, String departureStation)
-            throws LineNotExistsException, StationNotExistsException {
+            throws LineNotExistsException, DepartureNotExistsException {
         Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
         Station station = line.getStationByName(departureStation);
         if (station == null || !line.isStationTerminal(station))
-            throw new StationNotExistsException();
+            throw new DepartureNotExistsException();
         return line.getSchedulesByStation(station);
     }
 

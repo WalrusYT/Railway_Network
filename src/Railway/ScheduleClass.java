@@ -20,16 +20,18 @@ public class ScheduleClass implements Schedule {
      * List of the {@link ScheduleEntry} enties
      */
     private final List<ScheduleEntry> entries;
-    
+
+    private final Direction direction;
 
     /**
      * Constructs an object {@link ScheduleClass} with the given train number and list of entries
      * @param trainNumber number of the train
      * @param entries list of entries of the schedule
      */
-    public ScheduleClass (int trainNumber, List<ScheduleEntry> entries) {
+    public ScheduleClass (int trainNumber, List<ScheduleEntry> entries, Direction direction) {
         this.trainNumber = trainNumber;
         this.entries = entries;
+        this.direction = direction;
     }
 
 
@@ -87,7 +89,7 @@ public class ScheduleClass implements Schedule {
      * Represents an individual entry within a train schedule, which includes a specific station 
      * and the scheduled time for that station. 
      */
-    public static class ScheduleEntry implements Serializable {
+    public static class ScheduleEntry implements Serializable, Comparable<ScheduleEntry> {
         /**
         * Serializable class a version number
         */
@@ -129,6 +131,14 @@ public class ScheduleClass implements Schedule {
             if (o == null || getClass() != o.getClass()) return false;
             ScheduleEntry that = (ScheduleEntry) o;
             return time.equals(that.time) && station.equals(that.station);
+        }
+
+        @Override
+        public int compareTo(ScheduleEntry o) {
+            int timeCompare = this.getTime().compareTo(o.getTime());
+            if (timeCompare == 0)
+                return this.getStation().getName().compareTo(o.getStation().getName());
+            return timeCompare;
         }
     }
 }
