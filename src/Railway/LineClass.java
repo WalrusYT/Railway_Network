@@ -1,5 +1,6 @@
 package Railway;
 
+import Railway.exceptions.InvalidScheduleException;
 import Railway.exceptions.ScheduleNotExistsException;
 import dataStructures.*;
 import Railway.ScheduleClass.ScheduleEntry;
@@ -123,8 +124,13 @@ public class LineClass implements Line {
     @Override
     public void removeSchedule(ScheduleEntry entry)
             throws ScheduleNotExistsException {
-        if (schedules.remove(entry) == null)
-            throw new ScheduleNotExistsException();
+        Schedule schedule = schedules.remove(entry);
+        if (schedule == null) throw new ScheduleNotExistsException();
+        Iterator<ScheduleEntry> entries = schedule.getEntries();
+        while (entries.hasNext()) {
+            ScheduleEntry e = entries.next();
+            e.getStation().removePassingTrain(e.getTime());
+        }
     }
 
     @Override
@@ -133,7 +139,8 @@ public class LineClass implements Line {
         Iterator<ScheduleEntry> entries = schedule.getEntries();
         while (entries.hasNext()) {
             ScheduleEntry entry = entries.next();
-            entry.getStation().addPassingTrain(entry.getTime(), schedule.getTrainNumber());
+            Train train = new Train(schedule.getTrainNumber(), schedule.getDirection());
+            entry.getStation().addPassingTrain(entry.getTime(), train);
         }
      }
 
@@ -187,10 +194,22 @@ public class LineClass implements Line {
         }
         // checking if there is an arrival at the same time on different lines (train collisions)
         Iterator<ScheduleEntry> entries = schedule.getEntries();
-        while (entries.hasNext()) {
+        Iterator<Station> lineStations = this.getStations(schedule.getDirection());
+        Time prevTime = new Time(0, 0);
+        scheduleLoop: while (entries.hasNext()) {
             ScheduleEntry entry = entries.next();
-            boolean arrive = entry.getStation().isTrainArrive(entry.getTime());
-            if (arrive) return false;
+            if (entry.getTime().compareTo(prevTime) <= 0) return false;
+            if (entry.getStation().isTrainArrive(entry.getTime(), schedule.getDirection()))
+                return false;
+            while (lineStations.hasNext()) { // look for station in the line
+                // if found - continue with the next station
+                if (lineStations.next().equals(entry.getStation())) {
+                    prevTime = entry.getTime();
+                    continue scheduleLoop;
+                }
+            }
+            // if needed station was not found - while loop exits and exception is thrown
+            return false;
         }
         return true;
     }

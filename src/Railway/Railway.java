@@ -100,5 +100,5 @@ public interface Railway extends Serializable {
                            String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, DepartureNotExistsException;
 
-    Iterator<Entry<Time, Integer>> passingTrainsOfStation(String name);
+    Iterator<Entry<Time, Train>> passingTrainsOfStation(String name);
 }

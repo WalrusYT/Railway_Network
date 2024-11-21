@@ -253,14 +253,14 @@ public class Main {
 
     public static void listTrains(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
-        Iterator<Entry<Time, Integer>> trains = rw.passingTrainsOfStation(name);
+        Iterator<Entry<Time, Train>> trains = rw.passingTrainsOfStation(name);
         if (trains == null) {
             System.out.println(Feedback.INEXISTENT_STATION);
             return;
         }
         while (trains.hasNext()) {
-            Entry<Time, Integer> train = trains.next();
-            System.out.printf("Comboio %d %s%n", train.getValue(), timeToString(train.getKey()));
+            Entry<Time, Train> train = trains.next();
+            System.out.printf("Comboio %d %s%n", train.getValue().getNumber(), timeToString(train.getKey()));
         }
     }
 

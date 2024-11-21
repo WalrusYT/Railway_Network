@@ -20,9 +20,11 @@ public interface Station extends Serializable, ProtectedStation {
      */
     void removeLine(Line line);
 
-    void addPassingTrain(Time time, int train);
+    void addPassingTrain(Time time, Train train);
 
-    Iterator<Entry<Time, Integer>> getPassingTrains();
+    void removePassingTrain(Time time);
 
-    boolean isTrainArrive(Time time);
+    Iterator<Entry<Time, Train>> getPassingTrains();
+
+    boolean isTrainArrive(Time time, Direction direction);
 }

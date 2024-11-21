@@ -109,26 +109,10 @@ public class RailwayClass implements Railway {
             throws InvalidScheduleException, ScheduleNotExistsException {
         Line line = getLine(name);
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
-        ScheduleClass.ScheduleEntry firstEntry = createScheduleEntry(line, entriesRaw.getFirst());
-        Direction direction = line.getDirectionByDeparture(firstEntry.getStation());
+        for (int i = 0; i < entriesRaw.size(); i++)
+            entries.addLast(createScheduleEntry(line, entriesRaw.get(i)));
+        Direction direction = line.getDirectionByDeparture(entries.getFirst().getStation());
         if (direction == null) throw new InvalidScheduleException();
-        Time prevTime = firstEntry.getTime();
-        entries.addLast(firstEntry);
-        Iterator<Station> lineStations = line.getStations(direction);
-        scheduleLoop: for (int i = 1; i < entriesRaw.size() ; i++) {
-            ScheduleClass.ScheduleEntry entry = createScheduleEntry(line, entriesRaw.get(i));
-            if (entry.getTime().compareTo(prevTime) <= 0) throw new InvalidScheduleException();
-            while (lineStations.hasNext()) { // look for station in the line
-                // if found - continue with the next station
-                if (lineStations.next().equals(entry.getStation())) {
-                    entries.addLast(entry);
-                    prevTime = entry.getTime();
-                    continue scheduleLoop;
-                }
-            }
-            // if needed station was not found - while loop exits and exception is thrown
-            throw new InvalidScheduleException();
-        }
         Schedule schedule = new ScheduleClass(number, entries, direction);
         if (!line.isScheduleValid(schedule)) throw new InvalidScheduleException();
         line.addSchedule(schedule);
@@ -145,7 +129,7 @@ public class RailwayClass implements Railway {
     }
 
     @Override
-    public Iterator<Entry<Time, Integer>> passingTrainsOfStation(String name) {
+    public Iterator<Entry<Time, Train>> passingTrainsOfStation(String name) {
         Station station = this.getStation(name);
         return station == null ? null : station.getPassingTrains();
     }

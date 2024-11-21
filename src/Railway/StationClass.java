@@ -17,7 +17,7 @@ public class StationClass implements Station {
 
     private final Set<Line> lines;
 
-    private final Dictionary<Time, Integer> passingTrains;
+    private final Dictionary<Time, Train> passingTrains;
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -72,18 +72,25 @@ public class StationClass implements Station {
     }
 
     @Override
-    public void addPassingTrain(Time time, int train) {
+    public void addPassingTrain(Time time, Train train) {
         this.passingTrains.insert(time, train);
     }
 
     @Override
-    public Iterator<Entry<Time, Integer>> getPassingTrains() {
+    public void removePassingTrain(Time time) {
+        this.passingTrains.remove(time);
+    }
+
+    @Override
+    public Iterator<Entry<Time, Train>> getPassingTrains() {
         return this.passingTrains.iterator();
     }
 
     @Override
-    public boolean isTrainArrive(Time time) {
-        return passingTrains.find(time) != null;
+    public boolean isTrainArrive(Time time, Direction direction) {
+        Train train = passingTrains.find(time);
+        if (train == null) return false;
+        return train.getDirection() == direction;
     }
 
     @Override
