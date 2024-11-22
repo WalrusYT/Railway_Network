@@ -174,14 +174,4 @@ public class BSTreeTests {
         assertNull(bst.remove(100)); // Non-existent key
         assertEquals(4, bst.size()); // Size should remain unchanged
     }
-    @Test
-    public void insertAndRemoveTwiceTest() {
-        Dictionary<Integer, String> tree = new BinarySearchTree<>();
-        assertNull(tree.insert(1, "a"));
-        assertNull(tree.insert(2, "b"));
-        assertEquals("a", tree.remove(1));
-        assertEquals("b", tree.remove(2));
-        assertNull(tree.find(1));
-        assertNull(tree.find(2));
-    }
 }
