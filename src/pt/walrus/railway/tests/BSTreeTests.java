@@ -57,4 +57,49 @@ public class BSTreeTests {
             System.out.println(it.next());
         }
     }
+    @Test
+    public void testRemove() {
+        BinarySearchTree<Integer, String> bst = new BinarySearchTree<>();
+
+        // Populate the tree
+        bst.insert(50, "Root");
+        bst.insert(30, "Left Child");
+        bst.insert(70, "Right Child");
+        bst.insert(20, "Left-Left Child");
+        bst.insert(40, "Left-Right Child");
+        bst.insert(60, "Right-Left Child");
+        bst.insert(80, "Right-Right Child");
+
+        // Check initial tree size
+        assertEquals(7, bst.size());
+
+        // Test 1: Remove a leaf node (20)
+        assertEquals("Left-Left Child", bst.remove(20)); // Leaf node
+        assertEquals(6, bst.size());
+        assertNull(bst.find(20)); // Node should no longer exist
+
+        // Test 2: Remove a node with one child (30)
+        assertEquals("Left Child", bst.remove(30)); // Node with one child
+        assertEquals(5, bst.size());
+        assertNull(bst.find(30)); // Node should no longer exist
+
+        // Test 3: Remove a node with two children (50)
+        assertEquals("Root", bst.remove(50)); // Node with two children
+        assertEquals(4, bst.size());
+        assertNull(bst.find(50)); // Node should no longer exist
+
+        // Test 4: Attempt to remove a non-existent node (100)
+        assertNull(bst.remove(100)); // Non-existent key
+        assertEquals(4, bst.size()); // Size should remain unchanged
+    }
+    @Test
+    public void insertAndRemoveTwiceTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        assertNull(tree.insert(1, "a"));
+        assertNull(tree.insert(2, "b"));
+        assertEquals("a", tree.remove(1));
+        assertEquals("b", tree.remove(2));
+        assertNull(tree.find(1));
+        assertNull(tree.find(2));
+    }
 }
