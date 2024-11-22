@@ -59,7 +59,7 @@ public class BSTNode<E> implements Serializable
      * 
      * @return
      */
-    E getElement( )
+    public E getElement( )
     {
         return element;
     }
@@ -71,7 +71,7 @@ public class BSTNode<E> implements Serializable
      * 
      * @return
      */
-    BSTNode<E> getLeft( )
+    public BSTNode<E> getLeft( )
     {    
         return left;
     }
@@ -82,7 +82,7 @@ public class BSTNode<E> implements Serializable
      * 
      * @return
      */
-    BSTNode<E> getRight( )
+    public BSTNode<E> getRight( )
     {
         return right;
     }
@@ -91,12 +91,12 @@ public class BSTNode<E> implements Serializable
      *
      * @return
      */
-    BSTNode<E> getParent( )
+    public BSTNode<E> getParent()
     {
         return parent;
     }
 
-    boolean isInternal() {
+    public boolean isInternal() {
         //TODO
         return true;
     }
@@ -115,5 +115,9 @@ public class BSTNode<E> implements Serializable
 
     public void setParent(BSTNode<E> parent) {
         this.parent = parent;
+    }
+
+    public E getEntry() {
+        return getElement();
     }
 }

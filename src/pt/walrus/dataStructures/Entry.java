@@ -3,11 +3,13 @@
  */
 package pt.walrus.dataStructures;
 
+import java.io.Serializable;
+
 /**
  * @author fernanda
  *
  */
-public interface Entry<K, V> {
+public interface Entry<K, V> extends Serializable {
 	// Returns the key in the entry.
 	K getKey( );
 	 

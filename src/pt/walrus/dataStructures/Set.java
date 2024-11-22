@@ -1,6 +1,8 @@
 package pt.walrus.dataStructures;
 
-public interface Set<T> {
+import java.io.Serializable;
+
+public interface Set<T> extends Serializable {
     boolean add(T element);
     boolean remove(T element);
     boolean contains(T element);

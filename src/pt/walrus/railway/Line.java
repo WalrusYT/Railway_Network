@@ -2,12 +2,11 @@ package pt.walrus.railway;
 
 import pt.walrus.railway.exceptions.InvalidScheduleException;
 import pt.walrus.railway.exceptions.ScheduleNotExistsException;
-import java.io.Serializable;
 
 /**
  * This interface represents a line in the pt.walrus.Railway Network.
  */
-public interface Line extends Serializable, ProtectedLine, Comparable<Line> {
+public interface Line extends ProtectedLine, Comparable<Line> {
 
     /**
      * Adds a {@link Schedule} schedule to the line

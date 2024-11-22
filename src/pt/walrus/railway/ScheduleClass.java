@@ -118,7 +118,7 @@ public class ScheduleClass implements Schedule {
      * Represents an individual entry within a train schedule, which includes a specific station 
      * and the scheduled time for that station. 
      */
-    public static class ScheduleEntry implements Serializable, Comparable<ScheduleEntry> {
+    public static class ScheduleEntry implements Comparable<ScheduleEntry>, Serializable {
         /**
         * Serializable class a version number
         */

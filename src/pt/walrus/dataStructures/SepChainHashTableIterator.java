@@ -11,13 +11,14 @@ public class SepChainHashTableIterator<K extends Comparable<K>, V> implements It
     }
 
     private void setNextBucket() {
-        while (elements[++bucketCounter].isEmpty()) {
-            if (bucketCounter >= elements.length - 1) {
-                this.iteratorOfBucket = null;
+        for (int i = bucketCounter + 1; i < elements.length; i++) {
+            if (!elements[i].isEmpty()) {
+                bucketCounter = i;
+                iteratorOfBucket = elements[i].iterator();
                 return;
             }
         }
-        this.iteratorOfBucket = elements[bucketCounter].iterator();
+        iteratorOfBucket = null;
     }
     @Override
     public boolean hasNext() {

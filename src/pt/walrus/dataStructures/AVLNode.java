@@ -8,7 +8,7 @@ package pt.walrus.dataStructures;
  *
  * @param <E> Generic element type
  */
-class AVLNode<E> extends BSTNode<E>
+public class AVLNode<E> extends BSTNode<E>
 {
 
 
@@ -82,16 +82,8 @@ class AVLNode<E> extends BSTNode<E>
     /**
      * Return the child of this node with greater height
      */
-    AVLNode<E> tallerChild()  {
+    public AVLNode<E> tallerChild()  {
         //TODO -- careful about ties
-        AVLNode<E> leftChild = (AVLNode<E>) this.getLeft();
-        AVLNode<E> rightChild = (AVLNode<E>) this.getRight();
-        int leftChildHeight = getHeight(leftChild);
-        int rightChildHeight = getHeight(rightChild);
-        if (leftChildHeight > rightChildHeight)
-            return leftChild;
-        else if (leftChildHeight < rightChildHeight)
-            return rightChild;
         return null;
     }
 

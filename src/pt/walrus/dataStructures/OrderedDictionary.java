@@ -33,7 +33,7 @@ public interface OrderedDictionary<K extends Comparable<K>, V>
      * Returns an iterator of the entries in the dictionary 
      * which preserves the key order relation.
      * 
-     * @see pt.walrus.dataStructures.Dictionary#iterator()
+     * @see dataStructures.Dictionary#iterator()
      */
     // Iterator<Entry<K,V>> iterator( );  
 

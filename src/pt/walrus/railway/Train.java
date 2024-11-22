@@ -1,6 +1,8 @@
 package pt.walrus.railway;
 
-public class Train {
+import java.io.Serializable;
+
+public class Train implements Serializable {
     private final int number;
     private final Direction direction;
 
