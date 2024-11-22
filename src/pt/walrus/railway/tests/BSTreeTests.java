@@ -9,8 +9,89 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class BSTreeTests {
 
     @Test
+    public void insertSizeTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        assertEquals(0, tree.size());
+        tree.insert(1, "a");
+        assertEquals(1, tree.size());
+        tree.insert(2, "b");
+        assertEquals(2, tree.size());
+        tree.insert(3, "c");
+        assertEquals(3, tree.size());
+    }
+
+    @Test
+    public void insertAndFindTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        tree.insert(1, "a");
+        tree.insert(2, "b");
+        tree.insert(3, "c");
+        assertEquals("a", tree.find(1));
+        assertEquals("b", tree.find(2));
+        assertEquals("c", tree.find(3));
+    }
+
+    @Test
+    public void insertAndRemoveTwiceTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        assertNull(tree.insert(1, "a"));
+        assertNull(tree.insert(2, "b"));
+        assertEquals("a", tree.remove(1));
+        assertEquals("b", tree.remove(2));
+        assertNull(tree.find(1));
+        assertNull(tree.find(2));
+    }
+
+    @Test
+    public void insertDuplicateTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        assertNull(tree.insert(1, "a"));
+        assertNull(tree.insert(2, "b"));
+        assertEquals("a", tree.insert(1, "a"));
+        assertEquals(2, tree.size());
+        assertEquals("b", tree.insert(2, "c"));
+        assertEquals(2, tree.size());
+        assertEquals("a", tree.find(1));
+        assertEquals("c", tree.find(2));
+    }
+
+    @Test
+    public void removeTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        tree.insert(1, "a");
+        tree.insert(2, "b");
+        tree.insert(3, "c");
+        assertEquals("c", tree.remove(3));
+        assertEquals(2, tree.size());
+        assertNull(tree.find(3));
+        assertEquals("a", tree.remove(1));
+        assertEquals(1, tree.size());
+        assertNull(tree.find(1));
+        assertEquals("b", tree.remove(2));
+        assertEquals(0, tree.size());
+        assertNull(tree.find(2));
+        assertNull(tree.remove(1));
+        assertEquals(0, tree.size());
+    }
+
+    @Test
+    public void insertAfterRemoveTest() {
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
+        tree.insert(1, "a");
+        tree.insert(2, "b");
+        tree.remove(1);
+        assertNull(tree.insert(1, "a"));
+        assertEquals("a", tree.remove(1));
+        assertNull(tree.insert(1, "b"));
+        assertEquals("b", tree.remove(2));
+        assertNull(tree.insert(2, "a"));
+        assertEquals("a", tree.find(2));
+        assertEquals("b", tree.find(1));
+    }
+
+    @Test
     public void iterator1Test() {
-        OrderedDictionary<Integer, String> tree = new BinarySearchTree<>();
+        Dictionary<Integer, String> tree = new BinarySearchTree<>();
         tree.insert(5, "a");
         tree.insert(10, "b");
         tree.insert(1, "c");
@@ -21,9 +102,10 @@ public class BSTreeTests {
             System.out.println(entry.getKey());
         }
     }
+
     @Test
     public void iterator2Test() {
-        OrderedDictionary<String, String> tree = new BinarySearchTree<>();
+        Dictionary<String, String> tree = new BinarySearchTree<>();
         tree.insert("f", "smth");
         tree.insert("d", "smth");
         tree.insert("g", "smth");

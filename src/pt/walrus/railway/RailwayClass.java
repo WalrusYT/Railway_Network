@@ -14,11 +14,11 @@ public class RailwayClass implements Railway {
     /**
      * Collection of lines of the network
      */
-    Dictionary<String, Line> lines;
+    private final Dictionary<String, Line> lines;
     /**
      * Collection of stations of the network
      */
-    Dictionary<String, Station> stations;
+    private final Dictionary<String, Station> stations;
 
     /**
      * Constructs an object pt.walrus.Railway Network

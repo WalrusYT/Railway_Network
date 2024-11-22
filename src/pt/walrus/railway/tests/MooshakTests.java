@@ -20,8 +20,7 @@ public class MooshakTests {
 
     @BeforeAll
     public static void removeSerializedData() throws IOException {
-        if (Files.exists(Path.of(SERIALIZED_DATA_FILE_NAME)))
-        Files.delete(Path.of(SERIALIZED_DATA_FILE_NAME));
+        Files.deleteIfExists(Path.of(SERIALIZED_DATA_FILE_NAME));
     }
 
     @RepeatedTest(value = TEST_FILES_AMOUNT)

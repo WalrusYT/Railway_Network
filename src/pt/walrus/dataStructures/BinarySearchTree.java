@@ -7,58 +7,45 @@ package pt.walrus.dataStructures;
  * @param <K> Generic type Key, must extend comparable
  * @param <V> Generic type Value 
  */
-public class BinarySearchTree<K extends Comparable<K>, V> 
-    implements OrderedDictionary<K,V>
-{                                                                   
+public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDictionary<K, V> {
     /**
      * The root of the tree.                                            
      * 
      */
-    protected BSTNode<Entry<K,V>> root;
+    protected BSTNode<Entry<K, V>> root;
 
     /**
      * Number of entries in the tree.                                  
      * 
      */
-    protected int currentSize;                   
-
-
-
+    protected int currentSize;
 
     /**
      * Tree Constructor - creates an empty tree.
      */
-    public BinarySearchTree( )                                    
-    {    
+    public BinarySearchTree() {
         root = null;
         currentSize = 0;
     }
 
-
     @Override
-    public boolean isEmpty( )                               
-    {    
+    public boolean isEmpty() {
         return root == null;
     }
 
-
     @Override
-    public int size( )                                      
-    {    
+    public int size() {
         return currentSize;
     }
 
-
     @Override
-    public V find( K key )                             
-    {    
-        BSTNode<Entry<K,V>> node = this.findNode(key);
+    public V find(K key) {
+        BSTNode<Entry<K, V>> node = this.findNode(key);
         if ( node == null || node.getElement().getKey().compareTo(key) != 0 )
-            return null;                                    
+            return null;
         else                                                     
             return node.getElement().getValue();
     }
-
 
     /*
     **
@@ -85,14 +72,10 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         }                 
     }
     */
-
-
     @Override
-    public Entry<K,V> minEntry( ) throws EmptyDictionaryException
-    {                                                                   
-        if ( this.isEmpty() )                              
-            throw new EmptyDictionaryException();           
-
+    public Entry<K, V> minEntry() throws EmptyDictionaryException {
+        if (this.isEmpty())
+            throw new EmptyDictionaryException();
         return this.minNode(root).getElement();
     }
 
@@ -104,24 +87,19 @@ public class BinarySearchTree<K extends Comparable<K>, V>
      * @param node - node that roots the tree
      * @return node with the smallest key in the tree
      */
-    BSTNode<Entry<K,V>> minNode( BSTNode<Entry<K,V>> node )
-    {
-
-        while ( node.getLeft() != null )
+    BSTNode<Entry<K, V>> minNode(BSTNode<Entry<K, V>> node) {
+        while (node.getLeft() != null)
         {
             node = node.getLeft();
         }
         return node;
-
     }                               
 
 
     @Override
-    public Entry<K,V> maxEntry( ) throws EmptyDictionaryException
-    {                                                                   
-        if ( this.isEmpty() )                              
-            throw new EmptyDictionaryException();           
-
+    public Entry<K, V> maxEntry() throws EmptyDictionaryException {
+        if (this.isEmpty())
+            throw new EmptyDictionaryException();
         return this.maxNode(root).getElement();
     }
 
@@ -133,32 +111,27 @@ public class BinarySearchTree<K extends Comparable<K>, V>
      * @param node that roots the tree
      * @return node with the largest key in the tree
      */
-    BSTNode<Entry<K,V>> maxNode( BSTNode<Entry<K,V>> node )
-    {                                                                   
-        if ( node.getRight() == null )                            
+    BSTNode<Entry<K, V>> maxNode(BSTNode<Entry<K,V>> node) {
+        if (node.getRight() == null)
             return node;                                             
         else                                                     
-            return this.maxNode( node.getRight() );                       
-    }                               
-
+            return this.maxNode(node.getRight());
+    }
 
     /**
      * Returns the node whose key is the specified key;
      * or the parent of the node where the key should exist if no such node exists.
      * @param key to be searched
      * @return see above
-     
      */
-    BSTNode<Entry<K,V>> findNode( K key)
-    {      
-        BSTNode<Entry<K,V>> node = root;
-        BSTNode<Entry<K,V>> current = null;
-        while ( node != null )
-        {
-            int compResult = key.compareTo( node.getElement().getKey() );
-            if ( compResult == 0 )
+    protected BSTNode<Entry<K, V>> findNode(K key) {
+        BSTNode<Entry<K, V>> node = root;
+        BSTNode<Entry<K, V>> current = null;
+        while (node != null) {
+            int compResult = key.compareTo(node.getElement().getKey());
+            if (compResult == 0)
                 return node;
-            else if ( compResult < 0 ) {
+            else if (compResult < 0) {
                 current = node;
                 node = node.getLeft();
             }
@@ -168,30 +141,24 @@ public class BinarySearchTree<K extends Comparable<K>, V>
             }
         }
         return current;
-    }                               
-
+    }
 
     @Override
-    public V insert( K key, V value )
-    {                                                                   
-
-        BSTNode<Entry<K,V>> node = this.findNode(key);
-
-        if ( node == null || node.getElement().getKey().compareTo(key) != 0 )
-        { // Key does not exist, node is "parent"
-            BSTNode<Entry<K,V>> newLeaf = new BSTNode<>(new EntryClass<>(key, value));
+    public V insert(K key, V value) {
+        BSTNode<Entry<K, V>> node = this.findNode(key);
+        if (node == null || node.getElement().getKey().compareTo(key) != 0) {
+            // Key does not exist, node is "parent"
+            BSTNode<Entry<K, V>> newLeaf = new BSTNode<>(new EntryClass<>(key, value));
             this.linkSubtreeInsert(newLeaf, node);
             currentSize++;
             return null;   
         }                                 
-        else 
-        {
+        else {
             V oldValue = node.getElement().getValue();
             node.setElement(new EntryClass<>(key, value));
             return oldValue;
         }
     }
-
 
     /**
      * Links a new subtree, rooted at the specified node, to the tree.
@@ -199,8 +166,8 @@ public class BinarySearchTree<K extends Comparable<K>, V>
      * @param node - root of the subtree
      * @param parent - parent node for the new subtree
      */
-    void linkSubtreeInsert(BSTNode<Entry<K,V>> node, BSTNode<Entry<K,V>> parent) {
-        if ( parent == null )
+    protected void linkSubtreeInsert(BSTNode<Entry<K, V>> node, BSTNode<Entry<K, V>> parent) {
+        if (parent == null)
             // Change the root of the tree.
             root = node;
         else {
@@ -238,51 +205,37 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         }
     }
 
-
-
-
-
     @Override
-    public V remove( K key )
-    {
-
-        BSTNode<Entry<K,V>> node = this.findNode(key);
-        if ( node == null || node.getElement().getKey().compareTo(key) != 0 )
+    public V remove(K key) {
+        BSTNode<Entry<K, V>> node = this.findNode(key);
+        if (node == null || node.getElement().getKey().compareTo(key) != 0)
             return null;
-        else
-        {
-            V oldValue = node.getElement().getValue();
-
-	        if ( node.getLeft() == null )
-                // The left subtree is empty.
-                this.linkSubtreeRemove(node.getRight(), node.getParent(),node);
-            else if ( node.getRight() == null )
-                // The right subtree is empty.
-                this.linkSubtreeRemove(node.getLeft(), node.getParent(),node);
-            else
-            {
-                // Node has 2 children. Replace the node's entry with
-                // the 'minEntry' of the right subtree.
-                BSTNode<Entry<K,V>> minNode = this.minNode(node.getRight());
-                node.setElement( minNode.getElement() );
-                // Remove the 'minEntry' of the right subtree.
-                this.linkSubtreeRemove(minNode.getRight(), minNode.getParent(),minNode);
-            }
-            currentSize--;
-            return oldValue;
-        }                                 
-    }                                
-
+        V oldValue = node.getElement().getValue();
+        if (node.getLeft() == null)
+            // The left subtree is empty.
+            this.linkSubtreeRemove(node.getRight(), node.getParent(),node);
+        else if (node.getRight() == null)
+            // The right subtree is empty.
+            this.linkSubtreeRemove(node.getLeft(), node.getParent(),node);
+        else {
+            // Node has 2 children. Replace the node's entry with
+            // the 'minEntry' of the right subtree.
+            BSTNode<Entry<K, V>> minNode = this.minNode(node.getRight());
+            node.setElement( minNode.getElement() );
+            // Remove the 'minEntry' of the right subtree.
+            this.linkSubtreeRemove(minNode.getRight(), minNode.getParent(), minNode);
+        }
+        currentSize--;
+        return oldValue;
+    }
 
     /**
      * Returns an iterator of the entries in the dictionary 
      * which preserves the key order relation.
      * @return  key-order iterator of the entries in the dictionary
      */
-    public Iterator<Entry<K,V>> iterator( ) 
-    {
-        return new BSTKeyOrderIterator<K,V>(root);
+    public Iterator<Entry<K, V>> iterator() {
+        return new BSTKeyOrderIterator<>(root);
     }
-
 }
 

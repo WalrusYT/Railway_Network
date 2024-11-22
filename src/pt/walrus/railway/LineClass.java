@@ -121,8 +121,7 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleEntry entry)
-            throws ScheduleNotExistsException {
+    public void removeSchedule(ScheduleEntry entry) throws ScheduleNotExistsException {
         Schedule schedule = schedules.remove(entry);
         if (schedule == null) throw new ScheduleNotExistsException();
         Iterator<ScheduleEntry> entries = schedule.getEntries();
