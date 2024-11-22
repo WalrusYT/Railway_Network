@@ -35,7 +35,9 @@ public interface Railway extends Serializable {
      * of the line
      * @throws LineNotExistsException if there is no line with the given name
      */
-    Iterator<Station> listStations (String name) throws LineNotExistsException;
+    Iterator<ProtectedStation> listStations (String name);
+
+    Iterator<ProtectedLine> listLines (String name);
 
     /**
      * Inserts a schedule to the given {@link Line} line with the given
@@ -47,13 +49,13 @@ public interface Railway extends Serializable {
      * @throws InvalidScheduleException if the first station indicated is not terminal, or if
      * there is an overlap with another schedule or the times of arriving are not strictly
      * increasing
-     * @throws StationNotExistsException if there is no {@link Station} station with the given name
+     * @throws DepartureNotExistsException if there is no {@link Station} station with the given name
      * @throws ScheduleNotExistsException if there is no such {@link Schedule} schedule with in the
      * given line
      */
     void insertSchedule(String name, int number, List<Entry<String, Time>> entries)
             throws LineNotExistsException, InvalidScheduleException,
-            StationNotExistsException, ScheduleNotExistsException;
+            DepartureNotExistsException, ScheduleNotExistsException;
 
     /**
      * Removes a schedule from the given {@link Line} line with the given
@@ -75,11 +77,11 @@ public interface Railway extends Serializable {
      * @return an {@link Iterator<Schedule>} iterator to iterate
      * through the {@link Schedule} schedules
      * @throws LineNotExistsException if there is no {@link Line} line with the given name
-     * @throws StationNotExistsException if there is no {@link Station} station
+     * @throws DepartureNotExistsException if there is no {@link Station} station
      * with the given name or if it's not a departure station
      */
     Iterator<Schedule> listSchedules (String name, String departureStation)
-            throws LineNotExistsException, StationNotExistsException;
+            throws LineNotExistsException, DepartureNotExistsException;
 
     /**
      * Finds out the best timetable of the given {@link Line} line by its name,
@@ -92,10 +94,11 @@ public interface Railway extends Serializable {
      * @throws LineNotExistsException if there is no {@link Line} line with the given name
      * @throws ImpossibleRouteException if the given route is impossible
      * (e.g. the departure time is less that an arriving one)
-     * @throws StationNotExistsException if there is no {@link Station} with the given name
+     * @throws DepartureNotExistsException if there is no {@link Station} with the given name
      */
     Schedule bestTimetable(String name, String departureStation,
                            String destinationStation, Time arrivalTime)
-            throws LineNotExistsException, ImpossibleRouteException, StationNotExistsException;
+            throws LineNotExistsException, ImpossibleRouteException, DepartureNotExistsException;
 
+    Iterator<Entry<Time, Train>> passingTrainsOfStation(String name);
 }

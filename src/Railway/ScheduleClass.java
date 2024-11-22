@@ -20,16 +20,18 @@ public class ScheduleClass implements Schedule {
      * List of the {@link ScheduleEntry} enties
      */
     private final List<ScheduleEntry> entries;
-    
+
+    private final Direction direction;
 
     /**
      * Constructs an object {@link ScheduleClass} with the given train number and list of entries
      * @param trainNumber number of the train
      * @param entries list of entries of the schedule
      */
-    public ScheduleClass (int trainNumber, List<ScheduleEntry> entries) {
+    public ScheduleClass (int trainNumber, List<ScheduleEntry> entries, Direction direction) {
         this.trainNumber = trainNumber;
         this.entries = entries;
+        this.direction = direction;
     }
 
 
@@ -65,6 +67,35 @@ public class ScheduleClass implements Schedule {
     }
 
     @Override
+    public boolean isOverlapping(Schedule other) {
+        if (this.direction != other.getDirection()) return false;
+        Iterator<ScheduleEntry> otherEntries = other.getEntries();
+        ScheduleEntry thisEntry = this.entries.getFirst(), otherEntry = otherEntries.next();
+        int initialTimeState = thisEntry.time.compareTo(otherEntry.getTime());
+        if (initialTimeState == 0) return true;
+        // It's not O(n^2) !!!
+        // keeping schedules' stations in sync with the second while loop
+        int lastStationIndex = 1;
+        otherEntriesLoop: while (otherEntries.hasNext()) {
+            otherEntry = otherEntries.next();
+            for (int i = lastStationIndex; i < this.entries.size(); i++) {
+                thisEntry = this.entries.get(i);
+                if (otherEntry.station.equals(thisEntry.getStation())) {
+                    lastStationIndex = i + 1;
+                    int currentTimeState = thisEntry.time.compareTo(otherEntry.getTime());
+                    if (currentTimeState == 0 || currentTimeState != initialTimeState) return true;
+                    continue otherEntriesLoop;
+                }
+            }
+        }
+        return false;
+    }
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -87,7 +118,7 @@ public class ScheduleClass implements Schedule {
      * Represents an individual entry within a train schedule, which includes a specific station 
      * and the scheduled time for that station. 
      */
-    public static class ScheduleEntry implements Serializable {
+    public static class ScheduleEntry implements Serializable, Comparable<ScheduleEntry> {
         /**
         * Serializable class a version number
         */
@@ -129,6 +160,14 @@ public class ScheduleClass implements Schedule {
             if (o == null || getClass() != o.getClass()) return false;
             ScheduleEntry that = (ScheduleEntry) o;
             return time.equals(that.time) && station.equals(that.station);
+        }
+
+        @Override
+        public int compareTo(ScheduleEntry o) {
+            int timeCompare = this.getTime().compareTo(o.getTime());
+            if (timeCompare == 0)
+                return this.getStation().getName().compareTo(o.getStation().getName());
+            return timeCompare;
         }
     }
 }

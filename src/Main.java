@@ -68,11 +68,11 @@ public class Main {
             case Commands.INSERT_LINE -> insertLine(in, rw);
             case Commands.REMOVE_LINE -> removeLine(in, rw);
             case Commands.LINE_STATIONS -> listStations(in, rw);
-            // case Commands.STATION_LINES -> {}
+            case Commands.STATION_LINES -> listLines(in, rw);
             case Commands.INSERT_SCHEDULE -> insertSchedule(in, rw);
             case Commands.REMOVE_SCHEDULE -> removeSchedule(in, rw);
             case Commands.LIST_SCHEDULES -> listSchedules(in, rw);
-            // case Commands.LIST_TRAINS -> {}
+            case Commands.LIST_TRAINS -> listTrains(in, rw);
             case Commands.BEST_TIMETABLE -> bestTimetable(in, rw);
             case Commands.EXIT -> System.out.println(Feedback.BYE);
             default -> {}
@@ -123,13 +123,25 @@ public class Main {
      */
     public static void listStations(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
-        try {
-            Iterator<Station> stations = rw.listStations(name);
-            while (stations.hasNext()) {
-                System.out.println(stations.next().getName());
-            }
-        } catch (LineNotExistsException e) {
-            System.out.println(e.getMessage());
+        Iterator<ProtectedStation> stations = rw.listStations(name);
+        if (stations == null) {
+            System.out.println(Feedback.INEXISTENT_LINE);
+            return;
+        }
+        while (stations.hasNext()) {
+            System.out.println(stations.next().getName());
+        }
+    }
+
+    public static void listLines (Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        Iterator<ProtectedLine> lines = rw.listLines(name);
+        if (lines == null) {
+            System.out.println(Feedback.INEXISTENT_STATION);
+            return;
+        }
+        while (lines.hasNext()) {
+            System.out.println(lines.next().getName());
         }
     }
 
@@ -156,7 +168,7 @@ public class Main {
             rw.insertSchedule(name, number, entries);
             System.out.println(Feedback.SCHEDULE_INSERTED);
         } catch (InvalidScheduleException | LineNotExistsException |
-                 StationNotExistsException | ScheduleNotExistsException e) {
+                 DepartureNotExistsException | ScheduleNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -234,8 +246,21 @@ public class Main {
                             timeToString(entry.getTime()));
                 }
             }
-        } catch (LineNotExistsException | StationNotExistsException e) {
+        } catch (LineNotExistsException | DepartureNotExistsException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public static void listTrains(Scanner in, Railway rw) {
+        String name = in.nextLine().trim();
+        Iterator<Entry<Time, Train>> trains = rw.passingTrainsOfStation(name);
+        if (trains == null) {
+            System.out.println(Feedback.INEXISTENT_STATION);
+            return;
+        }
+        while (trains.hasNext()) {
+            Entry<Time, Train> train = trains.next();
+            System.out.printf("Comboio %d %s%n", train.getValue().getNumber(), timeToString(train.getKey()));
         }
     }
 
@@ -263,7 +288,7 @@ public class Main {
                 System.out.printf("%s %s%n", entry.getStation().getName(),
                         timeToString(entry.getTime()));
             }
-        } catch (LineNotExistsException | ImpossibleRouteException | StationNotExistsException e) {
+        } catch (LineNotExistsException | ImpossibleRouteException | DepartureNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -287,6 +312,8 @@ public class Main {
                 LINE_REMOVED = "Remoção de linha com sucesso.",
                 SCHEDULE_INSERTED = "Criação de horário com sucesso.",
                 INVALID_SCHEDULE = "Horário inválido.",
+                INEXISTENT_STATION = "Estação inexistente.",
+                INEXISTENT_LINE = "Linha inexistente.",
                 SCHEDULE_REMOVED = "Remoção de horário com sucesso.";
     }
 }
