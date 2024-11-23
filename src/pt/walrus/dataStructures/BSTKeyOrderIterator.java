@@ -1,7 +1,7 @@
 package pt.walrus.dataStructures;
 
 /**
- * The type Bst key order iterator.
+ * BinarySearchTree order iterator by keys.
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
@@ -10,12 +10,12 @@ class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
 
 
 	/**
-	 * The Root.
+	 * The Root of the tree
 	 */
 	protected BSTNode<Entry<K,V>> root;
 
 	/**
-	 * The P.
+	 * An auxiliary stack to pop nodes in order
 	 */
 	protected Stack<BSTNode<Entry<K,V>>> p;
 
@@ -25,11 +25,15 @@ class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
 	 *
 	 * @param root the root
 	 */
-	BSTKeyOrderIterator(BSTNode<Entry<K,V>> root){
+	public BSTKeyOrderIterator(BSTNode<Entry<K,V>> root){
 		this.root = root;
 		rewind();
 	}
 
+	/**
+	 * Pushes the path to minimum BSTNode
+	 * @param node the root of the pushing
+	 */
 	private void pushPathToMinimum(BSTNode<Entry<K,V>> node) {
 		//TODO
 		while (node != null) {
@@ -39,11 +43,13 @@ class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
 	}
 
 	//O(1) para todos os casos
+
+	@Override
 	public boolean hasNext(){
 		return !p.isEmpty();
 	}
 
-
+	@Override
 	public Entry<K,V> next( ) throws NoSuchElementException {
 		if (!hasNext()) throw new NoSuchElementException();
 		else {
@@ -54,7 +60,7 @@ class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
 			return node.getElement();
 		}
 	}
-
+	@Override
 	public void rewind( ){
 		p = new StackInList<BSTNode<Entry<K,V>>>();
 		pushPathToMinimum(root);

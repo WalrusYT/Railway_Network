@@ -3,8 +3,6 @@ package pt.walrus.railway;
 import pt.walrus.dataStructures.Entry;
 import pt.walrus.dataStructures.Iterator;
 
-import java.io.Serializable;
-
 /**
  * This interface represents a station in the pt.walrus.Railway Network.
  */
@@ -13,7 +11,6 @@ public interface Station extends ProtectedStation {
      * Returns a name of the station
      *
      * @param line the line
-     * @return a {@link int} name of the station
      */
     void addLine(Line line);
 
@@ -37,21 +34,5 @@ public interface Station extends ProtectedStation {
      *
      * @param time the time
      */
-    void removePassingTrain(Time time);
-
-    /**
-     * Gets passing trains.
-     *
-     * @return the passing trains
-     */
-    Iterator<Entry<Time, Train>> getPassingTrains();
-
-    /**
-     * Is train arrive boolean.
-     *
-     * @param time      the time
-     * @param direction the direction
-     * @return the boolean
-     */
-    boolean isTrainArrive(Time time, Direction direction);
+    void removePassingTrain(Train train, Time time);
 }

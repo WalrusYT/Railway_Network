@@ -3,42 +3,20 @@ package pt.walrus.railway;
 import java.io.Serializable;
 
 /**
- * The type Train.
+ * The Train interface represents an interface of a Train Class
  */
-public class Train implements Serializable {
+public interface Train extends Serializable {
     /**
-     * Serializable class a version number
-     */
-    private static final long serialVersionUID = 0L;
-    private final int number;
-    private final Direction direction;
-
-    /**
-     * Instantiates a new Train.
-     *
-     * @param number    the number
-     * @param direction the direction
-     */
-    public Train(int number, Direction direction) {
-        this.number = number;
-        this.direction = direction;
-    }
-
-    /**
-     * Gets direction.
+     * Returns the direction of the train.
      *
      * @return the direction
      */
-    public Direction getDirection() {
-        return direction;
-    }
-
+    Direction getDirection();
     /**
-     * Gets number.
+     * Returns the number of the train.
      *
-     * @return the number
+     * @return the number of the train.
      */
-    public int getNumber() {
-        return number;
-    }
+    int getNumber();
+
 }

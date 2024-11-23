@@ -15,13 +15,12 @@ public class ScheduleClass implements Schedule {
     /**
      * Number of the train
      */
-    private final int trainNumber;
+    private final Train train;
      /**
      * List of the {@link ScheduleEntry} enties
      */
     private final List<ScheduleEntry> entries;
 
-    private final Direction direction;
 
     /**
      * Constructs an object {@link ScheduleClass} with the given train number and list of entries
@@ -29,9 +28,8 @@ public class ScheduleClass implements Schedule {
      * @param entries list of entries of the schedule
      */
     public ScheduleClass (int trainNumber, List<ScheduleEntry> entries, Direction direction) {
-        this.trainNumber = trainNumber;
+        this.train = new TrainClass(trainNumber, direction);
         this.entries = entries;
-        this.direction = direction;
     }
 
 
@@ -42,7 +40,7 @@ public class ScheduleClass implements Schedule {
 
     @Override
     public int getTrainNumber() {
-        return trainNumber;
+        return train.getNumber();
     }
 
     @Override
@@ -68,7 +66,7 @@ public class ScheduleClass implements Schedule {
 
     @Override
     public boolean isOverlapping(Schedule other) {
-        if (this.direction != other.getDirection()) return false;
+        if (this.train.getDirection() != other.getDirection()) return false;
         Iterator<ScheduleEntry> otherEntries = other.getEntries();
         ScheduleEntry thisEntry = this.entries.getFirst(), otherEntry = otherEntries.next();
         int initialTimeState = thisEntry.time.compareTo(otherEntry.getTime());
@@ -92,7 +90,11 @@ public class ScheduleClass implements Schedule {
     }
     @Override
     public Direction getDirection() {
-        return direction;
+        return train.getDirection();
+    }
+
+    public Train getTrain (){
+        return train;
     }
 
     @Override

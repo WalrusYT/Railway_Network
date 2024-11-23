@@ -82,11 +82,5 @@ public interface ProtectedLine extends Serializable {
      */
     Direction getDirectionByDeparture(Station station);
 
-    /**
-     * Gets station index.
-     *
-     * @param station the station
-     * @return the station index
-     */
-    int getStationIndex(Station station);
+
 }

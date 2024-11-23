@@ -255,14 +255,14 @@ public class Main {
 
     public static void listTrains(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
-        Iterator<Entry<Time, Train>> trains = rw.passingTrainsOfStation(name);
+        Iterator<Entry<StationClass.ArrivalEntry, Train>> trains = rw.passingTrainsOfStation(name);
         if (trains == null) {
             System.out.println(Feedback.INEXISTENT_STATION);
             return;
         }
         while (trains.hasNext()) {
-            Entry<Time, Train> train = trains.next();
-            System.out.printf("Comboio %d %s%n", train.getValue().getNumber(), timeToString(train.getKey()));
+            Entry<StationClass.ArrivalEntry, Train> train = trains.next();
+            System.out.printf("Comboio %d %s%n", train.getKey().getTrainNumber(), timeToString(train.getKey().getTime()));
         }
     }
 

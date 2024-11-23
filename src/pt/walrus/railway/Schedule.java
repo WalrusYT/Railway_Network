@@ -14,6 +14,8 @@ public interface Schedule extends Serializable {
      */
     int getTrainNumber();
 
+    Train getTrain();
+
     /**
      * Returns an iterator of entries of the schedule
      *

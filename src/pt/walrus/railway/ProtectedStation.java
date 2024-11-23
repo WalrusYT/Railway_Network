@@ -1,6 +1,8 @@
 package pt.walrus.railway;
 
 import java.io.Serializable;
+
+import pt.walrus.dataStructures.Entry;
 import pt.walrus.dataStructures.Iterator;
 
 /**
@@ -27,4 +29,20 @@ public interface ProtectedStation extends Serializable {
      * @return the protected lines
      */
     Iterator<ProtectedLine> getProtectedLines();
+
+    /**
+     * Gets passing trains.
+     *
+     * @return the passing trains
+     */
+    Iterator<Entry<StationClass.ArrivalEntry, Train>> getPassingTrains();
+
+    /**
+     * Checks if the train with the given number and time arrives
+     *
+     * @param time      the time
+     * @param trainNumber the number of the train
+     * @return the boolean
+     */
+    boolean isTrainArrive(Time time, int trainNumber);
 }

@@ -24,7 +24,7 @@ public class StationClass implements Station {
     /**
      * Trains of the station
      */
-    private final Dictionary<Time, Train> passingTrains;
+    private final Dictionary<ArrivalEntry, Train> passingTrains;
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -52,13 +52,14 @@ public class StationClass implements Station {
         // O log n
         lines.remove(line);
         Iterator<Entry<ScheduleEntry, Schedule>> it = line.getSchedules();
+        //TODO: THIS METHOD SHOULD BE CHANGED
         while (it.hasNext()) {
             Schedule s = it.next().getValue();
             Iterator<ScheduleEntry> it2 = s.getEntries();
             while (it2.hasNext()) {
                 ScheduleEntry se = it2.next();
                 if (se.getStation().equals(this)) {
-                    passingTrains.remove(se.getTime());
+                    passingTrains.remove(new ArrivalEntry(se.getTime(), s.getTrainNumber()));
                 }
             }
         }
@@ -92,24 +93,25 @@ public class StationClass implements Station {
 
     @Override
     public void addPassingTrain(Time time, Train train) {
-        this.passingTrains.insert(time, train);
+        ArrivalEntry entry = new ArrivalEntry(time, train.getNumber());
+        this.passingTrains.insert(entry, train);
     }
 
     @Override
-    public void removePassingTrain(Time time) {
-        this.passingTrains.remove(time);
+    public void removePassingTrain(Train train, Time time) {
+        this.passingTrains.remove(new ArrivalEntry(time, train.getNumber()));
     }
 
     @Override
-    public Iterator<Entry<Time, Train>> getPassingTrains() {
+    public Iterator<Entry<ArrivalEntry, Train>> getPassingTrains() {
         return this.passingTrains.iterator();
     }
 
     @Override
-    public boolean isTrainArrive(Time time, Direction direction) {
-        Train train = passingTrains.find(time);
+    public boolean isTrainArrive(Time time, int trainNumber) {
+        Train train = passingTrains.find(new ArrivalEntry(time, trainNumber));
         if (train == null) return false;
-        return train.getDirection() == direction;
+        return train.getNumber() == trainNumber;
     }
 
     @Override
@@ -125,31 +127,33 @@ public class StationClass implements Station {
      */
     public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
         /**
-         * The Time.
+         * The time of the arrival of the train.
          */
         Time time;
         /**
-         * The Direction.
+         * The number of the train
          */
-        Direction direction;
+        int trainNumber;
 
         /**
-         * Instantiates a new Arrival entry.
-         *
-         * @param time      the time
-         * @param direction the direction
+         * Constructs an instance of an Arrival Entry
+         * @param time time of the arrival
+         * @param trainNumber number of the arrival train
          */
-        ArrivalEntry (Time time, Direction direction) {
+        ArrivalEntry (Time time, int trainNumber) {
             this.time = time;
-            this.direction = direction;
+            this.trainNumber = trainNumber;
         }
         @Override
         public int compareTo(ArrivalEntry o) {
-            return this.getTime().compareTo(o.getTime());
+            int timeCompare = this.getTime().compareTo(o.getTime());
+            if (timeCompare == 0)
+                return trainNumber - o.getTrainNumber();
+            return timeCompare;
         }
 
         /**
-         * Gets time.
+         * Returns the time of the arrival
          *
          * @return the time
          */
@@ -158,12 +162,12 @@ public class StationClass implements Station {
         }
 
         /**
-         * Gets direction.
+         * Returns the train number of the arrival train
          *
-         * @return the direction
+         * @return the number of the train
          */
-        public Direction getDirection() {
-            return direction;
+        public int getTrainNumber() {
+            return trainNumber;
         }
     }
 }

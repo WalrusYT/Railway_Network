@@ -34,7 +34,6 @@ public interface Railway extends Serializable {
      *
      * @param name name of the {@link Line} line
      * @return an {@link Iterator<Station>} iterator to iterate though the stations of the line
-     * @throws LineNotExistsException if there is no line with the given name
      */
     Iterator<ProtectedStation> listStations (String name);
 
@@ -104,5 +103,5 @@ public interface Railway extends Serializable {
                            String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, DepartureNotExistsException;
 
-    Iterator<Entry<Time, Train>> passingTrainsOfStation(String name);
+    Iterator<Entry<StationClass.ArrivalEntry, Train>> passingTrainsOfStation(String name);
 }
