@@ -106,8 +106,9 @@ public class RailwayClass implements Railway {
 
     @Override
     public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
-            throws InvalidScheduleException, ScheduleNotExistsException {
+            throws InvalidScheduleException, ScheduleNotExistsException, LineNotExistsException {
         Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         for (int i = 0; i < entriesRaw.size(); i++)
             entries.addLast(createScheduleEntry(line, entriesRaw.get(i)));

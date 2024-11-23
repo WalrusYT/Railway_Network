@@ -1,5 +1,7 @@
 package pt.walrus.railway;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
     FORWARD, BACKWARDS
 }

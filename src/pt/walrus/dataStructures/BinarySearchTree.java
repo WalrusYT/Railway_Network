@@ -1,5 +1,10 @@
 package pt.walrus.dataStructures;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /**
  * BinarySearchTree implementation
  * @author AED team
@@ -8,6 +13,11 @@ package pt.walrus.dataStructures;
  * @param <V> Generic type Value 
  */
 public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDictionary<K, V> {
+
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
     /**
      * The root of the tree.                                            
      * 

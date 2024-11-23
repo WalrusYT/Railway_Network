@@ -33,6 +33,6 @@ public class MooshakTests {
         System.setOut(new PrintStream(outBytes));
         Main.main(new String[]{});
         String actual = outBytes.toString();
-        assertEquals(expected, actual);
+        assertEquals(expected, actual.replaceAll("\r\n", "\n"));
     }
 }

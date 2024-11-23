@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * This interface represents a station in the pt.walrus.Railway Network.
  */
-public interface Station extends Serializable, ProtectedStation {
+public interface Station extends ProtectedStation {
     /**
      * Returns a name of the station
      * @return a {@link int} name of the station

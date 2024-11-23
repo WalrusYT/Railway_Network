@@ -2,9 +2,16 @@ package pt.walrus.railway.tests;
 
 import pt.walrus.dataStructures.*;
 import org.junit.jupiter.api.Test;
+import pt.walrus.dataStructures.Dictionary;
+import pt.walrus.dataStructures.Iterator;
+import pt.walrus.dataStructures.Set;
+import pt.walrus.dataStructures.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.*;
+import java.util.List;
+import java.util.random.RandomGenerator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BSTreeTests {
 
@@ -87,6 +94,100 @@ public class BSTreeTests {
         assertNull(tree.insert(2, "a"));
         assertEquals("a", tree.find(2));
         assertEquals("b", tree.find(1));
+    }
+
+    @Test
+    public void randomInsertTest() {
+        Dictionary<Integer, Integer> tree = new BinarySearchTree<>();
+        Random rnd = Random.from(RandomGenerator.getDefault());
+        Map<Integer, Integer> map = new TreeMap<>();
+        for (int i = 0; i < 1000; i++) {
+            Entry<Integer, Integer> entry = new EntryClass<>(rnd.nextInt(), rnd.nextInt());
+            map.put(entry.getKey(), entry.getValue());
+            tree.insert(entry.getKey(), entry.getValue());
+        }
+        assertEquals(map.size(), tree.size());
+        var treeEntries = tree.iterator();
+        var mapEntries = map.entrySet().iterator();
+        while (treeEntries.hasNext()) {
+            assertTrue(mapEntries.hasNext());
+            var mapEntry = mapEntries.next();
+            var treeEntry = treeEntries.next();
+            assertEquals(mapEntry.getKey(), treeEntry.getKey());
+            assertEquals(mapEntry.getValue(), treeEntry.getValue());
+        }
+    }
+
+    @Test
+    public void randomRemoveTest() {
+        Dictionary<Integer, Integer> tree = new BinarySearchTree<>();
+        Random rnd = Random.from(RandomGenerator.getDefault());
+        Map<Integer, Integer> map = new TreeMap<>();
+        List<Integer> keys = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            Entry<Integer, Integer> entry = new EntryClass<>(rnd.nextInt(), rnd.nextInt());
+            map.put(entry.getKey(), entry.getValue());
+            tree.insert(entry.getKey(), entry.getValue());
+            keys.add(entry.getKey());
+        }
+        for (int i = 0; i < 100; i++) {
+            int key = keys.get(rnd.nextInt(0, keys.size()));
+            map.remove(key);
+            tree.remove(key);
+        }
+        var treeEntries = tree.iterator();
+        var mapEntries = map.entrySet().iterator();
+        while (treeEntries.hasNext()) {
+            assertTrue(mapEntries.hasNext());
+            var mapEntry = mapEntries.next();
+            var treeEntry = treeEntries.next();
+            assertEquals(mapEntry.getKey(), treeEntry.getKey());
+            assertEquals(mapEntry.getValue(), treeEntry.getValue());
+        }
+    }
+
+    @Test
+    public void setRandomInsertTest() {
+        Set<Integer> mySet = new TreeSet<>();
+        Random rnd = Random.from(RandomGenerator.getDefault());
+        java.util.Set<Integer> set = new java.util.TreeSet<>();
+        for (int i = 0; i < 1000; i++) {
+            int value = rnd.nextInt();
+            set.add(value);
+            mySet.add(value);
+        }
+        assertEquals(set.size(), mySet.size());
+        var mySetEntries = mySet.iterator();
+        var setEntries = set.iterator();
+        while (mySetEntries.hasNext()) {
+            assertTrue(setEntries.hasNext());
+            assertEquals(setEntries.next(), mySetEntries.next());
+        }
+    }
+
+    @Test
+    public void setRandomRemoveTest() {
+        Set<Integer> mySet = new TreeSet<>();
+        Random rnd = Random.from(RandomGenerator.getDefault());
+        java.util.Set<Integer> set = new java.util.TreeSet<>();
+        List<Integer> values = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            int value = rnd.nextInt();
+            set.add(value);
+            mySet.add(value);
+            values.add(value);
+        }
+        for (int i = 0; i < 100; i++) {
+            int value = values.get(rnd.nextInt(0, values.size()));
+            set.remove(value);
+            mySet.remove(value);
+        }
+        var mySetEntries = mySet.iterator();
+        var setEntries = set.iterator();
+        while (mySetEntries.hasNext()) {
+            assertTrue(setEntries.hasNext());
+            assertEquals(setEntries.next(), mySetEntries.next());
+        }
     }
 
     @Test

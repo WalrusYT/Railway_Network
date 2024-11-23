@@ -1,6 +1,9 @@
 package pt.walrus.railway;
 
 import pt.walrus.dataStructures.*;
+import pt.walrus.railway.ScheduleClass.ScheduleEntry;
+
+import java.io.Serializable;
 
 /**
  * The Station Class represents a station with a station name and list of lines
@@ -43,6 +46,17 @@ public class StationClass implements Station {
     public void removeLine(Line line) {
         // O log n
         lines.remove(line);
+        Iterator<Entry<ScheduleEntry, Schedule>> it = line.getSchedules();
+        while (it.hasNext()) {
+            Schedule s = it.next().getValue();
+            Iterator<ScheduleEntry> it2 = s.getEntries();
+            while (it2.hasNext()) {
+                ScheduleEntry se = it2.next();
+                if (se.getStation().equals(this)) {
+                    passingTrains.remove(se.getTime());
+                }
+            }
+        }
     }
 
     @Override
@@ -99,5 +113,25 @@ public class StationClass implements Station {
         if (o == null || getClass() != o.getClass()) return false;
         StationClass that = (StationClass) o;
         return name.equalsIgnoreCase(that.name);
+    }
+
+    public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
+        Time time;
+        Direction direction;
+        ArrivalEntry (Time time, Direction direction) {
+            this.time = time;
+            this.direction = direction;
+        }
+        @Override
+        public int compareTo(ArrivalEntry o) {
+            return this.getTime().compareTo(o.getTime());
+        }
+
+        public Time getTime() {
+            return time;
+        }
+        public Direction getDirection() {
+            return direction;
+        }
     }
 }

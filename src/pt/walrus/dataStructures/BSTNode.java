@@ -12,7 +12,10 @@ import java.io.Serializable;
 public class BSTNode<E> implements Serializable
 {
 
-
+    /**
+     * Serializable class a version number
+     */
+    private static final long serialVersionUID = 0L;
     /**
      * Element stored in the node.
      */

@@ -1,6 +1,12 @@
 package pt.walrus.dataStructures;
 
+import java.io.Serializable;
+
 public class TreeSet<T extends Comparable<T>> implements Set<T> {
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
     private final OrderedDictionary<T, T> dict;
 
     public TreeSet() {
