@@ -1,6 +1,18 @@
 package pt.walrus.dataStructures;
 
+/**
+ * The TreeSet class
+ *
+ * @param <T> the type parameter
+ */
 public class TreeSet<T extends Comparable<T>> implements Set<T> {
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
+    /**
+     * Set memory
+     */
     private final OrderedDictionary<T, T> dict;
 
     public TreeSet() {
@@ -9,7 +21,7 @@ public class TreeSet<T extends Comparable<T>> implements Set<T> {
 
     @Override
     public boolean add(T element) {
-        return dict.insert(element, null) == null;
+        return dict.insert(element, element) == null;
     }
 
     @Override

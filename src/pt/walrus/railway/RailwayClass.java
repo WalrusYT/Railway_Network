@@ -14,11 +14,11 @@ public class RailwayClass implements Railway {
     /**
      * Collection of lines of the network
      */
-    Dictionary<String, Line> lines;
+    private final Dictionary<String, Line> lines;
     /**
      * Collection of stations of the network
      */
-    Dictionary<String, Station> stations;
+    private final Dictionary<String, Station> stations;
 
     /**
      * Constructs an object pt.walrus.Railway Network
@@ -58,7 +58,6 @@ public class RailwayClass implements Railway {
      * Auxiliary method to get a line by its name
      * @param name name of the {@link Line} line
      * @return the {@link Line} line with the given name
-     * @throws LineNotExistsException if there is no line with the given name
      */
     private Line getLine(String name) {
         return lines.find(name.toLowerCase());
@@ -106,8 +105,9 @@ public class RailwayClass implements Railway {
 
     @Override
     public void insertSchedule(String name, int number, List<Entry<String, Time>> entriesRaw)
-            throws InvalidScheduleException, ScheduleNotExistsException {
+            throws InvalidScheduleException, ScheduleNotExistsException, LineNotExistsException {
         Line line = getLine(name);
+        if (line == null) throw new LineNotExistsException();
         List<ScheduleClass.ScheduleEntry> entries = new MyArrayList<>();
         for (int i = 0; i < entriesRaw.size(); i++)
             entries.addLast(createScheduleEntry(line, entriesRaw.get(i)));
@@ -129,7 +129,7 @@ public class RailwayClass implements Railway {
     }
 
     @Override
-    public Iterator<Entry<Time, Train>> passingTrainsOfStation(String name) {
+    public Iterator<Entry<StationClass.ArrivalEntry, Train>> passingTrainsOfStation(String name) {
         Station station = this.getStation(name);
         return station == null ? null : station.getPassingTrains();
     }

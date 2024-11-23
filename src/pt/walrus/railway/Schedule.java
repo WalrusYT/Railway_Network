@@ -9,29 +9,35 @@ import java.io.Serializable;
 public interface Schedule extends Serializable {
     /**
      * Returns a train number
+     *
      * @return a {@link int} number of the train
      */
     int getTrainNumber();
 
+    Train getTrain();
+
     /**
      * Returns an iterator of entries of the schedule
+     *
      * @return a {@link Iterator<ScheduleClass.ScheduleEntry>}  to iterate through the schedule
      */
     Iterator<ScheduleClass.ScheduleEntry> getEntries();
 
-     /**
+    /**
      * Returns the first entry in the schedule
+     *
      * @return a {@link ScheduleClass.ScheduleEntry} initial departure station and time
      */
     ScheduleClass.ScheduleEntry getDepartureEntry();
 
     /**
      * Returns the departure station
+     *
      * @return the {@link Station} departure station of the schedule
      */
     Station getDepartureStation();
 
-     /**
+    /**
      * Returns the scheduled arrival time at the specified destination station,
      * given a departure from a specified station
      *
@@ -41,7 +47,18 @@ public interface Schedule extends Serializable {
      */
     Time getArrivalForRoute(Station departure, Station destination);
 
+    /**
+     * Is overlapping boolean.
+     *
+     * @param schedule the schedule
+     * @return the boolean
+     */
     boolean isOverlapping(Schedule schedule);
 
+    /**
+     * Gets direction.
+     *
+     * @return the direction
+     */
     Direction getDirection();
 }

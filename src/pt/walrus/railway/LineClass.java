@@ -121,14 +121,14 @@ public class LineClass implements Line {
     }
 
     @Override
-    public void removeSchedule(ScheduleEntry entry)
-            throws ScheduleNotExistsException {
+    public void removeSchedule(ScheduleEntry entry) throws ScheduleNotExistsException {
         Schedule schedule = schedules.remove(entry);
         if (schedule == null) throw new ScheduleNotExistsException();
         Iterator<ScheduleEntry> entries = schedule.getEntries();
         while (entries.hasNext()) {
-            ScheduleEntry e = entries.next();
-            e.getStation().removePassingTrain(e.getTime());
+            ScheduleEntry entrySchedule = entries.next();
+            entrySchedule.getStation().removePassingTrain(schedule.getTrain(),
+                    entrySchedule.getTime());
         }
     }
 
@@ -138,7 +138,7 @@ public class LineClass implements Line {
         Iterator<ScheduleEntry> entries = schedule.getEntries();
         while (entries.hasNext()) {
             ScheduleEntry entry = entries.next();
-            Train train = new Train(schedule.getTrainNumber(), schedule.getDirection());
+            Train train = new TrainClass(schedule.getTrainNumber(), schedule.getDirection());
             entry.getStation().addPassingTrain(entry.getTime(), train);
         }
      }
@@ -151,11 +151,6 @@ public class LineClass implements Line {
     @Override
     public boolean isStationTerminal(Station station) {
         return station.equals(stations.getFirst()) || station.equals(stations.getLast());
-    }
-
-    @Override
-    public int getStationIndex(Station station) {
-        return stations.find(station);
     }
 
     @Override
@@ -198,7 +193,7 @@ public class LineClass implements Line {
         scheduleLoop: while (entries.hasNext()) {
             ScheduleEntry entry = entries.next();
             if (entry.getTime().compareTo(prevTime) <= 0) return false;
-            if (entry.getStation().isTrainArrive(entry.getTime(), schedule.getDirection()))
+            if (entry.getStation().isTrainArrive(entry.getTime(), schedule.getTrainNumber()))
                 return false;
             while (lineStations.hasNext()) { // look for station in the line
                 // if found - continue with the next station

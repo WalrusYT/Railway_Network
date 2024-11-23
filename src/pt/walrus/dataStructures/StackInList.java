@@ -1,15 +1,29 @@
 package pt.walrus.dataStructures;
 
+/**
+ * The type Stack in list.
+ *
+ * @param <E> the type parameter
+ */
 public class StackInList<E> implements Stack<E>
 {
 
+    /**
+     * The Serial version uid.
+     */
     static final long serialVersionUID = 0L;
 
 
-    // Memory of the stack: a list.
-    protected List<E> list;                     
+    /**
+     * The List.
+     */
+// Memory of the stack: a list.
+    protected List<E> list;
 
 
+    /**
+     * Instantiates a new Stack in list.
+     */
     public StackInList( )
     {     
         list = new DoubleList<E>();

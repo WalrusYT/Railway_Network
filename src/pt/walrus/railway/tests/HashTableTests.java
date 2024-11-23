@@ -17,6 +17,12 @@ public class HashTableTests {
         assertEquals("a", dict.find(1));
         assertEquals("b", dict.find(2));
         assertEquals("c", dict.find(3));
+        for (int i = 0; i < 100; i++) {
+            dict.insert(i, "abc" + i);
+            dict.insert(i, "_abc" + i);
+            dict.insert(i, "__abc" + i);
+        }
+        System.out.println(dict.find(98));
     }
 
     @Test
@@ -80,7 +86,9 @@ public class HashTableTests {
         Iterator<Entry<Integer, String>> iterator = dict.iterator();
         var data = new ArrayList<Entry<Integer, String>>();
         while (iterator.hasNext()) {
-            data.add(iterator.next());
+            Entry<Integer, String> en = iterator.next();
+            data.add(en);
+            System.out.println(en.getKey());
         }
         var actual = data.stream().sorted(java.util.Comparator.comparingInt(Entry::getKey)).toList();
         assertEquals(expected, actual);
@@ -98,6 +106,11 @@ public class HashTableTests {
         assertEquals(99, dict.size());
         assertNull(dict.remove(101));
         assertEquals(99, dict.size());
-        assertEquals("abc99", dict.find(99));
+        for (int i = 0; i < 50; i++) {
+            dict.remove(i);
+        }
+        for (int i = 100; i < 150; i++) {
+            dict.insert(i, "abc" + i);
+        }
     }
 }

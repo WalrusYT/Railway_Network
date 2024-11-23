@@ -341,11 +341,9 @@ public class DoubleList<E> implements TwoWayList<E>
         list.currentSize = 0;
     }
 
-
     @Override
     public TwoWayIterator<E> twoWayIterator() {
         return new DoubleListIterator<>(head, tail);
     }
+
 }
-
-

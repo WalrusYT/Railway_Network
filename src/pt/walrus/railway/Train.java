@@ -1,19 +1,22 @@
 package pt.walrus.railway;
 
-public class Train {
-    private final int number;
-    private final Direction direction;
+import java.io.Serializable;
 
-    public Train(int number, Direction direction) {
-        this.number = number;
-        this.direction = direction;
-    }
+/**
+ * The Train interface represents an interface of a Train Class
+ */
+public interface Train extends Serializable {
+    /**
+     * Returns the direction of the train.
+     *
+     * @return the direction
+     */
+    Direction getDirection();
+    /**
+     * Returns the number of the train.
+     *
+     * @return the number of the train.
+     */
+    int getNumber();
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public int getNumber() {
-        return number;
-    }
 }

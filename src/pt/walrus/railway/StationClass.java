@@ -1,6 +1,9 @@
 package pt.walrus.railway;
 
 import pt.walrus.dataStructures.*;
+import pt.walrus.railway.ScheduleClass.ScheduleEntry;
+
+import java.io.Serializable;
 
 /**
  * The Station Class represents a station with a station name and list of lines
@@ -14,13 +17,18 @@ public class StationClass implements Station {
      * Name of the station
      */
     private final String name;
-
+    /**
+     * Lines of the station
+     */
     private final Set<Line> lines;
-
-    private final Dictionary<Time, Train> passingTrains;
+    /**
+     * Trains of the station
+     */
+    private final Dictionary<ArrivalEntry, Train> passingTrains;
 
     /**
      * Constructs an object {@link StationClass} with the given station name
+     *
      * @param name name of the station
      */
     public StationClass (String name) {
@@ -43,6 +51,18 @@ public class StationClass implements Station {
     public void removeLine(Line line) {
         // O log n
         lines.remove(line);
+        Iterator<Entry<ScheduleEntry, Schedule>> it = line.getSchedules();
+        //TODO: THIS METHOD SHOULD BE CHANGED
+        while (it.hasNext()) {
+            Schedule s = it.next().getValue();
+            Iterator<ScheduleEntry> it2 = s.getEntries();
+            while (it2.hasNext()) {
+                ScheduleEntry se = it2.next();
+                if (se.getStation().equals(this)) {
+                    passingTrains.remove(new ArrivalEntry(se.getTime(), s.getTrainNumber()));
+                }
+            }
+        }
     }
 
     @Override
@@ -73,24 +93,25 @@ public class StationClass implements Station {
 
     @Override
     public void addPassingTrain(Time time, Train train) {
-        this.passingTrains.insert(time, train);
+        ArrivalEntry entry = new ArrivalEntry(time, train.getNumber());
+        this.passingTrains.insert(entry, train);
     }
 
     @Override
-    public void removePassingTrain(Time time) {
-        this.passingTrains.remove(time);
+    public void removePassingTrain(Train train, Time time) {
+        this.passingTrains.remove(new ArrivalEntry(time, train.getNumber()));
     }
 
     @Override
-    public Iterator<Entry<Time, Train>> getPassingTrains() {
+    public Iterator<Entry<ArrivalEntry, Train>> getPassingTrains() {
         return this.passingTrains.iterator();
     }
 
     @Override
-    public boolean isTrainArrive(Time time, Direction direction) {
-        Train train = passingTrains.find(time);
+    public boolean isTrainArrive(Time time, int trainNumber) {
+        Train train = passingTrains.find(new ArrivalEntry(time, trainNumber));
         if (train == null) return false;
-        return train.getDirection() == direction;
+        return train.getNumber() == trainNumber;
     }
 
     @Override
@@ -99,5 +120,54 @@ public class StationClass implements Station {
         if (o == null || getClass() != o.getClass()) return false;
         StationClass that = (StationClass) o;
         return name.equalsIgnoreCase(that.name);
+    }
+
+    /**
+     * The type Arrival entry.
+     */
+    public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
+        /**
+         * The time of the arrival of the train.
+         */
+        Time time;
+        /**
+         * The number of the train
+         */
+        int trainNumber;
+
+        /**
+         * Constructs an instance of an Arrival Entry
+         * @param time time of the arrival
+         * @param trainNumber number of the arrival train
+         */
+        ArrivalEntry (Time time, int trainNumber) {
+            this.time = time;
+            this.trainNumber = trainNumber;
+        }
+        @Override
+        public int compareTo(ArrivalEntry o) {
+            int timeCompare = this.getTime().compareTo(o.getTime());
+            if (timeCompare == 0)
+                return trainNumber - o.getTrainNumber();
+            return timeCompare;
+        }
+
+        /**
+         * Returns the time of the arrival
+         *
+         * @return the time
+         */
+        public Time getTime() {
+            return time;
+        }
+
+        /**
+         * Returns the train number of the arrival train
+         *
+         * @return the number of the train
+         */
+        public int getTrainNumber() {
+            return trainNumber;
+        }
     }
 }

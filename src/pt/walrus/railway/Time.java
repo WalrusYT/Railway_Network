@@ -13,7 +13,7 @@ public class Time implements Comparable<Time>, Serializable {
      */
     private static final long serialVersionUID = 0L;
     /**
-     * Hours and minutes
+     * Hours and minutes of the Time
      */
     private final int h;
     private final int m;

@@ -1,4 +1,9 @@
-package pt.walrus.dataStructures;
+package dataStructures;
+
+import pt.walrus.dataStructures.AVLNode;
+import pt.walrus.dataStructures.AdvancedBSTree;
+import pt.walrus.dataStructures.Entry;
+import pt.walrus.dataStructures.OrderedDictionary;
 
 /**
  * AVL tree implementation
@@ -13,7 +18,7 @@ public class AVLTree<K extends Comparable<K>, V>
     extends AdvancedBSTree<K,V> implements OrderedDictionary<K,V>
 {                                                                   
 
-    protected AVLTree(AVLNode<Entry<K,V>> node) {
+    AVLTree(AVLNode<Entry<K,V>> node) {
         root = node;
     }
 
@@ -33,6 +38,8 @@ public class AVLTree<K extends Comparable<K>, V>
         // Improve if possible...
         while (zPos!=null) {  // traverse up the tree towards the root
             zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
+            if (zPos == null) //reached the root, stop.
+               break;
             zPos.setHeight();
             if (!zPos.isBalanced()) {
                 // perform a trinode restructuring at zPos's tallest grandchild
@@ -62,6 +69,16 @@ public class AVLTree<K extends Comparable<K>, V>
         return valueToReturn;
 
     }
+
+
+
+
+
+
+
+        
+
+               
 
    @Override
     public V remove( K key )
