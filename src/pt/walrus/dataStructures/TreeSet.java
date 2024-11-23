@@ -21,7 +21,7 @@ public class TreeSet<T extends Comparable<T>> implements Set<T> {
 
     @Override
     public boolean add(T element) {
-        return dict.insert(element, null) == null;
+        return dict.insert(element, element) == null;
     }
 
     @Override
