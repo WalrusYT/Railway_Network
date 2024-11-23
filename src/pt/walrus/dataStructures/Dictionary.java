@@ -60,8 +60,7 @@ public interface Dictionary<K,V> extends Serializable
      * Returns an iterator of the entries in the dictionary.
      * @return  iterator of the entries in the dictionary
      */
-    Iterator<Entry<K,V>> iterator( );  
-
+    Iterator<Entry<K,V>> iterator( );
 } 
 
 

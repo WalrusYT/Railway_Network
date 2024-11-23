@@ -1,10 +1,21 @@
 package pt.walrus.dataStructures;
 
+/**
+ * Sep chain hash table iterator.
+ *
+ * @param <K> the type parameter
+ * @param <V> the type parameter
+ */
 public class SepChainHashTableIterator<K extends Comparable<K>, V> implements Iterator<Entry<K,V>> {
     private final Dictionary<K, V>[] elements;
     private Iterator<Entry<K, V>> iteratorOfBucket;
     private int bucketCounter;
 
+    /**
+     * Instantiates a new Sep chain hash table iterator.
+     *
+     * @param elements the elements
+     */
     public SepChainHashTableIterator(Dictionary<K,V>[] elements) {
         this.elements = elements;
         rewind();

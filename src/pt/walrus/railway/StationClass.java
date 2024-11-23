@@ -17,13 +17,18 @@ public class StationClass implements Station {
      * Name of the station
      */
     private final String name;
-
+    /**
+     * Lines of the station
+     */
     private final Set<Line> lines;
-
+    /**
+     * Trains of the station
+     */
     private final Dictionary<Time, Train> passingTrains;
 
     /**
      * Constructs an object {@link StationClass} with the given station name
+     *
      * @param name name of the station
      */
     public StationClass (String name) {
@@ -115,9 +120,25 @@ public class StationClass implements Station {
         return name.equalsIgnoreCase(that.name);
     }
 
+    /**
+     * The type Arrival entry.
+     */
     public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
+        /**
+         * The Time.
+         */
         Time time;
+        /**
+         * The Direction.
+         */
         Direction direction;
+
+        /**
+         * Instantiates a new Arrival entry.
+         *
+         * @param time      the time
+         * @param direction the direction
+         */
         ArrivalEntry (Time time, Direction direction) {
             this.time = time;
             this.direction = direction;
@@ -127,9 +148,20 @@ public class StationClass implements Station {
             return this.getTime().compareTo(o.getTime());
         }
 
+        /**
+         * Gets time.
+         *
+         * @return the time
+         */
         public Time getTime() {
             return time;
         }
+
+        /**
+         * Gets direction.
+         *
+         * @return the direction
+         */
         public Direction getDirection() {
             return direction;
         }

@@ -1,13 +1,30 @@
 package pt.walrus.dataStructures;
 
+/**
+ * The type Bst preorder iterator.
+ *
+ * @param <K> the type parameter
+ * @param <V> the type parameter
+ */
 public class BSTPreorderIterator<K,V> implements Iterator<Entry<K,V>> {
 
-		
-		protected BSTNode <Entry<K,V>> root;
-		
-		protected Stack<BSTNode<Entry<K,V>>> st;
 
-		BSTPreorderIterator(BSTNode<Entry<K,V>>root){
+	/**
+	 * The Root.
+	 */
+	protected BSTNode <Entry<K,V>> root;
+
+	/**
+	 * The St.
+	 */
+	protected Stack<BSTNode<Entry<K,V>>> st;
+
+	/**
+	 * Instantiates a new Bst preorder iterator.
+	 *
+	 * @param root the root
+	 */
+	BSTPreorderIterator(BSTNode<Entry<K,V>>root){
 			this.root=root;
 			rewind();
 		}
@@ -31,7 +48,12 @@ public class BSTPreorderIterator<K,V> implements Iterator<Entry<K,V>> {
 	    	if (this.root!= null) st.push(this.root);
 	    }
 
-public static void main(String[] args){
+	/**
+	 * Main.
+	 *
+	 * @param args the args
+	 */
+	public static void main(String[] args){
 	
 
 	BinarySearchTree<Integer,Integer> bst=new BinarySearchTree<>();

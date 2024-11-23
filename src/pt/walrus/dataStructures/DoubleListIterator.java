@@ -108,5 +108,4 @@ class DoubleListIterator<E> implements TwoWayIterator<E>
         return element;
     }
 
-
 }
