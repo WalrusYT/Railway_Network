@@ -1,10 +1,5 @@
 package pt.walrus.dataStructures;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-
 /**
  * BinarySearchTree implementation
  * @author AED team
@@ -247,5 +242,31 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
     public Iterator<Entry<K, V>> iterator() {
         return new BSTKeyOrderIterator<>(root);
     }
+
+//    @Serial
+//    private void writeObject(ObjectOutputStream out) throws IOException {
+//        out.defaultWriteObject();
+//        out.writeInt(this.currentSize);
+//        Iterator<Entry<K, V>> iterator = this.iterator();
+//        while (iterator.hasNext()) {
+//            Entry<K, V> entry = iterator.next();
+//            out.writeObject(entry.getKey());
+//            out.writeObject(entry.getValue());
+//        }
+//    }
+//
+//    @Serial
+//    @SuppressWarnings("unchecked")
+//    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+//        in.defaultReadObject();
+//        this.root = null;
+//        this.currentSize = 0;
+//        int size = in.readInt();
+//        for (int i = 0; i < size; i++) {
+//            K key = (K) in.readObject();
+//            V value = (V) in.readObject();
+//            this.insert(key, value);
+//        }
+//    }
 }
 

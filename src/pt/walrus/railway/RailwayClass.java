@@ -64,14 +64,21 @@ public class RailwayClass implements Railway {
     }
 
     @Override
-    public void removeLine(String name) throws LineNotExistsException {
+    public void removeLine(String name) throws LineNotExistsException, ScheduleNotExistsException {
         Line line = getLine(name);
         if (line == null) throw new LineNotExistsException();
         Iterator<Station> stations = line.getStations(Direction.FORWARD);
+        // removes all the station of the line
         while (stations.hasNext()) {
             Station station = stations.next();
             station.removeLine(line);
             if (!station.hasLines()) this.stations.remove(station.getName().toLowerCase());
+        }
+        // removes all the schedules of the line
+        Iterator<Entry<ScheduleClass.ScheduleEntry, Schedule>> schedules = line.getSchedules();
+        while (schedules.hasNext()) {
+            ScheduleClass.ScheduleEntry s = schedules.next().getKey();
+            line.removeSchedule(s);
         }
         lines.remove(line.getName().toLowerCase());
     }

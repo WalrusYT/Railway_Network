@@ -27,7 +27,7 @@ public interface Railway extends Serializable {
      * @param name name of the line that should be removed
      * @throws LineNotExistsException if there is no line with the given name
      */
-    void removeLine(String name) throws LineNotExistsException;
+    void removeLine(String name) throws LineNotExistsException, ScheduleNotExistsException;
 
     /**
      * Returns an iterator of stations of a given {@link Line} line by its name

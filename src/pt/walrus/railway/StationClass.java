@@ -26,6 +26,7 @@ public class StationClass implements Station {
      */
     private final Dictionary<ArrivalEntry, Train> passingTrains;
 
+
     /**
      * Constructs an object {@link StationClass} with the given station name
      *
@@ -51,18 +52,6 @@ public class StationClass implements Station {
     public void removeLine(Line line) {
         // O log n
         lines.remove(line);
-        Iterator<Entry<ScheduleEntry, Schedule>> it = line.getSchedules();
-        //TODO: THIS METHOD SHOULD BE CHANGED
-        while (it.hasNext()) {
-            Schedule s = it.next().getValue();
-            Iterator<ScheduleEntry> it2 = s.getEntries();
-            while (it2.hasNext()) {
-                ScheduleEntry se = it2.next();
-                if (se.getStation().equals(this)) {
-                    passingTrains.remove(new ArrivalEntry(se.getTime(), s.getTrainNumber()));
-                }
-            }
-        }
     }
 
     @Override

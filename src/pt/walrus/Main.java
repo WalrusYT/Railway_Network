@@ -113,7 +113,7 @@ public class Main {
         try {
             rw.removeLine(name);
             System.out.println(Feedback.LINE_REMOVED);
-        } catch (LineNotExistsException e) {
+        } catch (LineNotExistsException | ScheduleNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
