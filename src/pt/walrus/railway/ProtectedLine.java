@@ -75,12 +75,19 @@ public interface ProtectedLine extends Serializable {
     Iterator<Schedule> getSchedulesByStation(Station station);
 
     /**
-     * Gets direction by departure.
+     * Returns direction of the schedule by the departure station
      *
-     * @param station the station
-     * @return the direction by departure
+     * @param station the station of depart
+     * @return the direction of the train
      */
     Direction getDirectionByDeparture(Station station);
 
-
+    /**
+     * Checks if the given Schedule is valid for the insertion
+     *
+     * @param schedule the schedule that should be checked
+     * @return <code>true</code> if the schedule can be safely added to the line
+     * and <code>false</code> otherwise.
+     */
+    boolean isScheduleValid(Schedule schedule);
 }

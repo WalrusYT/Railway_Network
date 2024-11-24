@@ -24,16 +24,17 @@ public interface ProtectedStation extends Serializable {
     boolean hasLines();
 
     /**
-     * Gets protected lines.
+     * Returns the iterator of {@link ProtectedLine} lines of the station
+     * The object is protected from changing from the Main class
      *
-     * @return the protected lines
+     * @return the protected lines collection iterator
      */
     Iterator<ProtectedLine> getProtectedLines();
 
     /**
-     * Gets passing trains.
+     * Returns an iterator of passing the station trains
      *
-     * @return the passing trains
+     * @return the passing the station trains
      */
     Iterator<Entry<StationClass.ArrivalEntry, Train>> getPassingTrains();
 

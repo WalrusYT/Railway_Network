@@ -38,10 +38,11 @@ public interface Railway extends Serializable {
     Iterator<ProtectedStation> listStations (String name);
 
     /**
-     * List lines iterator.
+     * Iterator of {@link ProtectedLine} to show the all lines of the station by its name
+     * The instance of {@link ProtectedLine} does not allow to change an object from Main
      *
-     * @param name the name
-     * @return the iterator
+     * @param name the name of the station
+     * @return the iterator of the lines that have this station
      */
     Iterator<ProtectedLine> listLines (String name);
 
@@ -53,9 +54,12 @@ public interface Railway extends Serializable {
      * @param number  number of the train
      * @param entries pairs of (Station name , time )
      * @throws LineNotExistsException      if there is no line with the given name
-     * @throws InvalidScheduleException    if the first station indicated is not terminal, or if there is an overlap with another schedule or the times of arriving are not strictly increasing
+     * @throws InvalidScheduleException    if the first station indicated is not terminal,
+     * or if there is an overlap with another schedule or the times
+     * of arriving are not strictly increasing
      * @throws DepartureNotExistsException if there is no {@link Station} station with the given name
-     * @throws ScheduleNotExistsException  if there is no such {@link Schedule} schedule with in the given line
+     * @throws ScheduleNotExistsException  if there is no such {@link Schedule}
+     * schedule with in the given line
      */
     void insertSchedule(String name, int number, List<Entry<String, Time>> entries)
             throws LineNotExistsException, InvalidScheduleException,
@@ -79,9 +83,11 @@ public interface Railway extends Serializable {
      *
      * @param name             name of the {@link Line} line
      * @param departureStation station of the departure of the {@link Schedule} schedule
-     * @return an {@link Iterator<Schedule>} iterator to iterate through the {@link Schedule} schedules
+     * @return an {@link Iterator<Schedule>} iterator to iterate through
+     * the {@link Schedule} schedules
      * @throws LineNotExistsException      if there is no {@link Line} line with the given name
-     * @throws DepartureNotExistsException if there is no {@link Station} station with the given name or if it's not a departure station
+     * @throws DepartureNotExistsException if there is no {@link Station} station
+     * with the given name or if it's not a departure station
      */
     Iterator<Schedule> listSchedules (String name, String departureStation)
             throws LineNotExistsException, DepartureNotExistsException;
@@ -96,12 +102,18 @@ public interface Railway extends Serializable {
      * @param arrivalTime        {@link Time} time of the preferable arrival
      * @return the best timetable that suits to the preferences
      * @throws LineNotExistsException      if there is no {@link Line} line with the given name
-     * @throws ImpossibleRouteException    if the given route is impossible (e.g. the departure time is less that an arriving one)
+     * @throws ImpossibleRouteException    if the given route is impossible
+     * (e.g. the departure time is less that an arriving one)
      * @throws DepartureNotExistsException if there is no {@link Station} with the given name
      */
     Schedule bestTimetable(String name, String departureStation,
                            String destinationStation, Time arrivalTime)
             throws LineNotExistsException, ImpossibleRouteException, DepartureNotExistsException;
 
+    /**
+     * Returns an iterator of trains collection that passes the given station by its name
+     * @param name name of the station
+     * @return the iterator of trains collection
+     */
     Iterator<Entry<StationClass.ArrivalEntry, Train>> passingTrainsOfStation(String name);
 }

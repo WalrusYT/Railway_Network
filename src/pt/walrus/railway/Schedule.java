@@ -10,10 +10,14 @@ public interface Schedule extends Serializable {
     /**
      * Returns a train number
      *
-     * @return a {@link int} number of the train
+     * @return a number of the train of the schedule
      */
     int getTrainNumber();
 
+    /**
+     * Returns a train of the schedule
+     * @return a {@link Train} number of the train
+     */
     Train getTrain();
 
     /**
@@ -48,17 +52,18 @@ public interface Schedule extends Serializable {
     Time getArrivalForRoute(Station departure, Station destination);
 
     /**
-     * Is overlapping boolean.
+     * Checks if the given schedule overlaps with this schedule
      *
-     * @param schedule the schedule
-     * @return the boolean
+     * @param schedule the schedule that should be checked for overlapping
+     * @return <code>true</code> is the schedule are overlapping
+     * and <code>false</code> otherwise.
      */
     boolean isOverlapping(Schedule schedule);
 
     /**
-     * Gets direction.
+     * Returns a direction of the schedule
      *
-     * @return the direction
+     * @return a direction of the schedule
      */
     Direction getDirection();
 }

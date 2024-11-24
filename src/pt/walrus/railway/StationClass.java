@@ -1,7 +1,6 @@
 package pt.walrus.railway;
 
 import pt.walrus.dataStructures.*;
-import pt.walrus.railway.ScheduleClass.ScheduleEntry;
 
 import java.io.Serializable;
 

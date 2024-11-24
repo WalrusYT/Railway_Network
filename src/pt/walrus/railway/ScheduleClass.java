@@ -92,7 +92,7 @@ public class ScheduleClass implements Schedule {
     public Direction getDirection() {
         return train.getDirection();
     }
-
+    @Override
     public Train getTrain (){
         return train;
     }

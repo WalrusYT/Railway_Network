@@ -1,16 +1,13 @@
 package pt.walrus.railway;
 
-import pt.walrus.dataStructures.Entry;
-import pt.walrus.dataStructures.Iterator;
-
 /**
  * This interface represents a station in the pt.walrus.Railway Network.
  */
 public interface Station extends ProtectedStation {
     /**
-     * Returns a name of the station
+     * Adds a line to the station
      *
-     * @param line the line
+     * @param line the line that should be added
      */
     void addLine(Line line);
 
@@ -22,17 +19,17 @@ public interface Station extends ProtectedStation {
     void removeLine(Line line);
 
     /**
-     * Add passing train.
+     * Adds a train that passes the station with the given time
      *
-     * @param time  the time
-     * @param train the train
+     * @param time  the time of passing the station
+     * @param train the train that passes the station
      */
     void addPassingTrain(Time time, Train train);
 
     /**
-     * Remove passing train.
+     * Removes a train that passes the station with the given time
      *
-     * @param time the time
+     * @param time the time of passing the station
      */
     void removePassingTrain(Train train, Time time);
 }

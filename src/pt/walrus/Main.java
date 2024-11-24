@@ -135,6 +135,11 @@ public class Main {
         }
     }
 
+    /**
+     * Lists the lines of a given station, if it exists. The list in lexicographic order.
+     * @param in Scanner object to read user input
+     * @param rw pt.walrus.Railway object from that we want to be informed about stations
+     */
     public static void listLines (Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         Iterator<ProtectedLine> lines = rw.listLines(name);
@@ -253,6 +258,11 @@ public class Main {
         }
     }
 
+    /**
+     *  Lists all trains that pass by the given station in increasing order of departure time.
+     * @param in Scanner object to read user input
+     * @param rw pt.walrus.Railway object to that we want to list the schedules from
+     */
     public static void listTrains(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
         Iterator<Entry<StationClass.ArrivalEntry, Train>> trains = rw.passingTrainsOfStation(name);
@@ -262,7 +272,8 @@ public class Main {
         }
         while (trains.hasNext()) {
             Entry<StationClass.ArrivalEntry, Train> train = trains.next();
-            System.out.printf("Comboio %d %s%n", train.getKey().getTrainNumber(), timeToString(train.getKey().getTime()));
+            System.out.printf(Feedback.TRAIN, train.getKey().getTrainNumber(),
+                    timeToString(train.getKey().getTime()));
         }
     }
 
@@ -290,7 +301,8 @@ public class Main {
                 System.out.printf("%s %s%n", entry.getStation().getName(),
                         timeToString(entry.getTime()));
             }
-        } catch (LineNotExistsException | ImpossibleRouteException | DepartureNotExistsException e) {
+        } catch (LineNotExistsException | ImpossibleRouteException |
+                 DepartureNotExistsException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -301,7 +313,8 @@ public class Main {
     public static class Commands {
         public static final String
                 INSERT_LINE = "il", REMOVE_LINE = "rl", LINE_STATIONS = "cl", STATION_LINES = "ce",
-                INSERT_SCHEDULE = "ih", REMOVE_SCHEDULE = "rh", LIST_SCHEDULES = "ch", LIST_TRAINS = "lc",
+                INSERT_SCHEDULE = "ih", REMOVE_SCHEDULE = "rh", LIST_SCHEDULES = "ch",
+                LIST_TRAINS = "lc",
                 BEST_TIMETABLE = "mh", EXIT = "ta";
     }
     /**
@@ -316,6 +329,7 @@ public class Main {
                 INVALID_SCHEDULE = "Horário inválido.",
                 INEXISTENT_STATION = "Estação inexistente.",
                 INEXISTENT_LINE = "Linha inexistente.",
+                TRAIN = "Comboio %d %s%n",
                 SCHEDULE_REMOVED = "Remoção de horário com sucesso.";
     }
 }

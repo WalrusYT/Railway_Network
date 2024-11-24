@@ -24,11 +24,5 @@ public interface Line extends ProtectedLine, Comparable<Line> {
      */
     void removeSchedule(ScheduleClass.ScheduleEntry entry) throws ScheduleNotExistsException;
 
-    /**
-     * Is schedule valid boolean.
-     *
-     * @param schedule the schedule
-     * @return the boolean
-     */
-    boolean isScheduleValid(Schedule schedule);
+
 }
