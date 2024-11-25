@@ -86,12 +86,10 @@ public class AVLNode<E> extends BSTNode<E>
         int leftHeight = getHeight((AVLNode<E>) left);
         int rightHeight = getHeight((AVLNode<E>) right);
 
-        if (leftHeight > rightHeight) {
+        if (leftHeight >= rightHeight) {
             return (AVLNode<E>) left;
-        } else if (rightHeight > leftHeight) {
-            return (AVLNode<E>) right;
         } else {
-            return null;
+            return (AVLNode<E>) right;
         }
     }
 }

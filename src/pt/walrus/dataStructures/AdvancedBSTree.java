@@ -20,10 +20,17 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         //  a single rotation modifies a constant number of parent-child relationships,
         //  it can be implemented in O(1) time
         if (y.getRight() == null) return;
-        BSTNode<Entry<K,V>> x = y.getRight();
-        x.setLeft(y);
-        x.setParent(y.getParent());
-        y.setParent(x);
+        BSTNode<Entry<K,V>> x = y.getRight(); // right child of the rotation root
+        BSTNode<Entry<K,V>> z = y.getParent(); // parent of the rotation root
+        boolean isLeftChild = z.getLeft() == y;
+        x.setLeft(y); // set the left child of the rotation root
+        x.setParent(z); // set the new parent of the rotation root
+        y.setParent(x); // set the rotation root as a parent of the left child
+        if (isLeftChild) { // update the parent of the rotation root child
+            z.setLeft(x);
+        } else {
+            z.setRight(x);
+        }
     }
 
     /**
@@ -39,9 +46,17 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         //  it can be implemented in O(1) time
         if (y.getLeft() == null) return;
         BSTNode<Entry<K,V>> x = y.getLeft();
-        y.setRight(x);
+        BSTNode<Entry<K,V>> z = y.getParent();
+        boolean isLeftChild = z.getLeft() == y;
+        x.setRight(y);
         x.setParent(y.getParent());
         y.setParent(x);
+        if (isLeftChild) { // update the parent of the rotation root child
+            z.setLeft(x);
+        } else {
+            z.setRight(x);
+        }
+
     }
 
     /**
@@ -67,22 +82,25 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         // and is first rotated above its parent Y, and then above what was originally its grandparent Z.
         // In any of the cases, the trinode restructuring is completed with O(1)running time
         //TODO
+        if (x == null) return x;
         BSTNode<Entry<K,V>> y = x.getParent();
+        if (y == null) return x;
         BSTNode<Entry<K,V>> z = y.getParent();
-        BSTNode<Entry<K,V>> res = null;
-        if (z != null && y == z.getLeft() && x == y.getLeft()) {
-            rotateRight(x);
+        if (z == null) return x;
+        BSTNode<Entry<K,V>> res = x;
+        if (y == z.getLeft() && x == y.getLeft()) {
+            rotateRight(z);
+            res = y;
+        } else if (y == z.getRight() && x == y.getRight()) {
+            rotateLeft(z);
+            res = y;
+        } else if (y == z.getRight() && x == y.getLeft()) {
+            rotateRight(y);
+            rotateLeft(z); // ???
             res = x;
-        } else if (z != null && y == z.getRight() && x == y.getRight()) {
-            rotateLeft(x);
-            res = x;
-        } else if (z != null && y == z.getRight() && x == y.getLeft()) {
-            rotateRight(x);
-            rotateLeft(x);
-            res = x;
-        } else if (z != null && y == z.getLeft() && x == y.getRight()) {
-            rotateLeft(x);
-            rotateRight(x);
+        } else if (y == z.getLeft() && x == y.getRight()) {
+            rotateLeft(y);
+            rotateRight(z); // ???
             res = x;
         }
         return res;

@@ -1,9 +1,4 @@
-package dataStructures;
-
-import pt.walrus.dataStructures.AVLNode;
-import pt.walrus.dataStructures.AdvancedBSTree;
-import pt.walrus.dataStructures.Entry;
-import pt.walrus.dataStructures.OrderedDictionary;
+package pt.walrus.dataStructures;
 
 /**
  * AVL tree implementation
@@ -48,13 +43,13 @@ public class AVLTree<K extends Comparable<K>, V>
                 AVLNode<Entry<K,V>> xPos = zPos.tallerChild().tallerChild();
 
                 zPos = (AVLNode<Entry<K, V>>) restructure(xPos); // tri-node restructure (from parent class)
-                ((AVLNode<Entry<K, V>>) zPos.getLeft()).setHeight();  // recompute heights
-                ((AVLNode<Entry<K, V>>) zPos.getRight()).setHeight();
+
+                if (zPos.getLeft() != null) ((AVLNode<Entry<K, V>>) zPos.getLeft()).setHeight();  // recompute heights
+                if (zPos.getRight() != null) ((AVLNode<Entry<K, V>>) zPos.getRight()).setHeight();
                 zPos.setHeight();
             }
         }
     }
-
 
     @Override
     public V insert( K key, V value )
@@ -62,23 +57,23 @@ public class AVLTree<K extends Comparable<K>, V>
         //TODO
         V valueToReturn=null;
         AVLNode<Entry<K,V>> newNode=null; // node where the new entry is being inserted (if find(key)==null)
+        AVLNode<Entry<K,V>> node = (AVLNode<Entry<K,V>>) findNode(key);
         // insert the new Entry (if find(key)==null)
+        Entry<K,V> newEntry = new EntryClass<>(key, value);
+        if (node == null || !node.getElement().getKey().equals(key)) {
+            // means that we need to insert a new entry
+            newNode = new AVLNode<>(newEntry);
+            this.linkSubtreeInsert(newNode, node);
+            currentSize ++;
+        } else {
+            valueToReturn = node.getElement().getValue();
+            node.setElement(newEntry);
+        }
         // or set the new value (if find(key)!=null)
         if(newNode != null) //(if find(key)==null)
             rebalance(newNode); // rebalance up from the insertion node
         return valueToReturn;
-
     }
-
-
-
-
-
-
-
-        
-
-               
 
    @Override
     public V remove( K key )
@@ -86,7 +81,21 @@ public class AVLTree<K extends Comparable<K>, V>
          // TODO
          V valueToReturn=null;
          AVLNode<Entry<K,V>> node=null; // father of node where the key was
-         // removeNode is the BST remove(key)
+         BSTNode<Entry<K, V>> removeNode = this.findNode(key);
+         if (removeNode == null || removeNode.getElement().getKey().compareTo(key) != 0)
+             return null;
+         valueToReturn = removeNode.getElement().getValue();
+         node = (AVLNode<Entry<K, V>>) removeNode.getParent();
+         if (removeNode.getLeft() == null) {
+             this.linkSubtreeRemove(removeNode.getRight(), node, removeNode);
+         } else if (removeNode.getRight() == null) {
+             this.linkSubtreeRemove(removeNode.getLeft(), node, removeNode);
+         } else {
+             AVLNode<Entry<K, V>> minNode = (AVLNode<Entry<K, V>>) this.minNode(removeNode.getRight());
+             removeNode.setElement( minNode.getElement() );
+             this.linkSubtreeRemove(minNode.getRight(), minNode.getParent(), minNode);
+         }
+         currentSize --;
          if(node != null) //(if find(key)==null)
              rebalance(node); // rebalance up from the node
          return valueToReturn;

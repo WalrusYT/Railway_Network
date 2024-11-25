@@ -240,7 +240,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
      * @return  key-order iterator of the entries in the dictionary
      */
     public Iterator<Entry<K, V>> iterator() {
-        return new BSTKeyOrderIterator<>(root);
+        return new BSTBreadthFirstIterator<>(root);
     }
 
 //    @Serial

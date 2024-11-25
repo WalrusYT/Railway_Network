@@ -17,7 +17,8 @@ public interface Railway extends Serializable {
      *
      * @param name     name of the line
      * @param stations list of the stations of the line
-     * @throws LineAlreadyExistsException if there is a line with the same name in the system already.
+     * @throws LineAlreadyExistsException if there is a line
+     * with the same name in the system already.
      */
     void insertLine(String name, List<String> stations) throws LineAlreadyExistsException;
 
@@ -57,7 +58,8 @@ public interface Railway extends Serializable {
      * @throws InvalidScheduleException    if the first station indicated is not terminal,
      * or if there is an overlap with another schedule or the times
      * of arriving are not strictly increasing
-     * @throws DepartureNotExistsException if there is no {@link Station} station with the given name
+     * @throws DepartureNotExistsException
+     * if there is no {@link Station} station with the given name
      * @throws ScheduleNotExistsException  if there is no such {@link Schedule}
      * schedule with in the given line
      */
