@@ -106,8 +106,8 @@ public class StationClass implements Station {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StationClass that = (StationClass) o;
-        return name.equalsIgnoreCase(that.name);
+        Station that = (Station) o;
+        return name.equalsIgnoreCase(that.getName());
     }
 
     /**

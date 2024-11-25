@@ -134,7 +134,7 @@ public class ScheduleClass implements Schedule {
          */
         private final Time time;
         /**
-        * Constacts an object {@link ScheduleEntry} with the given station name and time
+        * Constructs an object {@link ScheduleEntry} with the given station name and time
         * @param station name of the station
         * @param time time of departure
         */

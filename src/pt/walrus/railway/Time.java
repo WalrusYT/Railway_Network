@@ -44,14 +44,14 @@ public class Time implements Comparable<Time>, Serializable {
         return h == that.h && m == that.m;
     }
     /**
-     * Returns hours
+     * Returns hours of the Time
      * @return hour
      */
     public int getHours() {
         return this.h;
     }
     /**
-     * Returns minutes
+     * Returns minutes of the Time
      * @return minutes
      */
     public int getMinutes() {
