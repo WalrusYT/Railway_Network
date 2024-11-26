@@ -28,19 +28,21 @@ public class AVLTree<K extends Comparable<K>, V>
      * the rebalance is completed with O(log n) running time
      */
     void rebalance(AVLNode<Entry<K,V>> zPos) {
-        if(zPos.isInternal())
+        if (zPos.isInternal())
             zPos.setHeight();
         // Improve if possible...
+        zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
         while (zPos!=null) {  // traverse up the tree towards the root
-            zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
-            if (zPos == null) //reached the root, stop.
-               break;
             zPos.setHeight();
             if (!zPos.isBalanced()) {
                 // perform a trinode restructuring at zPos's tallest grandchild
                 //If yPos (zPos.tallerChild()) denote the child of zPos with greater height.
                 //Finally, let xPos be the child of yPos with greater height
                 AVLNode<Entry<K,V>> xPos = zPos.tallerChild().tallerChild();
+                if (xPos == null) {
+                    zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
+                    continue;
+                }
 
                 zPos = (AVLNode<Entry<K, V>>) restructure(xPos); // tri-node restructure (from parent class)
 
@@ -48,6 +50,7 @@ public class AVLTree<K extends Comparable<K>, V>
                 if (zPos.getRight() != null) ((AVLNode<Entry<K, V>>) zPos.getRight()).setHeight();
                 zPos.setHeight();
             }
+            zPos = (AVLNode<Entry<K, V>>) zPos.getParent();
         }
     }
 

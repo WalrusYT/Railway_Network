@@ -34,7 +34,7 @@ public class StationClass implements Station {
     public StationClass (String name) {
         this.name = name;
         this.lines = new TreeSet<>();
-        this.passingTrains = new BinarySearchTree<>();
+        this.passingTrains = new AVLTree<>();
     }
 
     @Override

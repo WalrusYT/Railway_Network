@@ -22,15 +22,21 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         if (y.getRight() == null) return;
         BSTNode<Entry<K,V>> x = y.getRight(); // right child of the rotation root
         BSTNode<Entry<K,V>> z = y.getParent(); // parent of the rotation root
-        boolean isLeftChild = z.getLeft() == y;
+        if (z == null) {
+            root = x;
+        } else {
+            if (z.getLeft() == y) { // update the parent of the rotation root child
+                z.setLeft(x);
+            } else {
+                z.setRight(x);
+            }
+        }
+        BSTNode<Entry<K,V>> xLeftSubtree = x.getLeft();
         x.setLeft(y); // set the left child of the rotation root
         x.setParent(z); // set the new parent of the rotation root
         y.setParent(x); // set the rotation root as a parent of the left child
-        if (isLeftChild) { // update the parent of the rotation root child
-            z.setLeft(x);
-        } else {
-            z.setRight(x);
-        }
+        y.setRight(xLeftSubtree);
+        if (xLeftSubtree != null) xLeftSubtree.setParent(y);
     }
 
     /**
@@ -47,16 +53,21 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         if (y.getLeft() == null) return;
         BSTNode<Entry<K,V>> x = y.getLeft();
         BSTNode<Entry<K,V>> z = y.getParent();
-        boolean isLeftChild = z.getLeft() == y;
-        x.setRight(y);
-        x.setParent(y.getParent());
-        y.setParent(x);
-        if (isLeftChild) { // update the parent of the rotation root child
-            z.setLeft(x);
+        if (z == null) {
+            root = x;
         } else {
-            z.setRight(x);
+            if (z.getLeft() == y) { // update the parent of the rotation root child
+                z.setLeft(x);
+            } else {
+                z.setRight(x);
+            }
         }
-
+        BSTNode<Entry<K,V>> xRightSubtree = x.getRight();
+        x.setRight(y);
+        x.setParent(z);
+        y.setParent(x);
+        y.setLeft(xRightSubtree);
+        if (xRightSubtree != null) xRightSubtree.setParent(y);
     }
 
     /**
@@ -87,24 +98,25 @@ public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinaryS
         if (y == null) return x;
         BSTNode<Entry<K,V>> z = y.getParent();
         if (z == null) return x;
-        BSTNode<Entry<K,V>> res = x;
         if (y == z.getLeft() && x == y.getLeft()) {
             rotateRight(z);
-            res = y;
-        } else if (y == z.getRight() && x == y.getRight()) {
-            rotateLeft(z);
-            res = y;
-        } else if (y == z.getRight() && x == y.getLeft()) {
-            rotateRight(y);
-            rotateLeft(z); // ???
-            res = x;
-        } else if (y == z.getLeft() && x == y.getRight()) {
-            rotateLeft(y);
-            rotateRight(z); // ???
-            res = x;
+            return y;
         }
-        return res;
+        if (y == z.getRight() && x == y.getRight()) {
+            rotateLeft(z);
+            return y;
+        }
+        if (y == z.getRight() && x == y.getLeft()) {
+            rotateRight(y);
+            rotateLeft(z);
+            return x;
+        }
+        if (y == z.getLeft() && x == y.getRight()) {
+            rotateLeft(y);
+            rotateRight(z);
+            return x;
+        }
+        return x;
     }
-
 }
 

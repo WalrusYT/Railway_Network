@@ -1,13 +1,13 @@
-/**
- * 
- */
 package pt.walrus.dataStructures;
 
 import java.io.Serializable;
 
 /**
- * @author fernanda
+ * Entry interface
+ * @param <K> Generic Key
+ * @param <V> Generic Value
  *
+ * @author fernanda
  */
 public interface Entry<K, V> extends Serializable {
 	// Returns the key in the entry.

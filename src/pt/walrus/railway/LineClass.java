@@ -34,7 +34,7 @@ public class LineClass implements Line {
     public LineClass (String name, TwoWayList<Station> stations) {
         this.name = name;
         this.stations = stations;
-        this.schedules = new BinarySearchTree<>();
+        this.schedules = new AVLTree<>();
         for (int i = 0; i < stations.size(); i++) {
             stations.get(i).addLine(this);
         }

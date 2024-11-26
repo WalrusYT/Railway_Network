@@ -52,31 +52,6 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
             return node.getElement().getValue();
     }
 
-    /*
-    **
-     * Returns the node whose key is the specified key;
-     * or null if no such node exists.        
-     *                         
-     * @param node where the search starts 
-     * @param key to be found
-     * @return the found node, when the search is successful
-     *
-    BSTNode<Entry<K,V>> findNode( BSTNode<Entry<K,V>> node, K key )
-    {                                                                   
-        if ( node == null )
-            return null;
-        else
-        {
-            int compResult = key.compareTo( node.getElement().getKey() );
-            if ( compResult == 0 )
-                return node;                                         
-            else if ( compResult < 0 )
-                return this.findNode(node.getLeft(), key);
-            else                                                     
-                return this.findNode(node.getRight(), key); 
-        }                 
-    }
-    */
     @Override
     public Entry<K, V> minEntry() throws EmptyDictionaryException {
         if (this.isEmpty())
@@ -240,33 +215,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
      * @return  key-order iterator of the entries in the dictionary
      */
     public Iterator<Entry<K, V>> iterator() {
-        return new BSTBreadthFirstIterator<>(root);
+        return new BSTKeyOrderIterator<>(root);
     }
-
-//    @Serial
-//    private void writeObject(ObjectOutputStream out) throws IOException {
-//        out.defaultWriteObject();
-//        out.writeInt(this.currentSize);
-//        Iterator<Entry<K, V>> iterator = this.iterator();
-//        while (iterator.hasNext()) {
-//            Entry<K, V> entry = iterator.next();
-//            out.writeObject(entry.getKey());
-//            out.writeObject(entry.getValue());
-//        }
-//    }
-//
-//    @Serial
-//    @SuppressWarnings("unchecked")
-//    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-//        in.defaultReadObject();
-//        this.root = null;
-//        this.currentSize = 0;
-//        int size = in.readInt();
-//        for (int i = 0; i < size; i++) {
-//            K key = (K) in.readObject();
-//            V value = (V) in.readObject();
-//            this.insert(key, value);
-//        }
-//    }
 }
 

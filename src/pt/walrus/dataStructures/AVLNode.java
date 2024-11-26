@@ -25,8 +25,8 @@ public class AVLNode<E> extends BSTNode<E>
      *
      * @param element element stored in the node
 
-     * @param left    sub-tree of this node
-     * @param right   sub-tree of this node
+     * @param left    subtree of this node
+     * @param right   subtree of this node
      */
     public AVLNode( E element, AVLNode<E> parent,AVLNode<E> left, AVLNode<E> right )
     {                                                                
@@ -75,7 +75,7 @@ public class AVLNode<E> extends BSTNode<E>
      * @return the recomputed height.
      */
     public int setHeight() {
-        height= 1 + Math.max(getHeight((AVLNode<E>)left),getHeight((AVLNode<E>)right));
+        height = 1 + Math.max(getHeight((AVLNode<E>)left),getHeight((AVLNode<E>)right));
         return height;
     }
 

@@ -39,10 +39,10 @@ public class BSTNode<E> implements Serializable
     /**
      * Constructor for BST nodes
      *
-     * @param elem   the elem
-     * @param parent the parent
-     * @param left   the left
-     * @param right  the right
+     * @param elem   the element of the node
+     * @param parent the parent of the node
+     * @param left   the left child of the node
+     * @param right  the right child of the node
      */
     public BSTNode( E elem, BSTNode<E> parent, BSTNode<E> left, BSTNode<E> right )
     {                                                                
@@ -53,9 +53,9 @@ public class BSTNode<E> implements Serializable
     }
 
     /**
-     * Instantiates a new Bst node.
+     * Initializes a new Binary Search Node without links
      *
-     * @param elem the elem
+     * @param elem the element of the node
      */
     public BSTNode(E elem) {
         this(elem,null,null,null);
@@ -104,56 +104,47 @@ public class BSTNode<E> implements Serializable
     }
 
     /**
-     * Is internal boolean.
+     * Determines whether this node has any children
      *
-     * @return the boolean
+     * @return true, if either left or right child isn't null, false otherwise
      */
     public boolean isInternal() {
         return left != null || right != null;
     }
 
     /**
-     * Sets left.
+     * Sets the left child with the given node
      *
-     * @param left the left
+     * @param left the node that should be a left child of the node
      */
     public void setLeft(BSTNode<E> left) {
         this.left = left;
     }
 
     /**
-     * Sets right.
+     * Sets the right child with the given node
      *
-     * @param right the right
+     * @param right the node that should be a right child of the node
      */
     public void setRight(BSTNode<E> right) {
         this.right = right;
     }
 
     /**
-     * Sets element.
+     * Sets element of the node
      *
-     * @param element the element
+     * @param element the element that should be stored in the node
      */
     public void setElement(E element) {
         this.element = element;
     }
 
     /**
-     * Sets parent.
+     * Sets parent of the node with the given parent node
      *
-     * @param parent the parent
+     * @param parent the node of the parent
      */
     public void setParent(BSTNode<E> parent) {
         this.parent = parent;
-    }
-
-    /**
-     * Gets entry.
-     *
-     * @return the entry
-     */
-    public E getEntry() {
-        return getElement();
     }
 }

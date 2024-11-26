@@ -214,11 +214,11 @@ public class AVLTreeTests {
         tree.insert("e", "smth");
         tree.insert("j", "smth");
         tree.insert("i", "smth");
-//        tree.insert("h", "smth");
-//        tree.insert("a", "smth");
-//        tree.insert("k", "smth");
-//        tree.insert("c", "smth");
-//        tree.insert("b", "smth");
+        tree.insert("h", "smth");
+        tree.insert("a", "smth");
+        tree.insert("k", "smth");
+        tree.insert("c", "smth");
+        tree.insert("b", "smth");
         Iterator<Entry<String, String>> it = tree.iterator();
         while (it.hasNext()) {
             Entry<String, String> entry = it.next();

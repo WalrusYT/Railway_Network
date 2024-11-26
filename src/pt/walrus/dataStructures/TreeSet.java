@@ -16,7 +16,7 @@ public class TreeSet<T extends Comparable<T>> implements Set<T> {
     private final OrderedDictionary<T, T> dict;
 
     public TreeSet() {
-        this.dict = new BinarySearchTree<>();
+        this.dict = new AVLTree<>();
     }
 
     @Override

@@ -1,25 +1,26 @@
 package pt.walrus.dataStructures;
 
 /**
- * The type Bst breadth first iterator.
+ * The iterator through the binary search tree
+ * traversing the nodes in the order of children from left to right
  *
- * @param <K> the type parameter
- * @param <V> the type parameter
+ * @param <K> Generic type Key
+ * @param <V> Generic type Value
  */
 public class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
     /**
-     * The Root.
+     * Root of the binary search tree
      */
     protected BSTNode<Entry<K,V>> root;
     /**
-     * The Q.
+     * Auxiliary queue to store nodes
      */
     protected Queue<BSTNode<Entry<K,V>>> q;
 
     /**
-     * Instantiates a new Bst breadth first iterator.
+     * Constructs a new iterator through the binary search tree
      *
-     * @param root the root
+     * @param root the root of the binary search tree
      */
     BSTBreadthFirstIterator(BSTNode<Entry<K,V>> root){
         this.root=root;
