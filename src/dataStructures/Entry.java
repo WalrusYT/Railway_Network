@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @author fernanda
  */
-public interface Entry<K, V> extends Serializable {
+public interface Entry<K extends Serializable, V extends Serializable> extends Serializable {
 	// Returns the key in the entry.
 	K getKey( );
 	 

@@ -1,5 +1,8 @@
 package dataStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * AVL tree implementation
  * 
@@ -9,10 +12,14 @@ package dataStructures;
  * @param <K> Generic type Key, must extend comparable
  * @param <V> Generic type Value 
  */
-public class AVLTree<K extends Comparable<K>, V> 
+public class AVLTree<K extends Comparable<K> & Serializable, V extends Serializable>
     extends AdvancedBSTree<K,V> implements OrderedDictionary<K,V>
-{                                                                   
-
+{
+    /**
+     * Serial Version UID of the Class
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
     AVLTree(AVLNode<Entry<K,V>> node) {
         root = node;
     }

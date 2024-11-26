@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.io.Serializable;
+
 /**
  * Hash table implementation
  * @author AED  Team
@@ -8,7 +10,8 @@ package dataStructures;
  * @param <V> Generic Value 
  */
 
-public abstract class HashTable<K,V> implements Dictionary<K,V>
+public abstract class HashTable<K extends Serializable, V extends Serializable>
+        implements Dictionary<K,V>
 { 
 	/**
 	 * Serial Version UID of the Class.

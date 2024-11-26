@@ -13,14 +13,14 @@ import java.io.Serializable;
  * @param <E> Generic Element
  * 
  */
-public interface Stack<E> extends Serializable
+public interface Stack<E extends Serializable> extends Serializable
 {
 
     /**
      *  Returns true iff the stack contains no elements.
      * @return true iff the stack contains no elements, false otherwise
      */
-    public boolean isEmpty( );
+    boolean isEmpty( );
 
     /**
      *  Returns the number of elements in the stack.

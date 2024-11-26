@@ -1,5 +1,8 @@
 package dataStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Advanced BSTree Data Type implementation
  * @author AED team
@@ -7,7 +10,13 @@ package dataStructures;
  * @param <K> Generic type Key, must extend comparable
  * @param <V> Generic type Value 
  */
-public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinarySearchTree<K,V> {
+public abstract class AdvancedBSTree<K extends Comparable<K> & Serializable, V extends Serializable>
+        extends BinarySearchTree<K,V> {
+    /**
+     * Serial Version UID of the Class
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
     /**
      * Performs a single left rotation rooted at Y node.
      * Node X was a right  child of Y before the rotation,

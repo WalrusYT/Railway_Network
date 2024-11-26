@@ -1,6 +1,8 @@
 package dataStructures;
 
 import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A custom implementation of a dynamically resizing array-based list.
  * This class implements the {@link List} interface and supports common list operations,
@@ -8,7 +10,7 @@ import java.io.Serial;
  *
  * @param <E> the type of elements held in this list
  */
-public class MyArrayList<E> implements List<E> {
+public class MyArrayList<E extends Serializable> implements List<E>, Serializable {
     /**
      * Serial Version UID of the Class
      */

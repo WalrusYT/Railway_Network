@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 
  */
 
-public interface List<E> extends Serializable
+public interface List<E extends Serializable> extends Serializable
 {
 
     /**

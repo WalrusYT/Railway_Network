@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.io.Serializable;
-
 /**
  * Iterator Abstract Data Type 
  * Includes description of general methods for one way iterator.
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @param <E> Generic Element
  * 
  */
-public interface Iterator<E> extends Serializable
+public interface Iterator<E>
 {
 
     /** 

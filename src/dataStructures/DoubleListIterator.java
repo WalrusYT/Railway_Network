@@ -1,6 +1,7 @@
 package dataStructures;
 
 import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Implementation of Two Way Iterator for DLList 
@@ -9,7 +10,7 @@ import java.io.Serial;
  * @param <E> Generic Element
  * 
  */
-class DoubleListIterator<E> implements TwoWayIterator<E>
+class DoubleListIterator<E extends Serializable> implements TwoWayIterator<E>
 {
 
 	/**

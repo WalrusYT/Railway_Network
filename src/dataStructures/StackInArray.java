@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.io.Serializable;
+
 /**
  * Stack Array Implementation 
  * @author AED  Team
@@ -7,7 +9,7 @@ package dataStructures;
  * @param <E> Generic Element
  * 
  */
-public class StackInArray<E> implements Stack<E>
+public class StackInArray<E extends Serializable> implements Stack<E>
 {
 
 	/**

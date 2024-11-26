@@ -1,5 +1,8 @@
 package dataStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Doubly linked list Implementation 
  * @author AED  Team
@@ -7,13 +10,14 @@ package dataStructures;
  * @param <E> Generic Element
  * 
  */
-public class DoubleList<E> implements TwoWayList<E>
+public class DoubleList<E extends Serializable> implements TwoWayList<E>
 {   
 
 	/**
 	 * Serial Version UID of the Class
 	 */
-    static final long serialVersionUID = 0L;
+    @Serial
+    private static final long serialVersionUID = 0L;
     /**
      *  Node at the head of the list.
      */

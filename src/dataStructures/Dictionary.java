@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @param <V> Generic Value 
  */
 
-public interface Dictionary<K,V> extends Serializable
+public interface Dictionary<K extends Serializable, V extends Serializable> extends Serializable
 {                                                                   
 
     /**

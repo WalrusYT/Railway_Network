@@ -1,5 +1,6 @@
 package dataStructures;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -9,12 +10,13 @@ import java.io.Serializable;
  * @author AED team
  * @version 1.0
  */
-public class BSTNode<E> implements Serializable
+public class BSTNode<E extends Serializable> implements Serializable
 {
 
     /**
      * Serializable class a version number
      */
+    @Serial
     private static final long serialVersionUID = 0L;
     /**
      * Element stored in the node.

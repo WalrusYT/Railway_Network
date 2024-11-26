@@ -9,7 +9,8 @@ import java.io.Serializable;
  * @param <K> the type of keys maintained by this dictionary
  * @param <V> the type of values associated with keys
  */
-public class OrderedDoubleList <K, V> implements Dictionary<K, V>, Serializable {
+public class OrderedDoubleList<K extends Serializable, V extends Serializable>
+        implements Dictionary<K, V>, Serializable {
     /**
      * Serial Version UID of the Class
      */

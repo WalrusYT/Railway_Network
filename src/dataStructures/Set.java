@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @param <T> the type parameter
  */
-public interface Set<T> extends Serializable {
+public interface Set<T extends Serializable> extends Serializable {
     /**
      * Adds an element to the set
      *

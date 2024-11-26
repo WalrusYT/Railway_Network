@@ -1,4 +1,8 @@
 package dataStructures;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A queue implementation that can invert the order in which elements are added and removed.
  * This class extends {@link QueueInList} and implements the {@link InvertibleQueue} interface.
@@ -6,7 +10,14 @@ package dataStructures;
  *
  * @param <E> the type of elements held in this queue
  */
-public class InvertibleQueueClass<E> extends QueueInList<E> implements InvertibleQueue<E>  {
+public class InvertibleQueueClass<E extends Serializable> extends QueueInList<E>
+        implements InvertibleQueue<E>  {
+    /**
+     * Serial Version UID of the Class
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
     private boolean isInverted;
     /**
      * Constructs an empty {@code InvertibleQueueClass}.

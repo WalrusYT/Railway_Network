@@ -2,6 +2,7 @@ package railway;
 
 import dataStructures.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -110,10 +111,20 @@ public class StationClass implements Station {
         return name.equalsIgnoreCase(that.getName());
     }
 
+    @Override
+    public int hashCode() {
+        return name.toLowerCase().hashCode();
+    }
+
     /**
      * The type Arrival entry.
      */
     public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
+        /**
+         * Serializable class a version number
+         */
+        @Serial
+        private static final long serialVersionUID = 0L;
         /**
          * The time of the arrival of the train.
          */

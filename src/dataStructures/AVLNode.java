@@ -1,5 +1,8 @@
 package dataStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * AVL node version of the BSTNode
  * 
@@ -8,11 +11,13 @@ package dataStructures;
  *
  * @param <E> Generic element type
  */
-public class AVLNode<E> extends BSTNode<E>
+public class AVLNode<E extends Serializable> extends BSTNode<E>
 {
-
-
-
+    /**
+     * Serial Version UID of the Class
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
 
     /**
      * Height of the node
@@ -29,12 +34,12 @@ public class AVLNode<E> extends BSTNode<E>
      * @param right   subtree of this node
      */
     public AVLNode( E element, AVLNode<E> parent,AVLNode<E> left, AVLNode<E> right )
-    {                                                                
+    {
         super(element, parent, left, right);
-        height= 1 + Math.max(getHeight(left),getHeight(right));
+        this.height = 1 + Math.max(this.getHeight(left), this.getHeight(right));
     }
 
-    protected int getHeight(AVLNode<E> node) {
+    protected final int getHeight(AVLNode<E> node) {
         if (node==null)
             return 0;
         return node.getHeight();

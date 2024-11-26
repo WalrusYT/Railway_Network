@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.io.Serializable;
+
 /**
  * The iterator through the binary search tree
  * traversing the nodes in the order of children from left to right
@@ -7,7 +9,8 @@ package dataStructures;
  * @param <K> Generic type Key
  * @param <V> Generic type Value
  */
-public class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
+public class BSTBreadthFirstIterator<K extends Serializable,V extends Serializable>
+        implements Iterator<Entry<K,V>> {
     /**
      * Root of the binary search tree
      */

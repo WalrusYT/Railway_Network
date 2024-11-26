@@ -1,14 +1,15 @@
 package dataStructures;
 
+import java.io.Serializable;
+
 /**
  * BinarySearchTree order iterator by keys.
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
  */
-class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
-
-
+class BSTKeyOrderIterator<K extends Serializable, V extends Serializable>
+		implements Iterator<Entry<K,V>> {
 	/**
 	 * The Root of the tree
 	 */

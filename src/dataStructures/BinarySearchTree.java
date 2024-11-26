@@ -1,5 +1,8 @@
 package dataStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * BinarySearchTree implementation
  * @author AED team
@@ -7,11 +10,13 @@ package dataStructures;
  * @param <K> Generic type Key, must extend comparable
  * @param <V> Generic type Value 
  */
-public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDictionary<K, V> {
+public class BinarySearchTree<K extends Comparable<K> & Serializable, V extends Serializable>
+        implements OrderedDictionary<K, V> {
 
     /**
      * Serial Version UID of the Class
      */
+    @Serial
     private static final long serialVersionUID = 0L;
     /**
      * The root of the tree.                                            
