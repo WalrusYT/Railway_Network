@@ -2,7 +2,6 @@ package railway;
 
 import dataStructures.*;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -20,12 +19,13 @@ public class StationClass implements Station {
     /**
      * Lines of the station
      */
-    private final Set<Line> lines;
+    // Marked as transient to fix serialization issues
+    // (see Railway class serialization methods for more info)
+    private final transient Set<Line> lines;
     /**
      * Trains of the station
      */
     private final Dictionary<ArrivalEntry, Train> passingTrains;
-
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -111,19 +111,13 @@ public class StationClass implements Station {
         return name.equalsIgnoreCase(that.getName());
     }
 
-    @Override
-    public int hashCode() {
-        return name.toLowerCase().hashCode();
-    }
-
     /**
      * The type Arrival entry.
      */
     public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
         /**
-         * Serializable class a version number
+         * Serial Version UID of the Class
          */
-        @Serial
         private static final long serialVersionUID = 0L;
         /**
          * The time of the arrival of the train.

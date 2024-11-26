@@ -2,8 +2,6 @@ package railway;
 
 import dataStructures.Iterator;
 import dataStructures.List;
-
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,7 +17,7 @@ public class ScheduleClass implements Schedule {
      */
     private final Train train;
      /**
-     * List of the {@link ScheduleEntry} enties
+     * List of the {@link ScheduleEntry} entries
      */
     private final List<ScheduleEntry> entries;
 
@@ -114,11 +112,6 @@ public class ScheduleClass implements Schedule {
     }
 
     @Override
-    public int hashCode() {
-        return Integer.hashCode(train.getNumber());
-    }
-
-    @Override
     public Station getDepartureStation() {
         return entries.getFirst().getStation();
     }
@@ -131,7 +124,6 @@ public class ScheduleClass implements Schedule {
         /**
         * Serializable class a version number
         */
-        @Serial
         private static final long serialVersionUID = 0L;
         /**
          * Name of the station
@@ -157,6 +149,7 @@ public class ScheduleClass implements Schedule {
         public Station getStation() {
             return station;
         }
+
         /**
          * Returns time of departure
          * @return a {@link Time} time
@@ -170,11 +163,6 @@ public class ScheduleClass implements Schedule {
             if (o == null || getClass() != o.getClass()) return false;
             ScheduleEntry that = (ScheduleEntry) o;
             return time.equals(that.time) && station.equals(that.station);
-        }
-
-        @Override
-        public int hashCode() {
-            return time.hashCode() ^ station.hashCode();
         }
 
         @Override

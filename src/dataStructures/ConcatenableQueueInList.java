@@ -1,8 +1,5 @@
 package dataStructures;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * A queue implementation that supports concatenation of another queue's elements.
  * This class extends {@link QueueInList} and implements the {@link ConcatenableQueue} interface.
@@ -11,12 +8,10 @@ import java.io.Serializable;
  *
  * @param <E> the type of elements held in this queue
  */
-public class ConcatenableQueueInList<E extends Serializable> extends QueueInList<E>
-        implements ConcatenableQueue<E> {
+public class ConcatenableQueueInList<E> extends QueueInList<E> implements ConcatenableQueue<E> {
     /**
      * Serial Version UID of the Class
      */
-    @Serial
     private static final long serialVersionUID = 0L;
     /**
      * Constructs an empty {@code ConcatenableQueueInList}.

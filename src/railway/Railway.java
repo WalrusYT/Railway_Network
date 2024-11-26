@@ -8,7 +8,7 @@ import railway.exceptions.*;
 import java.io.Serializable;
 
 /**
- * This interface represents a top interface of the pt.walrus.Railway
+ * This interface represents a top interface of the Railway
  */
 public interface Railway extends Serializable {
     /**

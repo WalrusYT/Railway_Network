@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Comparator for comparing objects by the different criteria
  * @param <T> type of the object to compare
  */
-public interface Comparator<T extends Serializable> extends Serializable {
+public interface Comparator<T> extends Serializable {
     /**
      * Compares two objects of type T. Returns 1 if o1 > o2, -1 otherwise,
      * and 0 if they are equal.

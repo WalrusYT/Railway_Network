@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.io.Serializable;
-
 /**
  * Separate Chaining Hash table implementation
  * @author AED  Team
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @param <V> Generic Value 
  */
 
-public class SepChainHashTable<K extends Comparable<K> & Serializable, V extends Serializable>
+public class SepChainHashTable<K extends Comparable<K>, V> 
     extends HashTable<K,V> 
 { 
 	/**

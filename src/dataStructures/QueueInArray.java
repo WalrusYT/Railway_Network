@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.io.Serializable;
-
 /**
  * Queue Array Implementation 
  * @author AED  Team
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @param <E> Generic Element
  * 
  */
-public class QueueInArray<E extends Serializable> implements Queue<E>
+public class QueueInArray<E> implements Queue<E>
 {                                     
 
 	/**

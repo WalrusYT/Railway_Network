@@ -1,20 +1,15 @@
 package dataStructures;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * @author AED
  *
  */
-public class EntryClass<K extends Serializable, V extends Serializable>
-		implements Entry<K, V>, Serializable {
+public class EntryClass<K, V> implements Entry<K, V>{
 	protected K key;
 	protected V value;
 	/**
 	 * Serializable class a version number
 	 */
-	@Serial
 	private static final long serialVersionUID = 0L;
 	
 	public EntryClass(K k, V v){

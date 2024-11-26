@@ -1,15 +1,16 @@
 package dataStructures;
 
-import java.io.Serializable;
-
 /**
  * Sep chain hash table iterator.
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
  */
-public class SepChainHashTableIterator<K extends Comparable<K> & Serializable, V extends Serializable>
-        implements Iterator<Entry<K,V>> {
+public class SepChainHashTableIterator<K extends Comparable<K>, V> implements Iterator<Entry<K,V>> {
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
     private final Dictionary<K, V>[] elements;
     private Iterator<Entry<K, V>> iteratorOfBucket;
     private int bucketCounter;

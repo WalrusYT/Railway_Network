@@ -1,21 +1,17 @@
 package dataStructures;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * The type Bst preorder iterator.
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
  */
-public class BSTPreorderIterator<K extends Serializable, V extends Serializable>
-		implements Iterator<Entry<K,V>> {
+public class BSTPreorderIterator<K,V> implements Iterator<Entry<K,V>> {
 	/**
-	 * Serial Version UID of the Class
-	 */
-	@Serial
+ 	* Serial Version UID of the Class
+ 	*/
 	private static final long serialVersionUID = 0L;
+
 	/**
 	 * Root of the binary search tree
 	 */
@@ -51,7 +47,7 @@ public class BSTPreorderIterator<K extends Serializable, V extends Serializable>
 	}
 
 	@Override
-	public final void rewind( ){
+	public void rewind( ){
 		st=new StackInList<>();
 		if (this.root!= null) st.push(this.root);
 	}

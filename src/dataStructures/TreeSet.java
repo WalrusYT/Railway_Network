@@ -1,18 +1,14 @@
 package dataStructures;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * The TreeSet class
  *
  * @param <T> the type parameter
  */
-public class TreeSet<T extends Comparable<T> & Serializable> implements Set<T> {
+public class TreeSet<T extends Comparable<T>> implements Set<T> {
     /**
      * Serial Version UID of the Class
      */
-    @Serial
     private static final long serialVersionUID = 0L;
     /**
      * Set memory

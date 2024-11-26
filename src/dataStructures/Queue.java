@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 
  */
 
-public interface Queue<E extends Serializable> extends Serializable
+public interface Queue<E> extends Serializable
 {
 
     /**

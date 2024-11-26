@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @param <E> Generic Element
  *
  */
-public class DoubleListNode<E extends Serializable> implements Serializable
+public class DoubleListNode<E> implements Serializable
 {
 
     /**

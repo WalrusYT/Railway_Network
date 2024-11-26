@@ -1,8 +1,4 @@
 package dataStructures;
-
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * Queue List Implementation 
  * @author AED  Team
@@ -10,14 +6,13 @@ import java.io.Serializable;
  * @param <E> Generic Element
  * 
  */
-public class QueueInList<E extends Serializable> implements Queue<E>
+public class QueueInList<E> implements Queue<E>
 { 
 
 	/**
 	 * Serial Version UID of the Class
 	 */
-    @Serial
-    private static final long serialVersionUID = 0L;
+    static final long serialVersionUID = 0L;
 
 
     /**

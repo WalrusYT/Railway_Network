@@ -1,7 +1,9 @@
 package dataStructures;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * AVL tree implementation
@@ -12,13 +14,12 @@ import java.io.Serializable;
  * @param <K> Generic type Key, must extend comparable
  * @param <V> Generic type Value 
  */
-public class AVLTree<K extends Comparable<K> & Serializable, V extends Serializable>
+public class AVLTree<K extends Comparable<K>, V> 
     extends AdvancedBSTree<K,V> implements OrderedDictionary<K,V>
 {
     /**
      * Serial Version UID of the Class
      */
-    @Serial
     private static final long serialVersionUID = 0L;
     AVLTree(AVLNode<Entry<K,V>> node) {
         root = node;
@@ -111,17 +112,36 @@ public class AVLTree<K extends Comparable<K> & Serializable, V extends Serializa
          return valueToReturn;
     }
 
+    /*
+    Custom serialization to prevent StackOverflowError during deserialization
+    Simply writes out the size of a tree and its elements into the ObjectOutputStream
+     */
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(this.currentSize);
+        Iterator<Entry<K, V>> iterator = this.iterator();
+        while (iterator.hasNext()) {
+            Entry<K, V> entry = iterator.next();
+            out.writeObject(entry.getKey());
+            out.writeObject(entry.getValue());
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    /*
+    Reads the size of a tree and then reads and inserts that amount of elements into the tree.
+    This does not guarantee the same structure of a tree, but it does preserve all the elements
+    and fixes the deserialization problem
+     */
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        int size = in.readInt();
+        for (int i = 0; i < size; i++) {
+            K key = (K) in.readObject();
+            V value = (V) in.readObject();
+            this.insert(key, value);
+        }
+    }
 }

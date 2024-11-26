@@ -1,21 +1,17 @@
 package dataStructures;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * The type Stack in list.
  *
  * @param <E> the type parameter
  */
-public class StackInList<E extends Serializable> implements Stack<E>
+public class StackInList<E> implements Stack<E>
 {
 
     /**
      * The Serial version uid.
      */
-    @Serial
-    private static final long serialVersionUID = 0L;
+    static final long serialVersionUID = 0L;
 
 
     /**

@@ -13,6 +13,10 @@ public class LineClass implements Line {
      */
     private static final long serialVersionUID = 0L;
     /**
+     * Name of the line
+     */
+    private final String name;
+    /**
      * List of the {@link Station} stations of the line
      */
     private final TwoWayList<Station> stations;
@@ -20,10 +24,6 @@ public class LineClass implements Line {
      * Dictionary of schedules of the line
      */
     private final Dictionary<ScheduleEntry, Schedule> schedules;
-    /**
-     * Name of the line
-     */
-    private final String name;
 
     /**
      * Constructs an object {@link LineClass} with the given name and list of stations
