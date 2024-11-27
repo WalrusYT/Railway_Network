@@ -7,6 +7,10 @@ package pt.walrus.dataStructures;
  * @param <E> the type of elements held in this queue
  */
 public class InvertibleQueueClass<E> extends QueueInList<E> implements InvertibleQueue<E>  {
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
     private boolean isInverted;
     /**
      * Constructs an empty {@code InvertibleQueueClass}.

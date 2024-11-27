@@ -25,7 +25,7 @@ public interface ProtectedStation extends Serializable {
 
     /**
      * Returns the iterator of {@link ProtectedLine} lines of the station
-     * The object is protected from changing from the Main class
+     * The object is protected from changing from the pt.walrus.Main class
      *
      * @return the protected lines collection iterator
      */

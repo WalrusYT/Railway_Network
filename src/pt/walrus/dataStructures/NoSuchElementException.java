@@ -1,6 +1,3 @@
-/**
- * 
- */
 package pt.walrus.dataStructures;
 
 /**

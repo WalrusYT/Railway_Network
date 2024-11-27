@@ -1,5 +1,5 @@
 /**
- * Package pt.walrus.dataStructures for use in AED Curricular Unit
+ * Package dataStructures for use in AED Curricular Unit
  */
 package pt.walrus.dataStructures;
 

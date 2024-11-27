@@ -4,7 +4,7 @@ import pt.walrus.dataStructures.Iterator;
 import java.io.Serializable;
 
 /**
- * This interface represents a schedule in the pt.walrus.Railway Network.
+ * This interface represents a schedule in the Railway Network.
  */
 public interface Schedule extends Serializable {
     /**

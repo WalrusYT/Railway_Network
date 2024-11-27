@@ -7,6 +7,10 @@ package pt.walrus.dataStructures;
  */
 public class MyArrayListIterator<E> implements Iterator<E> {
     /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
+    /**
      * Array of the elements of the list
      */
     private final E[] elements;

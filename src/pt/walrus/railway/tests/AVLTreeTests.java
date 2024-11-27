@@ -1,12 +1,11 @@
 package pt.walrus.railway.tests;
 
-import pt.walrus.dataStructures.AVLTree;
+import pt.walrus.dataStructures.*;
 import org.junit.jupiter.api.Test;
 import pt.walrus.dataStructures.Dictionary;
 import pt.walrus.dataStructures.Iterator;
 import pt.walrus.dataStructures.Set;
 import pt.walrus.dataStructures.TreeSet;
-import pt.walrus.dataStructures.*;
 
 import java.util.List;
 import java.util.*;

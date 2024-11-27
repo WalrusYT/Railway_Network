@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.Scanner;
 
 /**
- * pt.walrus.Main program for pt.walrus.Railway Network
+ * pt.walrus.Main program for Railway Network
  * @author Ilia Taitsel (67258) i.taitsel@campus.fct.unl.pt
  * @author Oleksandra Kozlova (68739) o.kozlova@campus.fct.unl.pt
  */
@@ -31,7 +31,7 @@ public class Main {
     }
 
     /**
-     * Saves pt.walrus.Railway network into the file, when exiting from the application
+     * Saves Railway network into the file, when exiting from the application
      * @param rw instance of the railway network to save
      */
     private static void save(Railway rw) {
@@ -45,8 +45,8 @@ public class Main {
     }
 
     /**
-     * Loads pt.walrus.Railway Network from the file, if it's exists, otherwise create a new one
-     * @return the instance of pt.walrus.Railway - the railway network
+     * Loads Railway Network from the file, if it's exists, otherwise create a new one
+     * @return the instance of Railway - the railway network
      */
     @SuppressWarnings("unchecked")
     private static Railway load() {
@@ -63,7 +63,7 @@ public class Main {
      * Handle a command from an output and executes a corresponding method
      * @param in Scanner object to read user input
      * @param command String of a command from input
-     * @param rw pt.walrus.Railway object - the railway network
+     * @param rw Railway object - the railway network
      */
     private static void handleCommand(Scanner in, String command, Railway rw) {
         switch (command) {
@@ -84,7 +84,7 @@ public class Main {
     /**
      * Insertion of a line, given a name and a non-empty list of station names
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object to that we want to insert a new line
+     * @param rw Railway object to that we want to insert a new line
      */
     public static void insertLine(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
@@ -106,7 +106,7 @@ public class Main {
     /**
      * Removal of a line with the given name
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object from that we want to remove a line
+     * @param rw Railway object from that we want to remove a line
      */
     public static void removeLine(Scanner in, Railway rw) {
         String name = in.nextLine().trim().toLowerCase();
@@ -121,7 +121,7 @@ public class Main {
     /**
      * Lists the stations on a given line, if the line exists.
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object from that we want to be informed about stations
+     * @param rw Railway object from that we want to be informed about stations
      */
     public static void listStations(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
@@ -138,7 +138,7 @@ public class Main {
     /**
      * Lists the lines of a given station, if it exists. The list in lexicographic order.
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object from that we want to be informed about stations
+     * @param rw Railway object from that we want to be informed about stations
      */
     public static void listLines (Scanner in, Railway rw) {
         String name = in.nextLine().trim();
@@ -153,9 +153,9 @@ public class Main {
     }
 
     /**
-     * Inserts a new schedule into the pt.walrus.Railway Network
+     * Inserts a new schedule into the Railway Network
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object to that we want to insert a schedule
+     * @param rw Railway object to that we want to insert a schedule
      */
     public static void insertSchedule(Scanner in, Railway rw) {
         String name = in.nextLine().trim(); int number = Integer.parseInt(in.nextLine().trim());
@@ -183,7 +183,7 @@ public class Main {
     /**
      * Removal of a schedule, if the line and schedule exist
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object to that we want to insert a schedule
+     * @param rw Railway object to that we want to insert a schedule
      */
     public static void removeSchedule(Scanner in, Railway rw) {
         String line = in.nextLine().trim();
@@ -236,7 +236,7 @@ public class Main {
      * and the departure station is a terminal station
      * (determining the direction of travel direction)
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object to that we want to list the schedules from
+     * @param rw Railway object to that we want to list the schedules from
      */
     public static void listSchedules(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
@@ -261,7 +261,7 @@ public class Main {
     /**
      *  Lists all trains that pass by the given station in increasing order of departure time.
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object to that we want to list the schedules from
+     * @param rw Railway object to that we want to list the schedules from
      */
     public static void listTrains(Scanner in, Railway rw) {
         String name = in.nextLine().trim();
@@ -281,7 +281,7 @@ public class Main {
      * Determines, if possible, the “best” route between two stations
      * (departure and destination) on a given line.
      * @param in Scanner object to read user input
-     * @param rw pt.walrus.Railway object that we want to find the best timetable from
+     * @param rw Railway object that we want to find the best timetable from
      */
     private static void bestTimetable(Scanner in, Railway rw) {
         String name = in.nextLine().trim(), departureStation = in.nextLine().trim();

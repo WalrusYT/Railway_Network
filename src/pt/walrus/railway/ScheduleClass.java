@@ -17,7 +17,7 @@ public class ScheduleClass implements Schedule {
      */
     private final Train train;
      /**
-     * List of the {@link ScheduleEntry} enties
+     * List of the {@link ScheduleEntry} entries
      */
     private final List<ScheduleEntry> entries;
 
@@ -149,6 +149,7 @@ public class ScheduleClass implements Schedule {
         public Station getStation() {
             return station;
         }
+
         /**
          * Returns time of departure
          * @return a {@link Time} time

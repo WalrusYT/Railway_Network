@@ -76,7 +76,7 @@ public class StackInArray<E> implements Stack<E>
 
 
     /* 
-     * @see pt.walrus.dataStructures.Stack#top()
+     * @see dataStructures.Stack#top()
      */
     @Override
 	public E top( ) throws EmptyStackException

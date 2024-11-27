@@ -9,6 +9,10 @@ package pt.walrus.dataStructures;
  */
 public class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
     /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
+    /**
      * Root of the binary search tree
      */
     protected BSTNode<Entry<K,V>> root;

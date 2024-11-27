@@ -1,7 +1,7 @@
 package pt.walrus.railway.tests;
 
-import pt.walrus.dataStructures.*;
 import org.junit.jupiter.api.Test;
+import pt.walrus.dataStructures.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

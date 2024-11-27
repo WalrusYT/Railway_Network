@@ -1,7 +1,7 @@
 package pt.walrus.railway;
 
 /**
- * This interface represents a station in the pt.walrus.Railway Network.
+ * This interface represents a station in the Railway Network.
  */
 public interface Station extends ProtectedStation {
     /**

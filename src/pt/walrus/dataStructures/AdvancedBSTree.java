@@ -9,6 +9,10 @@ package pt.walrus.dataStructures;
  */
 public abstract class AdvancedBSTree<K extends Comparable<K>, V> extends BinarySearchTree<K,V> {
     /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
+    /**
      * Performs a single left rotation rooted at Y node.
      * Node X was a right  child of Y before the rotation,
      * then Y becomes the left child of X after the rotation.

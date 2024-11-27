@@ -8,7 +8,7 @@ import pt.walrus.railway.exceptions.*;
 import java.io.Serializable;
 
 /**
- * This interface represents a top interface of the pt.walrus.Railway
+ * This interface represents a top interface of the Railway
  */
 public interface Railway extends Serializable {
     /**
@@ -40,7 +40,7 @@ public interface Railway extends Serializable {
 
     /**
      * Iterator of {@link ProtectedLine} to show the all lines of the station by its name
-     * The instance of {@link ProtectedLine} does not allow to change an object from Main
+     * The instance of {@link ProtectedLine} does not allow to change an object from pt.walrus.Main
      *
      * @param name the name of the station
      * @return the iterator of the lines that have this station

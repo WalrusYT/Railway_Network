@@ -7,6 +7,10 @@ package pt.walrus.dataStructures;
  * @param <V> the type parameter
  */
 public class BSTPreorderIterator<K,V> implements Iterator<Entry<K,V>> {
+	/**
+ 	* Serial Version UID of the Class
+ 	*/
+	private static final long serialVersionUID = 0L;
 
 	/**
 	 * Root of the binary search tree

@@ -11,8 +11,10 @@ package pt.walrus.dataStructures;
 public class AVLNode<E> extends BSTNode<E>
 {
 
-
-
+    /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
 
     /**
      * Height of the node

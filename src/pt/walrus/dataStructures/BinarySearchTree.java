@@ -1,4 +1,5 @@
 package pt.walrus.dataStructures;
+import java.io.*;
 
 /**
  * BinarySearchTree implementation
@@ -17,13 +18,17 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
      * The root of the tree.                                            
      * 
      */
-    protected BSTNode<Entry<K, V>> root;
+    // Marked as transient to fix serialization issues
+    // (see AVLTree class serialization methods for more info)
+    protected transient BSTNode<Entry<K, V>> root;
 
     /**
      * Number of entries in the tree.                                  
      * 
      */
-    protected int currentSize;
+    // Marked as transient to fix serialization issues
+    // (see AVLTree class serialization methods for more info)
+    protected transient int currentSize;
 
     /**
      * Tree Constructor - creates an empty tree.
@@ -217,5 +222,6 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements OrderedDict
     public Iterator<Entry<K, V>> iterator() {
         return new BSTKeyOrderIterator<>(root);
     }
+
 }
 

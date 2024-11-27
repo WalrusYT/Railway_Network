@@ -10,6 +10,10 @@ package pt.walrus.dataStructures;
  */
 public class ConcatenableQueueInList<E> extends QueueInList<E> implements ConcatenableQueue<E> {
     /**
+     * Serial Version UID of the Class
+     */
+    private static final long serialVersionUID = 0L;
+    /**
      * Constructs an empty {@code ConcatenableQueueInList}.
      */
     public ConcatenableQueueInList() {

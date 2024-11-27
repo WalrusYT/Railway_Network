@@ -7,6 +7,10 @@ package pt.walrus.dataStructures;
  * @param <V> the type parameter
  */
 class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>> {
+	/**
+	 * Serial Version UID of the Class
+	 */
+	private static final long serialVersionUID = 0L;
 
 
 	/**

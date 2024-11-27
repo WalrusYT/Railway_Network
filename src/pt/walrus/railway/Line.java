@@ -4,7 +4,7 @@ import pt.walrus.railway.exceptions.InvalidScheduleException;
 import pt.walrus.railway.exceptions.ScheduleNotExistsException;
 
 /**
- * This interface represents a line in the pt.walrus.Railway Network.
+ * This interface represents a line in the Railway Network.
  */
 public interface Line extends ProtectedLine, Comparable<Line> {
 

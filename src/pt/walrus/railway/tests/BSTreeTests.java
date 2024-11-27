@@ -1,7 +1,7 @@
 package pt.walrus.railway.tests;
 
-import pt.walrus.dataStructures.*;
 import org.junit.jupiter.api.Test;
+import pt.walrus.dataStructures.*;
 import pt.walrus.dataStructures.Dictionary;
 import pt.walrus.dataStructures.Iterator;
 import pt.walrus.dataStructures.Set;

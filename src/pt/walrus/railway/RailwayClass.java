@@ -3,8 +3,14 @@ package pt.walrus.railway;
 import pt.walrus.railway.exceptions.*;
 import pt.walrus.dataStructures.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.lang.reflect.Field;
+
 /**
- * The pt.walrus.Railway class represents a railway system with a collection of lines and stations
+ * The Railway class represents a railway system with a collection of lines and stations
  */
 public class RailwayClass implements Railway {
     /**
@@ -12,16 +18,17 @@ public class RailwayClass implements Railway {
      */
     private static final long serialVersionUID = 0L;
     /**
-     * Collection of lines of the network
-     */
-    private final Dictionary<String, Line> lines;
-    /**
      * Collection of stations of the network
      */
     private final Dictionary<String, Station> stations;
+    /**
+     * Collection of lines of the network
+     */
+    private final Dictionary<String, Line> lines;
+
 
     /**
-     * Constructs an object pt.walrus.Railway Network
+     * Constructs an object Railway Network
      */
     public RailwayClass() {
         lines = new SepChainHashTable<>();
@@ -164,5 +171,45 @@ public class RailwayClass implements Railway {
         Station station = line.getStationByName(entry.getKey());
         if (station == null) throw new ScheduleNotExistsException();
         return new ScheduleClass.ScheduleEntry(station, entry.getValue());
+    }
+
+    /*
+    Custom serialization for Railway class.
+    Using java's default serialization mechanism fails with NullPointerException
+    when inserting Lines into the Set<Line> lines field of a StationClass during deserialization.
+    The Set in question is marked as transient in order to exclude it from default
+    serialization mechanism - this will ensure that the Set is not serialized.
+     */
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    /*
+    Iterate through Stations' of each Line and modify each Stations Set<Line> field.
+    Using reflection here to initialize the Set in question and prevent NullPointerException
+
+    This solution is approved by professor Bernardo Toninho
+     */
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        Iterator<Entry<String, Line>> linesIter = lines.iterator();
+        while (linesIter.hasNext()) {
+            Line line = linesIter.next().getValue();
+            Iterator<Station> stationsIter = line.getStations(Direction.FORWARD);
+            while (stationsIter.hasNext()) {
+                Station station = stationsIter.next();
+                try {
+                    Field f = StationClass.class.getDeclaredField("lines");
+                    f.setAccessible(true);
+                    if (f.get(station) == null)
+                        f.set(station, new TreeSet<>());
+                } catch (Exception e) {
+                    System.out.println("Deserialization failed :(");
+                }
+                station.addLine(line);
+            }
+        }
     }
 }

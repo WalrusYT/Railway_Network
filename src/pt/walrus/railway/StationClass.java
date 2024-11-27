@@ -19,12 +19,13 @@ public class StationClass implements Station {
     /**
      * Lines of the station
      */
-    private final Set<Line> lines;
+    // Marked as transient to fix serialization issues
+    // (see Railway class serialization methods for more info)
+    private final transient Set<Line> lines;
     /**
      * Trains of the station
      */
     private final Dictionary<ArrivalEntry, Train> passingTrains;
-
 
     /**
      * Constructs an object {@link StationClass} with the given station name
@@ -114,6 +115,10 @@ public class StationClass implements Station {
      * The type Arrival entry.
      */
     public static class ArrivalEntry implements Comparable<ArrivalEntry>, Serializable {
+        /**
+         * Serial Version UID of the Class
+         */
+        private static final long serialVersionUID = 0L;
         /**
          * The time of the arrival of the train.
          */
