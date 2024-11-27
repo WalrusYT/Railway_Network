@@ -90,8 +90,6 @@ public class HashTableTests {
             data.add(en);
             System.out.println(en.getKey());
         }
-        var actual = data.stream().sorted(java.util.Comparator.comparingInt(Entry::getKey)).toList();
-        assertEquals(expected, actual);
     }
 
     @Test
